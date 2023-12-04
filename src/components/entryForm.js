@@ -9,9 +9,6 @@ function getToday(){
     const options = {month: "short"};
     const year = today.getFullYear();
     const formattedMonth = new Intl.DateTimeFormat("en-US", options).format(today)
-
-    const MonthDate = formattedMonth.concat(` ${date}, ${year}`)
-   /// const hourMin = 
     
     return formattedMonth.concat(` ${date}, ${year}`)
 }
