@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import TagPage from './components/tagPage';
+import { Outlet } from "react-router-dom";
 
 
 
@@ -8,9 +8,9 @@ function App() {
   return (
     <div className="App">
       <header>
-      
+
       </header>
-      <TagPage />
+      <Outlet />
     </div>
   );
 }
