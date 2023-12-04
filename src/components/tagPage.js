@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from "react";
 import Tags from "./tag";
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import Autocomplete from '@mui/joy/Autocomplete';
+import { Button, Box, Typography, Sheet, Autocomplete } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from "../constants";
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+
 
 export default function TagPage(){
     const [value, setValue] = useState(options[0]);
     const [inputValue, setInputValue] = useState('');
     const [selectedTags, setSelectedTags] = useState([]); 
+    const [originalData, setOriginalData] = useState([]);
     const [selectedTagNames, setSelectedTagNames] = useState([]);
 
     useEffect(() => {
@@ -19,7 +20,8 @@ export default function TagPage(){
             // console.log(received);
             const getUserTags = received.map((data) => data.user_tags);
             const getTagIds = getUserTags.map((userTag) => userTag.tagId);
-            console.log(getTagIds)
+            // console.log(getTagIds)
+            setOriginalData(getTagIds);
             setSelectedTags(getTagIds);
          
         })
@@ -39,36 +41,51 @@ export default function TagPage(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('selectedTags', selectedTags); 
-        // check how the req.body should look like for this call 
-    
-        // Send an HTTP request to associate selectedTags with the logged-in user
-        axios.post(`${BACKEND_URL}/users/1/tags`, { selectedTags })
+      
+        const newData = selectedTags;
+        const idsToDelete = originalData.filter((id) => !newData.includes(id));
+        const idsToAdd = newData.filter((id) => !originalData.includes(id));
+
+        //call post
+        axios.post(`${BACKEND_URL}/tags/users/1`, { idsToAdd })
           .then((response) => {
-            console.log("response", response)
+            console.log("adding ids", response)
             // setSelectedTags()
           })
           .catch((error) => {
             console.error('Error associating tags:', error);
           });
+        
+        axios({
+            url: `${BACKEND_URL}/tags/users/1`,
+            method: 'delete',
+            data: idsToDelete,
+          }).then((response) => console.log('hey', response))
+
       };
 
     return(
     <Sheet sx={{width: "1200px", display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
-        <Typography fontWeight="lg" level="h1" color="neutral" sx={{ mb: 0.5}}>Onboarding </Typography>
         {/* {selectedTags.map((id) => <div>{id}</div>)} */}
-        <PersonalitySelect value={value} inputValue={inputValue} setValue={setValue} setInputValue={setInputValue}/>
-        <Tags 
-            requestType= "Personality" 
-            userPersonality={value}
-            selectedTags={selectedTags}
-             toggleSelection={toggleSelection}
-        />
-        <Tags 
-            requestType="CBT"
-            selectedTags={selectedTags}
-            toggleSelection={toggleSelection}
-        />
+        <form onSubmit={handleSubmit}>
+            <Box sx={{ display: 'flex', justifyContent: "space-between", mb: 2 }}>
+                <Typography fontWeight="lg" level="h1" color="neutral" sx={{ mb: 0.5}}>Onboarding </Typography>
+                <Button size="lg" type="submit" variant="outlined" endDecorator={<KeyboardArrowRight />} color="success">Next </Button>
+            </Box>
+            <PersonalitySelect value={value} inputValue={inputValue} setValue={setValue} setInputValue={setInputValue}/>
+            <Tags 
+                requestType= "Personality" 
+                userPersonality={value}
+                selectedTags={selectedTags}
+                toggleSelection={toggleSelection}
+            />
+            <Tags 
+                requestType="CBT"
+                selectedTags={selectedTags}
+                toggleSelection={toggleSelection}
+            />
+
+        </form>
     </Sheet>
     )
 }
