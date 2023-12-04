@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TagPage from './components/tagPage';
 import EntryForm from './components/entryForm';
-import EntryList from './components/entryList';
+import MyPage from './components/myPage';
 import TagSelect from './components/tagSelect';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -15,7 +15,7 @@ root.render(
     <Routes>
     
       <Route path="/" element={<App />}>
-        <Route index element={<EntryList />} />
+        <Route index element={<MyPage />} />
         <Route path="tags" element={<TagPage />} />
         <Route path="entry" element={<EntryForm />} />
         <Route path="*" element={"Nothing here!"} />

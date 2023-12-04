@@ -8,9 +8,7 @@ export default function EntryList(){
     const [entries, setEntries] = useState([]);
     const [openStates, setOpenStates] = useState([]);
 
-    const toggleAll = (value) => {
-        // Set all open states to the specified value (true for open, false for close)
-        
+    const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
         setOpenStates(newOpenStates);
       };
@@ -30,7 +28,8 @@ export default function EntryList(){
     },[])
 
     return(
-        <Sheet sx={{display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
+        <div>
+            <Typography level="h3" fontWeight="lg">Entries</Typography>
             <div>
                 <button onClick={() => toggleAll(true)}>Open All</button>
                 <button onClick={() => toggleAll(false)}>Close All</button>
@@ -49,7 +48,7 @@ export default function EntryList(){
                         }} 
                     />)}
             </AccordionGroup>
-        </Sheet>
+        </div>
     )
 }
 
