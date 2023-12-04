@@ -10,6 +10,7 @@ export default function EntryList(){
 
     const toggleAll = (value) => {
         // Set all open states to the specified value (true for open, false for close)
+        
         const newOpenStates = Array(openStates.length).fill(value);
         setOpenStates(newOpenStates);
       };
@@ -20,6 +21,7 @@ export default function EntryList(){
             const received = response.data;
             console.log(received);
             setEntries(received);
+            setOpenStates(Array(received.length).fill(false));
         })
         .catch((error) =>{
             console.log('error', error)
@@ -34,12 +36,18 @@ export default function EntryList(){
                 <button onClick={() => toggleAll(false)}>Close All</button>
             </div>
             <AccordionGroup sx={{ maxWidth: 400 }}>
-                {entries.map((entry, index) =><Entry key={entry.id} index={index} entry={entry} open={openStates[index]} setOpen={(value) => {
-                const newOpenStates = [...openStates];
-                newOpenStates[index] = value;
-                setOpenStates(newOpenStates);
-            }} 
-            />)}
+                {entries.map((entry, index) =>
+                    <Entry 
+                        key={entry.id} 
+                        index={index} 
+                        entry={entry} 
+                        open={openStates[index]} 
+                        setOpen={(value) => {
+                            const newOpenStates = [...openStates];
+                            newOpenStates[index] = value;
+                            setOpenStates(newOpenStates);
+                        }} 
+                    />)}
             </AccordionGroup>
         </Sheet>
     )
@@ -62,8 +70,6 @@ function Entry({entry, open, setOpen}){
             <Typography sx={{mb: 1}} fontSize="md">{entry.solution}</Typography>
             <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Observation</Typography>
             <Typography sx={{mb: 1}} fontSize="md">{entry.observation}</Typography>
-     
-           
         </AccordionDetails>
       </Accordion>
     )
