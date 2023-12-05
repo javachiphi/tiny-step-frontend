@@ -11,10 +11,13 @@ import ModalForm from './modalForm';
 
 export default function MyTags(){
     const [ tags, setTags ] = useState([])
+    
     const [openStates, setOpenStates] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
+    const [selectedTagForEdit, setSelectedTagForEdit] = useState(null);
 
-    const handleEdit = () => {
+    const handleEdit = (tag) => {
+        setSelectedTagForEdit(tag);
         setModalOpen(true);
     }
 
@@ -84,7 +87,14 @@ export default function MyTags(){
                 />
             )}
         </AccordionGroup>
-
+        {selectedTagForEdit && (
+            <ModalForm
+                mode={"edit"}
+                editTagData={selectedTagForEdit}
+                modalOpen={modalOpen}
+                setModalOpen={setModalOpen}
+            />
+        )}
     </div>)
 }
 
@@ -108,20 +118,19 @@ function Tag({tag, open, setOpen, onDelete, onEdit, modalOpen, setModalOpen}){
             (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>added on {getDate(tag.user_tags.createdAt)}</Typography>)
             : (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>selected on {getDate(tag.user_tags.createdAt)}</Typography>)
             }
-             <TagMore onEdit={onEdit} onDelete={onDelete} tagId={tag.user_tags.tagId} tagType={tag.type}/>
+             <TagMore tag={tag} onEdit={onEdit} onDelete={onDelete} tagId={tag.user_tags.tagId} tagType={tag.type}/>
              </div>
 
             <Typography sx={{mb: 1}} fontSize="md">{tag.description}</Typography>
          
         </AccordionDetails>
       </Accordion>
-      <ModalForm mode={"edit"} editTagData={tag} modalOpen={modalOpen} setModalOpen={setModalOpen}/>
         </>
     )
 }
 
 
-function TagMore({onDelete, tagId, tagType, onEdit}){
+function TagMore({onDelete, tagId, tagType, onEdit, tag}){
     return(
         <Dropdown>
             <MenuButton
@@ -134,7 +143,7 @@ function TagMore({onDelete, tagId, tagType, onEdit}){
                 {/* edit */}
             </MenuButton>
             <Menu>
-                <MenuItem onClick={onEdit}>
+                <MenuItem onClick={() => onEdit(tag)}>
                     Edit
                 </MenuItem>
                 <MenuItem onClick={() => onDelete(tagId, tagType)}>Delete</MenuItem>
