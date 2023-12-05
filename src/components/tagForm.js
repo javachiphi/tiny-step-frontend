@@ -5,9 +5,9 @@ import { Button, Box, Textarea, Input, Typography } from '@mui/joy';
 
 
 
-export default function TagForm(){
-    const [note, setNote ] = useState('');
-    const [ description, setDescription] = useState('');
+export default function TagForm({mode, editTagData, setModalOpen}){
+    const [note, setNote ] = useState(mode === 'edit' ? editTagData.note : '');
+    const [description, setDescription] = useState(mode === 'edit' ? editTagData.description : '');
 
     const handleChange = (e,type) => {
 
@@ -23,8 +23,26 @@ export default function TagForm(){
 
         e.preventDefault();
 
+        if(mode ==="edit") {
+            console.log('edit submitted!')
+            const tagId = editTagData.user_tags.tagId;
+
+            axios.put(`${BACKEND_URL}/tags/${tagId}`, {
+                note: note,
+                description: description,
+                type: "user_generated"
+            })
+            .then((response) => {
+
+                console.log(response.data)
+                setModalOpen(false)
+                // somehow need to refresh the page
+                
+            })
+
+
+        } else { // mode === "create" 
         console.log('hey creating');
-        // body 
         axios.post(`${BACKEND_URL}/tags`, {
             note: note,
             description: description,
@@ -43,12 +61,13 @@ export default function TagForm(){
         } 
         )
         .catch((error) => console.log(error));
+        }
 
 
     }
     return(
         <form onSubmit={handleSubmit}>
-            <Box sx={{display: "flex", flexDirection:"column", width: "600px"}}>
+            <Box sx={{display: "flex", flexDirection:"column"}}>
             <Typography level='h3'>Create a Tag</Typography>
             <Input
                 value={note}

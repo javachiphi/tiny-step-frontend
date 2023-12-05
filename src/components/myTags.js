@@ -7,9 +7,16 @@ import {MoreVert, DeleteIcon, EditIcon, MoreHoriz } from '@mui/icons-material';
 import {Button, Typography, AccordionGroup, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
 import { getDate } from './entryList';
 
+import ModalForm from './modalForm';
+
 export default function MyTags(){
     const [ tags, setTags ] = useState([])
     const [openStates, setOpenStates] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleEdit = () => {
+        setModalOpen(true);
+    }
 
     const handleDelete = (tagId, tagType) => {
         console.log('hey')
@@ -66,6 +73,9 @@ export default function MyTags(){
                     index={index}
                     open={openStates[index]}
                     onDelete={handleDelete}
+                    onEdit={handleEdit}
+                    modalOpen={modalOpen}
+                    setModalOpen={setModalOpen}
                     setOpen={(value) => {
                         const newOpenStates = [...openStates];
                         newOpenStates[index] = value;
@@ -79,8 +89,9 @@ export default function MyTags(){
 }
 
 
-function Tag({tag, open, setOpen, onDelete}){    
+function Tag({tag, open, setOpen, onDelete, onEdit, modalOpen, setModalOpen}){    
     return(
+        <>
      <Accordion
         expanded={open}
         onChange={(event, expanded) => {
@@ -97,18 +108,20 @@ function Tag({tag, open, setOpen, onDelete}){
             (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>added on {getDate(tag.user_tags.createdAt)}</Typography>)
             : (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>selected on {getDate(tag.user_tags.createdAt)}</Typography>)
             }
-             <TagMore onDelete={onDelete} tagId={tag.user_tags.tagId} tagType={tag.type}/>
+             <TagMore onEdit={onEdit} onDelete={onDelete} tagId={tag.user_tags.tagId} tagType={tag.type}/>
              </div>
 
             <Typography sx={{mb: 1}} fontSize="md">{tag.description}</Typography>
          
         </AccordionDetails>
       </Accordion>
+      <ModalForm mode={"edit"} editTagData={tag} modalOpen={modalOpen} setModalOpen={setModalOpen}/>
+        </>
     )
 }
 
 
-function TagMore({onDelete, tagId, tagType}){
+function TagMore({onDelete, tagId, tagType, onEdit}){
     return(
         <Dropdown>
             <MenuButton
@@ -121,7 +134,9 @@ function TagMore({onDelete, tagId, tagType}){
                 {/* edit */}
             </MenuButton>
             <Menu>
-                <MenuItem>Edit</MenuItem>
+                <MenuItem onClick={onEdit}>
+                    Edit
+                </MenuItem>
                 <MenuItem onClick={() => onDelete(tagId, tagType)}>Delete</MenuItem>
             </Menu>
         </Dropdown>
