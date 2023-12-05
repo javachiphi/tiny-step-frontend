@@ -1,6 +1,9 @@
 import axios from 'axios';
 import React, {useState, useEffect } from 'react';
 import { BACKEND_URL } from '../constants';
+import {IconButton, Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy"
+import {MoreVert, DeleteIcon, EditIcon, MoreHoriz } from '@mui/icons-material';
+
 import {Button, Typography, AccordionGroup, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
 import { getDate } from './entryList';
 
@@ -8,10 +11,33 @@ export default function MyTags(){
     const [ tags, setTags ] = useState([])
     const [openStates, setOpenStates] = useState([]);
 
+    const handleDelete = (tagId, tagType) => {
+        console.log('hey')
+        let idsToDelete = [];
+        idsToDelete.push(tagId);
+
+        axios({
+            url: `${BACKEND_URL}/tags/users/1`, //remove association 
+            method: 'delete',
+            data: idsToDelete,
+          })
+          .then((response) => {
+            console.log('delete', response.data.message)
+            // if user created the tag, then destroy the tag
+            if(tagType === 'user_generated'){
+                axios.delete(`${BACKEND_URL}/tags/${tagId}`)
+                .then((response) => {
+                    console.log('response', response);
+                })
+            }
+          })
+    }
+
     const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
         setOpenStates(newOpenStates);
       };
+
 
 
     useEffect(() => {
@@ -35,10 +61,11 @@ export default function MyTags(){
         <AccordionGroup sx={{ maxWidth: 400 }}>
             {tags.map((tag, index) => 
                 <Tag 
-                    key={tag.id}
+                    key={tag.user_tags.tagId+ tag.note}
                     tag={tag}
                     index={index}
                     open={openStates[index]}
+                    onDelete={handleDelete}
                     setOpen={(value) => {
                         const newOpenStates = [...openStates];
                         newOpenStates[index] = value;
@@ -52,7 +79,7 @@ export default function MyTags(){
 }
 
 
-function Tag({tag, open, setOpen}){    
+function Tag({tag, open, setOpen, onDelete}){    
     return(
      <Accordion
         expanded={open}
@@ -62,15 +89,41 @@ function Tag({tag, open, setOpen}){
       >
         <AccordionSummary>
             <Typography level='body'>{tag.note} </Typography>
-            </AccordionSummary>
+        </AccordionSummary>
+            
         <AccordionDetails>
+            <div style={{display: 'flex', alignItems: 'end', justifyContent: 'space-between'}}>
              {  tag.type === 'user_generated' ? 
             (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>added on {getDate(tag.user_tags.createdAt)}</Typography>)
             : (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>selected on {getDate(tag.user_tags.createdAt)}</Typography>)
             }
+             <TagMore onDelete={onDelete} tagId={tag.user_tags.tagId} tagType={tag.type}/>
+             </div>
+
             <Typography sx={{mb: 1}} fontSize="md">{tag.description}</Typography>
          
         </AccordionDetails>
       </Accordion>
+    )
+}
+
+
+function TagMore({onDelete, tagId, tagType}){
+    return(
+        <Dropdown>
+            <MenuButton
+                slots={{ root: IconButton }}
+                slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
+                sx={{width: '20px'}}
+                
+            >
+                <MoreHoriz color='neutral'/>
+                {/* edit */}
+            </MenuButton>
+            <Menu>
+                <MenuItem>Edit</MenuItem>
+                <MenuItem onClick={() => onDelete(tagId, tagType)}>Delete</MenuItem>
+            </Menu>
+        </Dropdown>
     )
 }
