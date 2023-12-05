@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TagPage from './components/tagPage';
+import OnboardingPage from './components/onboardingPage';
 import EntryForm from './components/entryForm';
 import MyPage from './components/myPage';
 import TagSelect from './components/tagSelect';
+import TagForm from './components/tagForm';
+import MyTags from './components/myTags';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,8 +17,8 @@ root.render(
     <Routes>
     
       <Route path="/" element={<App />}>
-        <Route index element={<MyPage />} />
-        <Route path="tags" element={<TagPage />} />
+        <Route index element={<TagForm />} />
+        <Route path="onboarding" element={<OnboardingPage />} />
         <Route path="entry" element={<EntryForm />} />
         <Route path="*" element={"Nothing here!"} />
       </Route>

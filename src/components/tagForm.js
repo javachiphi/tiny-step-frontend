@@ -27,7 +27,8 @@ export default function TagForm(){
         // body 
         axios.post(`${BACKEND_URL}/tags`, {
             note: note,
-            description: description
+            description: description,
+            type: "user_generated"
         })
         .then((response) => {
            console.log('response', response.data.id)

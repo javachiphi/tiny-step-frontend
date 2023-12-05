@@ -1,38 +1,30 @@
 import React, { useState, useEffect } from 'react'; 
-import { Box, Sheet, Typography, Textarea, Button } from '@mui/joy';
+import { Box, Sheet, Typography, Textarea, Button, IconButton } from '@mui/joy';
 import {AccordionGroup, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function EntryList(){
-    const [entries, setEntries] = useState([]);
-    const [openStates, setOpenStates] = useState([]);
+// all diary entries axios.get(`${BACKEND_URL}/users/1/entries`) // 
+
+export default function EntryList({entries, tag}){
+    // const [entries, setEntries] = useState([]);
+    const [openStates, setOpenStates] = useState(Array(entries.length).fill(false));
 
     const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
         setOpenStates(newOpenStates);
       };
 
-    useEffect(() => {
-        axios.get(`${BACKEND_URL}/users/1/entries`) // need to implement pagination 
-        .then((response) =>{
-            const received = response.data;
-            console.log(received);
-            setEntries(received);
-            setOpenStates(Array(received.length).fill(false));
-        })
-        .catch((error) =>{
-            console.log('error', error)
-        })
-
-    },[])
-
     return(
         <div>
-            <Typography level="h3" fontWeight="lg">Entries</Typography>
+            <Typography level="h3" fontWeight="lg">{tag}</Typography>
+            {/* <IconButton>Create</IconButton> */}
             <div>
-                <button onClick={() => toggleAll(true)}>Open All</button>
-                <button onClick={() => toggleAll(false)}>Close All</button>
+               
+                <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
+                <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
             </div>
             <AccordionGroup sx={{ maxWidth: 400 }}>
                 {entries.map((entry, index) =>
@@ -52,10 +44,9 @@ export default function EntryList(){
     )
 }
 
+/// http://localhost:3001/tags/entries/1
 
-
-function Entry({entry, open, setOpen}){
-    
+function Entry({entry, open, setOpen}){    
     return(
      <Accordion
         expanded={open}
@@ -67,7 +58,7 @@ function Entry({entry, open, setOpen}){
         <AccordionDetails>
             <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Solution</Typography>
             <Typography sx={{mb: 1}} fontSize="md">{entry.solution}</Typography>
-            <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Observation</Typography>
+            <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Situation</Typography>
             <Typography sx={{mb: 1}} fontSize="md">{entry.observation}</Typography>
         </AccordionDetails>
       </Accordion>
@@ -75,7 +66,7 @@ function Entry({entry, open, setOpen}){
 }
 
 
-function getDate(createdDate) {
+export function getDate(createdDate) {
     const entryDate = new Date(createdDate);
     if (isNaN(entryDate)) {
       return "Invalid Date";

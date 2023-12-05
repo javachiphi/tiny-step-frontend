@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import Tags from "./tag";
+import Tags from "./onboardingTag";
 import { Button, Box, Typography, Sheet, Autocomplete } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from "../constants";
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 
-export default function TagPage(){
+export default function OnboardingPage(){
     const [value, setValue] = useState(options[0]);
     const [inputValue, setInputValue] = useState('');
     const [selectedTags, setSelectedTags] = useState([]); 

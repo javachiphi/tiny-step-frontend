@@ -3,6 +3,7 @@ import { Box, Sheet, Typography, Textarea, Button } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
 
+
 function getToday(){
     const today = new Date();
     const date = today.getDate();
@@ -36,19 +37,20 @@ export default function EntryForm(){
         })
         .then((response) => {
             console.log('response', response.data);
-            setObservation('');
-            setSolution('');
+            //handle after saving -> redirect? where?
         })
         .catch((error) =>{
             console.log("error")
         })
     }
+
     
 
     return(
-        <Sheet sx={{display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
+        // <Sheet sx={{display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
+        <div style={{width: '800px'}}>
         <form onSubmit={handleSubmit}>
-        <Box sx={{display: "flex", alignContent:"center",  justifyContent: 'space-evenly' , alignItems: 'baseline'}}>
+        <Box sx={{display: "flex", alignContent:"center",  justifyContent: 'center' , alignItems: 'baseline'}}>
             <Typography level="h1" sx={{marginTop: "50px", textAlign: "center"}}>
             {getToday()}
             </Typography>
@@ -71,7 +73,8 @@ export default function EntryForm(){
             />
         </Box>
         </form>
-        </Sheet>
+        </div>
+        // </Sheet>
     )
 }
 
