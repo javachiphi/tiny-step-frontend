@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Sheet, Typography, Textarea, Button } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
+import TagSelect from './tagSelect';
+import ModalForm from './modalForm';
 
 
 function getToday(){
@@ -18,7 +20,12 @@ export default function EntryForm(){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
     const [data, setData] = useState({});
+    const [modalOpen, setModalOpen] = useState(false);
 
+    const handleClick = () => {
+        console.log('clicked')
+        setModalOpen(true);
+    }
     const handleChange = (e, type) => {
         const value = e.target.value;
         if(type === "observation"){
@@ -56,6 +63,9 @@ export default function EntryForm(){
             </Typography>
             <Button type="submit" variant="outlined" color="neutral" disabled={solution === '' && observation === ''}>Save</Button>
         </Box>
+        <TagSelect /> 
+        <Button onClick={handleClick}>Create a tag</Button>
+         <ModalForm modalOpen={modalOpen} setModalOpen={setModalOpen} mode="create"/>
         <Box sx={{ display: 'flex', flexDirection: 'column'}}>
             Observation
             <Textarea

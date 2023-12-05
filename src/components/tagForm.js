@@ -55,6 +55,7 @@ export default function TagForm({mode, editTagData, setModalOpen}){
 
            axios.post(`${BACKEND_URL}/tags/users/1`, { idsToAdd })
            .then((response) => {
+            setModalOpen(false)
             console.log("add tag to a user", response.data)
            })
 
