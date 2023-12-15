@@ -4,23 +4,17 @@ import axios from 'axios';
 import { BACKEND_URL } from '../constants';
 import TagSelect from './tagSelect';
 import ModalForm from './modalForm';
+import { useAuthToken } from './useAuthToken';
 
 
-function getToday(){
-    const today = new Date();
-    const date = today.getDate();
-    const options = {month: "short"};
-    const year = today.getFullYear();
-    const formattedMonth = new Intl.DateTimeFormat("en-US", options).format(today)
-    
-    return formattedMonth.concat(` ${date}, ${year}`)
-}
+
 
 export default function EntryForm(){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
     const [data, setData] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
+    const jwtToken = useAuthToken();
 
     const handleClick = () => {
         console.log('clicked')
@@ -38,13 +32,16 @@ export default function EntryForm(){
     const handleSubmit =(e) => {
         e.preventDefault();
 
-        axios.post(`${BACKEND_URL}/users/1/entries`, {
+        axios.post(`${BACKEND_URL}/entries`, {
             observation: observation, 
             solution: solution
-        })
+        }, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            }
+          })
         .then((response) => {
             console.log('response', response.data);
-            //handle after saving -> redirect? where?
         })
         .catch((error) =>{
             console.log("error")
@@ -86,6 +83,19 @@ export default function EntryForm(){
         </div>
         // </Sheet>
     )
+}
+
+
+
+
+function getToday(){
+    const today = new Date();
+    const date = today.getDate();
+    const options = {month: "short"};
+    const year = today.getFullYear();
+    const formattedMonth = new Intl.DateTimeFormat("en-US", options).format(today)
+    
+    return formattedMonth.concat(` ${date}, ${year}`)
 }
 
 
