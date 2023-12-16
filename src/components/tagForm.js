@@ -2,12 +2,14 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
 import { Button, Box, Textarea, Input, Typography } from '@mui/joy';
+import { useAuthToken } from './useAuthToken';
 
 
 
 export default function TagForm({mode, editTagData, setModalOpen}){
     const [note, setNote ] = useState(mode === 'edit' ? editTagData.note : '');
     const [description, setDescription] = useState(mode === 'edit' ? editTagData.description : '');
+    const jwtToken = useAuthToken();
 
     const handleChange = (e,type) => {
 
@@ -33,7 +35,6 @@ export default function TagForm({mode, editTagData, setModalOpen}){
                 type: "user_generated"
             })
             .then((response) => {
-
                 console.log(response.data)
                 setModalOpen(false)
                 // somehow need to refresh the page
@@ -47,13 +48,24 @@ export default function TagForm({mode, editTagData, setModalOpen}){
             note: note,
             description: description,
             type: "user_generated"
-        })
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            }
+         }
+        )
         .then((response) => {
            console.log('response', response.data.id)
            const idsToAdd = []
            idsToAdd.push(response.data.id)
 
-           axios.post(`${BACKEND_URL}/tags/users/1`, { idsToAdd })
+           axios.post(`${BACKEND_URL}/tags/users/my`, { idsToAdd }, 
+           {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            }
+         })
            .then((response) => {
             setModalOpen(false)
             console.log("add tag to a user", response.data)
