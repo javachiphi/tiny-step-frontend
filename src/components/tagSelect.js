@@ -2,11 +2,11 @@ import React, {useEffect, useState} from "react";
 import { Autocomplete } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from "../constants";
+import { useAuthToken } from './useAuthToken';
 
 
 
 export default function TagSelect({jwtToken, tagValue, setTagValue}){
-    // const [value, setTagValue] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions ] = useState([]);
 
@@ -14,9 +14,13 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
     // fix backend jwtSub
 
     useEffect(() => {
-        // console.log('jwtToken', jwtToken)
+        
         if(jwtToken){
-            axios.get(`${BACKEND_URL}/tags/users/1`)
+            axios.get(`${BACKEND_URL}/tags/users/my`, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                }
+            })
             .then((response) => {
                 const received = response.data;
                 // const getUserTags = received.map((data) => data.user_tags);
@@ -49,7 +53,6 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
             sx={{ width: 300 }}
             value={tagValue}
             onChange={(event, newValue) => {
-                console.log('new value', newValue)
                 setTagValue(newValue);
             }}
             inputValue={inputValue}
