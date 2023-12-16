@@ -15,6 +15,7 @@ export default function EntryForm(){
     const [data, setData] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const jwtToken = useAuthToken();
+    const [tagValue, setTagValue] = useState('');
 
     const handleClick = () => {
         console.log('clicked')
@@ -34,7 +35,8 @@ export default function EntryForm(){
 
         axios.post(`${BACKEND_URL}/entries`, {
             observation: observation, 
-            solution: solution
+            solution: solution,
+            tagId: tagValue ? tagValue.id : null
         }, {
             headers: {
                 Authorization: `Bearer ${jwtToken}`,
@@ -49,7 +51,7 @@ export default function EntryForm(){
     }
 
     
-
+// FIX: frontend mechanism of sending tag id! right now tag id is not being sent. 
     return(
         // <Sheet sx={{display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
         <div style={{width: '800px'}}>
@@ -60,7 +62,11 @@ export default function EntryForm(){
             </Typography>
             <Button type="submit" variant="outlined" color="neutral" disabled={solution === '' && observation === ''}>Save</Button>
         </Box>
-        <TagSelect /> 
+        <TagSelect 
+            jwtToken={jwtToken}
+            tagValue={tagValue}
+            setTagValue={setTagValue}
+        /> 
         <Button onClick={handleClick}>Create a tag</Button>
          <ModalForm modalOpen={modalOpen} setModalOpen={setModalOpen} mode="create"/>
         <Box sx={{ display: 'flex', flexDirection: 'column'}}>
