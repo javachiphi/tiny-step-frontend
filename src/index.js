@@ -28,7 +28,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Welcome />} />s
+          <Route index element={<Welcome />} />
           <Route path="trends" element={<Trends />} />
           <Route path="onboarding" element={<OnboardingPage />} />
           <Route path="create" element={<EntryForm />} />

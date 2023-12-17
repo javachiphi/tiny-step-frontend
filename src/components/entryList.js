@@ -1,28 +1,57 @@
 import React, { useState, useEffect } from 'react'; 
-import { Box, Sheet, Typography, Textarea, Button, IconButton } from '@mui/joy';
+import { Drawer, Typography, Textarea, Button, IconButton } from '@mui/joy';
 import {AccordionGroup, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import EditDeleteDropDown from './EditDeleteDropdown';
+import { useAuthToken } from './useAuthToken';
+import EntryForm from './entryForm';
 
-// all diary entries axios.get(`${BACKEND_URL}/users/1/entries`) // 
-
-export default function EntryList({entries, tag}){
-    // const [entries, setEntries] = useState([]);
+export default function EntryList({entries, tagName, tagId}){
     const [openStates, setOpenStates] = useState(Array(entries.length).fill(false));
+    const jwtToken = useAuthToken();
+    const [selectedEntry, setSelectedEntry] = useState(null);
+    const [selectedTag, setSelectedTag] = useState(null);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
     const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
         setOpenStates(newOpenStates);
       };
 
+    const handleEdit = (entry, tagValue) => {
+        setSelectedEntry(entry);
+        console.log('tagValue', tagValue)
+        setSelectedTag(tagValue);
+        setIsDrawerOpen(true);
+    };
+
+    const handleCloseDrawer = () => {
+        setIsDrawerOpen(false);
+    };
+
+
+
+    const handleDelete = (entryId) => {
+        axios({
+            url: `${BACKEND_URL}/entries/${entryId}`,
+            method: 'delete',
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            }
+        })
+        .then((response) => {
+            console.log('delete', response.data.message)
+        })
+    }
+
+    const tagValue = {label: tagName, id: tagId}
     return(
         <div>
-            <Typography level="h3" fontWeight="lg">{tag}</Typography>
+            <Typography level="h3" fontWeight="lg">{tagName}</Typography>
             {/* <IconButton>Create</IconButton> */}
             <div>
-               
+
                 <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
                 <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
             </div>
@@ -32,6 +61,13 @@ export default function EntryList({entries, tag}){
                         key={entry.id} 
                         index={index} 
                         entry={entry} 
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        onClose={handleCloseDrawer}
+                        tagValue={tagValue}
+                        isDrawerOpen={isDrawerOpen}
+                        selectedEntry={selectedEntry}
+                        selectedTag={selectedTag}
                         open={openStates[index]} 
                         setOpen={(value) => {
                             const newOpenStates = [...openStates];
@@ -44,9 +80,9 @@ export default function EntryList({entries, tag}){
     )
 }
 
-/// http://localhost:3001/tags/entries/1
 
-function Entry({entry, open, setOpen}){    
+function Entry({entry, open, setOpen, onDelete,onEdit, onClose, selectedEntry, selectedTag, isDrawerOpen, tagValue}){    
+
     return(
      <Accordion
         expanded={open}
@@ -54,8 +90,30 @@ function Entry({entry, open, setOpen}){
             setOpen(expanded);
         }}
       >
-        <AccordionSummary>{getDate(entry.createdAt)}</AccordionSummary>
+        <AccordionSummary>
+            {getDate(entry.createdAt)}
+        </AccordionSummary>
         <AccordionDetails>
+            <EditDeleteDropDown 
+                content={entry} 
+                onEdit={onEdit} 
+                onDelete={onDelete} 
+                contentId={entry.id} 
+                tagValue={tagValue}
+            />
+            <Drawer 
+                anchor="right" 
+                open={isDrawerOpen} 
+                onClose={onClose}
+            >
+                <EntryForm 
+                    entry={selectedEntry}
+                    onClose={onClose}
+                    tagValue={selectedTag}
+                    // tagName={tagName}
+                    // tagId={tagId}
+                />
+            </Drawer>
             <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Solution</Typography>
             <Typography sx={{mb: 1}} fontSize="md">{entry.solution}</Typography>
             <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Situation</Typography>

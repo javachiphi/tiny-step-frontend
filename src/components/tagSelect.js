@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import { Autocomplete } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from "../constants";
-import { useAuthToken } from './useAuthToken';
 
 
 
@@ -10,8 +9,7 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions ] = useState([]);
 
-    /// fix users/1 to based on user jwtSub. 
-    // fix backend jwtSub
+
 
     useEffect(() => {
         
@@ -23,8 +21,6 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
             })
             .then((response) => {
                 const received = response.data;
-                // const getUserTags = received.map((data) => data.user_tags);
-                console.log('received', received)
                 let formatted = [];
 
                 received.forEach((tag) => {
@@ -33,7 +29,7 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
 
                 setOptions(formatted);
                 setTagValue(formatted[0]);
-                        
+                
             })
             .catch((error) => {
                 console.log('error', error)
@@ -43,8 +39,7 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
 
 
 
-    },[jwtToken])
-
+    },[jwtToken, setTagValue])
 
     return(
         <Autocomplete
@@ -52,9 +47,10 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
             options={options}
             sx={{ width: 300 }}
             value={tagValue}
-            onChange={(event, newValue) => {
+            onChange={(event, newValue) => {    
                 setTagValue(newValue);
             }}
+            isOptionEqualToValue={(option, value) => value ? option.id === value.id : false}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
@@ -62,5 +58,3 @@ export default function TagSelect({jwtToken, tagValue, setTagValue}){
         />
     )
 }
-
-// const options =['INFP', 'ENFP', 'INTJ', 'ENTJ']

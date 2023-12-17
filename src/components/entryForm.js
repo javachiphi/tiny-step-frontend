@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import { Box, Sheet, Typography, Textarea, Button } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from '../constants';
@@ -7,15 +7,29 @@ import ModalForm from './modalForm';
 import { useAuthToken } from './useAuthToken';
 
 
-
-
-export default function EntryForm(){
+export default function EntryForm({entry, onClose, tagValue: initialTagValue}){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
     const [data, setData] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const jwtToken = useAuthToken();
     const [tagValue, setTagValue] = useState('');
+
+
+    useEffect(() => {
+        if(entry && entry.id){
+            console.log('entry form, set tag value received ', initialTagValue)
+            setObservation(entry.observation || '');
+            setSolution(entry.solution || '');
+            // const initialTagValue = tagName && tagId ? {label: tagName, id: tagId} : null;
+            setTagValue(initialTagValue || tagValue);
+
+            console.log('initial tag value', initialTagValue)
+        }
+
+        console.log(entry)
+        console.log('initialTag value', initialTagValue)
+    },[entry, initialTagValue])
 
     const handleClick = () => {
         console.log('clicked')
@@ -32,22 +46,39 @@ export default function EntryForm(){
     }
     const handleSubmit =(e) => {
         e.preventDefault();
+  
+        if(entry && entry.id){ // edit action (if entry & entry Id )
 
-        axios.post(`${BACKEND_URL}/entries`, {
-            observation: observation, 
-            solution: solution,
-            tagId: tagValue ? tagValue.id : null
-        }, {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            }
-          })
-        .then((response) => {
-            console.log('response', response.data);
-        })
-        .catch((error) =>{
-            console.log("error")
-        })
+            
+            axios.put(`${BACKEND_URL}/entries/${entry.id}`, {
+                observation: observation,
+                solution: solution,
+                tagId: tagValue ?  [tagValue.id] : null
+            }, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                }
+            })
+            .then((response) => {console.log('response', response.data)})
+            .catch((error) => console.log(error))
+
+        } else { // create action
+                axios.post(`${BACKEND_URL}/entries`, {
+                    observation: observation, 
+                    solution: solution,
+                    tagId: tagValue ? tagValue.id : null
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${jwtToken}`,
+                    }
+                })
+                .then((response) => {
+                    console.log('response', response.data);
+                })
+                .catch((error) =>{
+                    console.log("error")
+                })
+        }
     }
 
     
@@ -61,6 +92,7 @@ export default function EntryForm(){
             {getToday()}
             </Typography>
             <Button type="submit" variant="outlined" color="neutral" disabled={solution === '' && observation === ''}>Save</Button>
+            {/* {entry && <button onClick={onClose}>Close</button>} */}
         </Box>
         <TagSelect 
             jwtToken={jwtToken}
@@ -81,10 +113,11 @@ export default function EntryForm(){
             <Textarea
                 minRows={3}
                 value={solution}
-                 onChange={(e) => handleChange(e, 'solution')}
+                onChange={(e) => handleChange(e, 'solution')}
                 placeholder={"What will you do about it?"}
             />
         </Box>
+        
         </form>
         </div>
         // </Sheet>

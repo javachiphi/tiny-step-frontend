@@ -13,15 +13,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 
 
-
 export default function Trends(){
-    // const [data, setData] = useState([]);
-    // const jwtToken = useAuthToken();
-   
     const jwtToken = useAuthToken();
     const [data, setData] = useState(null);
-
-    console.log('jwtToke', jwtToken)
 
     useEffect(() => {
         if (jwtToken) {
@@ -33,7 +27,6 @@ export default function Trends(){
                 // setData(response.data);
 
                 const received = response.data;
-                console.log(received);
                 let formatted = {}; 
 
                 received.forEach(item => {
@@ -56,7 +49,7 @@ export default function Trends(){
                     return { [note]: formatted[note] }
                 })
                 
-                console.log("formatted", formattedData);
+                // console.log("formatted", formattedData);
                 setData(formattedData);
             })
             .catch(error => {
@@ -71,15 +64,19 @@ export default function Trends(){
 
     return(
         <div>
-         <Typography level="h2" color="neutral">Qualities I am working on</Typography>
-         <MyTags />
+         <Typography level="h2" color="neutral">My Tags</Typography>
+         <MyTags jwtToken={jwtToken}/>
     
+
+         <Typography level="h2" color="neutral">My Diary</Typography>
         {data && data.map((dataObject, index) => {
-            const tag = Object.keys(dataObject)[0];
-            const entries = dataObject[tag].entries;
+            const tagName = Object.keys(dataObject)[0];
+            const tagId = dataObject[tagName].id; 
+            const entries = dataObject[tagName].entries;
+
 
             return (
-                <EntryList key={index} entries={entries} tag={tag} />
+                <EntryList key={index} entries={entries} tagName={tagName} tagId={tagId}/>
             )
         }
         )}
