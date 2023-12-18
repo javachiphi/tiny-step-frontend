@@ -8,14 +8,10 @@ import { useAuthToken } from './useAuthToken';
 import { useAuth0 } from '@auth0/auth0-react';
 
 
-
-/// need to send with JWT bearer token!! axios (get all by one users, tag count, create one )
-
-
-
 export default function Trends(){
     const jwtToken = useAuthToken();
     const [data, setData] = useState(null);
+    const [dataChanged, setDataChanged] = useState(false);
 
     useEffect(() => {
         if (jwtToken) {
@@ -56,7 +52,11 @@ export default function Trends(){
                 console.error('Error fetching data', error);
             });
         }
-    }, [jwtToken]); // Dependency on jwtToken
+
+        if(dataChanged === true){
+            setDataChanged(false);
+        }
+    }, [jwtToken, dataChanged]); // Dependency on jwtToken
 
     if (!jwtToken) {
         return <div>Loading...</div>;
@@ -76,7 +76,13 @@ export default function Trends(){
 
 
             return (
-                <EntryList key={index} entries={entries} tagName={tagName} tagId={tagId}/>
+                <EntryList 
+                    key={index} 
+                    entries={entries} 
+                    tagName={tagName} 
+                    tagId={tagId}
+                    setDataChanged={setDataChanged}
+                />
             )
         }
         )}

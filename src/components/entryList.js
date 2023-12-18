@@ -7,12 +7,12 @@ import EditDeleteDropDown from './EditDeleteDropdown';
 import { useAuthToken } from './useAuthToken';
 import EntryForm from './entryForm';
 
-export default function EntryList({entries, tagName, tagId}){
+export default function EntryList({entries, tagName, tagId, setDataChanged}){
     const [openStates, setOpenStates] = useState(Array(entries.length).fill(false));
     const jwtToken = useAuthToken();
     const [selectedEntry, setSelectedEntry] = useState(null);
     const [selectedTag, setSelectedTag] = useState(null);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
 
     const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
@@ -68,6 +68,7 @@ export default function EntryList({entries, tagName, tagId}){
                         isDrawerOpen={isDrawerOpen}
                         selectedEntry={selectedEntry}
                         selectedTag={selectedTag}
+                        setDataChanged={setDataChanged}
                         open={openStates[index]} 
                         setOpen={(value) => {
                             const newOpenStates = [...openStates];
@@ -81,7 +82,19 @@ export default function EntryList({entries, tagName, tagId}){
 }
 
 
-function Entry({entry, open, setOpen, onDelete,onEdit, onClose, selectedEntry, selectedTag, isDrawerOpen, tagValue}){    
+function Entry({
+    entry, 
+    open,
+    setOpen, 
+    onDelete,
+    onEdit, 
+    onClose, 
+    selectedEntry,
+    selectedTag, 
+    isDrawerOpen, 
+    tagValue,
+    setDataChanged
+}){    
 
     return(
      <Accordion
@@ -110,8 +123,7 @@ function Entry({entry, open, setOpen, onDelete,onEdit, onClose, selectedEntry, s
                     entry={selectedEntry}
                     onClose={onClose}
                     tagValue={selectedTag}
-                    // tagName={tagName}
-                    // tagId={tagId}
+                    setDataChanged={setDataChanged}
                 />
             </Drawer>
             <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Solution</Typography>

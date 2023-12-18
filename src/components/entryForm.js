@@ -5,15 +5,17 @@ import { BACKEND_URL } from '../constants';
 import TagSelect from './tagSelect';
 import ModalForm from './modalForm';
 import { useAuthToken } from './useAuthToken';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function EntryForm({entry, onClose, tagValue: initialTagValue}){
+export default function EntryForm({entry, onClose, tagValue: initialTagValue, setDataChanged}){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
     const [data, setData] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const jwtToken = useAuthToken();
     const [tagValue, setTagValue] = useState('');
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -59,7 +61,11 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue}){
                     Authorization: `Bearer ${jwtToken}`,
                 }
             })
-            .then((response) => {console.log('response', response.data)})
+            .then((response) => {
+                console.log('response', response.data)
+                setDataChanged(true);
+                onClose();
+            })
             .catch((error) => console.log(error))
 
         } else { // create action
@@ -74,6 +80,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue}){
                 })
                 .then((response) => {
                     console.log('response', response.data);
+                    navigate('/trends');
                 })
                 .catch((error) =>{
                     console.log("error")
