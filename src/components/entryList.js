@@ -41,7 +41,7 @@ export default function EntryList({entries, tagName, tagId, setDataChanged}){
             }
         })
         .then((response) => {
-            console.log('delete', response.data.message)
+            setDataChanged(true);
         })
     }
 
