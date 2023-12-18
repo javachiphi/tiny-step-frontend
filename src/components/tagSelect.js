@@ -35,7 +35,6 @@ export default function TagSelect({
                 // Set the tag value only if it's not already set or if a new tag is created
                 if (!tagValue || checkTagCreation) {
                     const newTagValue = checkTagCreation ? formatted[formatted.length - 1] : formatted[0];
-                    console.log('New tag value:', newTagValue);
                     setTagValue(newTagValue);
                     setCheckTagCreation(false);
                 }

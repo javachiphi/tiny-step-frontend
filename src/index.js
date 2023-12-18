@@ -6,9 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import OnboardingPage from './components/onboardingPage';
 import EntryForm from './components/entryForm';
-
-import TagSelect from './components/tagSelect';
-import TagForm from './components/tagForm';
 import MyTags from './components/myTags';
 import { Auth0Provider } from '@auth0/auth0-react';
 import Welcome from './components/welcome';
@@ -31,6 +28,7 @@ root.render(
         <Route path="/" element={<App />}>
           <Route index element={<Welcome />} />
           <Route path="diary" element={<EntriesByTag />} />
+          <Route path="tags" element={<MyTags />} />
           <Route path="onboarding" element={<OnboardingPage />} />
           <Route path="create" element={<EntryForm />} />
           <Route path="*" element={"Nothing here!"} />

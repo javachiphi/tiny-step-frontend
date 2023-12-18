@@ -21,17 +21,10 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
 
     useEffect(() => {
         if(entry && entry.id){
-            console.log('entry form, set tag value received ', initialTagValue)
             setObservation(entry.observation || '');
             setSolution(entry.solution || '');
-            // const initialTagValue = tagName && tagId ? {label: tagName, id: tagId} : null;
             setTagValue(initialTagValue || tagValue);
-
-            console.log('initial tag value', initialTagValue)
         }
-
-        console.log(entry)
-        console.log('initialTag value', initialTagValue)
     },[entry, initialTagValue])
 
     const handleOpenTagModal = (e) => {

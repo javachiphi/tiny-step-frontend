@@ -5,13 +5,15 @@ import {Button, AccordionGroup} from '@mui/joy';
 import axios from 'axios';
 import Tag from './myTag';
 import ModalForm from './modalForm';
+import { useAuthToken } from './useAuthToken';
 
-export default function MyTags({jwtToken}){
+export default function MyTags(){
     const [ tags, setTags ] = useState([])
     const [openStates, setOpenStates] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedTagForEdit, setSelectedTagForEdit] = useState(null);
     const [dataChanged, setDataChanged] = useState(false);
+    const jwtToken = useAuthToken()
 
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export default function MyTags({jwtToken}){
             setDataChanged(false);
         }
         
-    },[dataChanged])
+    },[jwtToken, dataChanged])
     
 
     const handleEdit = (tag) => {
