@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
-import Tags from "./onboardingTag";
+import SystemTags from "./systemTagsList";
 import { Button, Box, Typography, Sheet, Autocomplete } from '@mui/joy';
 import axios from 'axios';
 import { BACKEND_URL } from "../constants";
+import { useAuthToken } from './useAuthToken';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function OnboardingPage(){
@@ -11,22 +13,35 @@ export default function OnboardingPage(){
     const [inputValue, setInputValue] = useState('');
     const [selectedTags, setSelectedTags] = useState([]); 
     const [originalData, setOriginalData] = useState([]);
+    const jwtToken = useAuthToken();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/tags/users/1`)
-        .then((response) => {
-            const received = response.data;
-            const getUserTags = received.map((data) => data.user_tags);
-            const getTagIds = getUserTags.map((userTag) => userTag.tagId);
-            setOriginalData(getTagIds);
-            setSelectedTags(getTagIds);
-         
-        })
-        .catch((error) => {
-            console.log('error', error)
-        })
+        if(jwtToken){
+            axios.get(`${BACKEND_URL}/tags/users/my`, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                }
+            })
+            .then((response) => {
+                const received = response.data;
+                const getUserTags = received.map((data) => data.user_tags);
+                const getTagIds = getUserTags.map((userTag) => userTag.tagId);
+                setOriginalData(getTagIds);
+                setSelectedTags(getTagIds);
+                // console.log('getTagIds', getTagIds)
+            
+            })
+            .catch((error) => {
+                console.log('error', error)
+            })
+        }
 
-    },[])
+    },[jwtToken])
+
+    if (!jwtToken) {
+        return <div>Loading...</div>;
+    }
 
     const toggleSelection = (tagId) => {
         if(selectedTags.includes(tagId)){
@@ -40,43 +55,72 @@ export default function OnboardingPage(){
         e.preventDefault();
       
         const newData = selectedTags;
-        const idsToDelete = originalData.filter((id) => !newData.includes(id));
-        const idsToAdd = newData.filter((id) => !originalData.includes(id));
-
-        //call post 
-        axios.post(`${BACKEND_URL}/tags/users/1`, { idsToAdd }) // fix user id to 'loggedin user'
-          .then((response) => {
-            console.log("adding tags", response.data.message)
-            // setSelectedTags()
-          })
-          .catch((error) => {
-            console.error('Error associating tags:', error);
-          });
-        
-        axios({
-            url: `${BACKEND_URL}/tags/users/1`, // fix user id to 'loggedin user'
+        const idsToDelete = originalData.filter(id => !newData.includes(id));
+        const idsToAdd = newData.filter(id => !originalData.includes(id));
+    
+        const addTagsPromise = axios.post(`${BACKEND_URL}/tags/users/my`, {
+            idsToAdd
+        }, {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            }
+        });
+    
+        const deleteTagsPromise = axios({
+            url: `${BACKEND_URL}/tags/users/my`,
             method: 'delete',
             data: idsToDelete,
-          }).then((response) => console.log('delete', response.data.message))
-
-      };
+            headers: {
+                Authorization: `Bearer ${jwtToken}`,
+            }
+        });
+    
+        Promise.all([addTagsPromise, deleteTagsPromise])
+            .then((responses) => {
+                console.log("Adding tags response:", responses[0].data.message);
+                console.log("Deleting tags response:", responses[1].data.message);
+                // Redirect after successful operations
+                navigate('/tags');
+            })
+            .catch((error) => {
+                console.error('Error in tag operations:', error);
+            });
+    };
+    
 
     return(
     <Sheet sx={{display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
         {/* {selectedTags.map((id) => <div>{id}</div>)} */}
         <form onSubmit={handleSubmit}>
             <Box sx={{ display: 'flex', justifyContent: "space-between", mb: 2 }}>
-                <Typography fontWeight="lg" level="h1" color="neutral" sx={{ mb: 0.5}}>Onboarding </Typography>
-                <Button size="lg" type="submit" variant="outlined" endDecorator={<KeyboardArrowRight />} color="success">Next </Button>
+                <Typography 
+                    fontWeight="lg" 
+                    level="h1" 
+                    color="neutral" 
+                    sx={{ mb: 0.5}}>Onboarding </Typography>
+                <Button 
+                    size="lg" 
+                    type="submit" 
+                    variant="outlined" 
+                    endDecorator={<KeyboardArrowRight />} 
+                    color="success"
+                >
+                    Next
+                </Button>
             </Box>
-            <PersonalitySelect value={value} inputValue={inputValue} setValue={setValue} setInputValue={setInputValue}/>
-            <Tags 
+            <PersonalitySelect 
+                value={value} 
+                inputValue={inputValue} 
+                setValue={setValue} 
+                setInputValue={setInputValue}
+            />
+            <SystemTags 
                 requestType= "Personality" 
                 userPersonality={value}
                 selectedTags={selectedTags}
                 toggleSelection={toggleSelection}
             />
-            <Tags 
+            <SystemTags 
                 requestType="CBT"
                 selectedTags={selectedTags}
                 toggleSelection={toggleSelection}

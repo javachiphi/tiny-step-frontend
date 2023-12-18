@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Typography from '@mui/joy/Typography';
-import Card from '@mui/joy/Card';
-import IconButton from '@mui/joy/IconButton';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Box from '@mui/joy/Box';
 import { BACKEND_URL } from '../constants';
 import axios from 'axios';
+import TagCard from './TagCard';
 
-export default function Tags({requestType, userPersonality, selectedTags, toggleSelection}){
+export default function SystemTags({
+  requestType, 
+  userPersonality, 
+  selectedTags, 
+  toggleSelection
+}){
     const [ tags, setTags ] = useState([]);
 
     useEffect(() => {
@@ -46,39 +47,17 @@ export default function Tags({requestType, userPersonality, selectedTags, toggle
                     flexWrap: "wrap"
                 }}
             >
-                {
-                    tags.map((tag) => 
-                        <Tag 
-                          key={tag.id} 
-                          tag={tag}
-                          isSelected={selectedTags.includes(tag.id)}
-                          toggleSelection={() => toggleSelection(tag.id)}
-                        />)
-                }
+                {tags.map((tag) => 
+                  <TagCard 
+                    key={tag.id} 
+                    tag={tag}
+                    isSelected={selectedTags.includes(tag.id)}
+                    toggleSelection={() => toggleSelection(tag.id)}
+                  />
+                )}
            </Box>
         </div>
     )
-}
-
-export function Tag({tag, isSelected, toggleSelection}) {
-  return (
-     <Card sx={{ 
-        width: '270px', 
-        margin: '8px',
-        '&:hover': { boxShadow: 'md' }, 
-        }}>
-        <Typography level="title-lg">
-          {tag.note}
-        </Typography>
-        <Typography level="body-md">
-         {tag.description}
-        </Typography>
-        <IconButton onClick={toggleSelection} variant="outlined" color="neutral" sx={{ mr: 'auto' }}>
-          {isSelected ? <CheckCircleIcon />: <CheckCircleOutlineIcon />}
-        </IconButton>
-
-      </Card>
-  );
 }
 
 
