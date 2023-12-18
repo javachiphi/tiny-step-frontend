@@ -1,11 +1,8 @@
 import axios from 'axios';
 import React, {useState, useEffect } from 'react';
 import { BACKEND_URL } from '../constants';
-import {IconButton, Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy"
-import { MoreHoriz } from '@mui/icons-material';
 import {Button, Typography, AccordionGroup, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
 import { getDate } from './entryList';
-import { useAuthToken } from './useAuthToken';
 import EditDeleteDropDown from './EditDeleteDropdown';
 
 import ModalForm from './modalForm';
@@ -15,6 +12,7 @@ export default function MyTags({jwtToken}){
     const [openStates, setOpenStates] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedTagForEdit, setSelectedTagForEdit] = useState(null);
+    const [dataChanged, setDataChanged] = useState(false);
 
 
     useEffect(() => {
@@ -30,7 +28,12 @@ export default function MyTags({jwtToken}){
             setOpenStates(Array(myTags.length).fill(false)) // nice if you can add created at 
         })
         .catch((error)=> console.log(error))
-    },[])
+
+        if(dataChanged === true){
+            setDataChanged(false);
+        }
+        
+    },[dataChanged])
     
 
     const handleEdit = (tag) => {
@@ -60,6 +63,8 @@ export default function MyTags({jwtToken}){
                     console.log('response', response);
                 })
             }
+
+            setDataChanged(true);
           })
     }
 
@@ -99,6 +104,7 @@ export default function MyTags({jwtToken}){
                 editTagData={selectedTagForEdit}
                 modalOpen={modalOpen}
                 setModalOpen={setModalOpen}
+                setDataChanged={setDataChanged}
             />
         )}
     </div>)

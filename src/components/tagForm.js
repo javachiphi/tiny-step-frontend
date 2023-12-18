@@ -6,7 +6,7 @@ import { useAuthToken } from './useAuthToken';
 
 
 
-export default function TagForm({mode, editTagData, setModalOpen}){
+export default function TagForm({mode, editTagData, setModalOpen, setDataChanged}){
     const [note, setNote ] = useState(mode === 'edit' ? editTagData.note : '');
     const [description, setDescription] = useState(mode === 'edit' ? editTagData.description : '');
     const jwtToken = useAuthToken();
@@ -22,9 +22,7 @@ export default function TagForm({mode, editTagData, setModalOpen}){
 
     }
     const handleSubmit =(e) => {
-
         e.preventDefault();
-
         if(mode ==="edit") {
             console.log('edit submitted!')
             const tagId = editTagData.user_tags.tagId;
@@ -36,8 +34,8 @@ export default function TagForm({mode, editTagData, setModalOpen}){
             })
             .then((response) => {
                 console.log(response.data)
-                setModalOpen(false)
-                // somehow need to refresh the page
+                setDataChanged(true); // this will trigger a re-render of the tag list
+                setModalOpen(false);
                 
             })
 

@@ -6,7 +6,13 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import TagForm from './tagForm';
 
-export default function ModalForm({modalOpen, setModalOpen, mode, editTagData}) {
+export default function ModalForm({
+  modalOpen, 
+  setModalOpen,
+  mode,
+  editTagData, 
+  setDataChanged
+}) {
 
   return (
       <Modal
@@ -26,7 +32,12 @@ export default function ModalForm({modalOpen, setModalOpen, mode, editTagData}) 
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-            <TagForm mode={mode} editTagData={editTagData} setModalOpen={setModalOpen}/> 
+            <TagForm 
+              mode={mode} 
+              editTagData={editTagData} 
+              setModalOpen={setModalOpen}
+              setDataChanged={setDataChanged}
+              /> 
         </Sheet>
       </Modal>
   );
