@@ -3,7 +3,7 @@ import EntryList from "./entryList";
 import { Typography } from '@mui/joy';
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-import MyTags from './myTags';
+import MyTags from './tagsAccorGroup';
 import { useAuthToken } from './useAuthToken';
 import { useAuth0 } from '@auth0/auth0-react';
 

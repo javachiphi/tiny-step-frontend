@@ -3,11 +3,11 @@ import React, {useState, useEffect } from 'react';
 import { BACKEND_URL } from '../constants';
 import {Button, AccordionGroup} from '@mui/joy';
 import axios from 'axios';
-import Tag from './myTag';
+import TagAccordion from './tagAccordion';
 import ModalForm from './modalForm';
 import { useAuthToken } from './useAuthToken';
 
-export default function MyTags(){
+export default function TagsAccorGroup(){
     const [ tags, setTags ] = useState([])
     const [openStates, setOpenStates] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -82,7 +82,7 @@ export default function MyTags(){
         </div>
         <AccordionGroup sx={{ maxWidth: 400 }}>
             {tags.map((tag, index) => 
-                <Tag 
+                <TagAccordion 
                     key={tag.user_tags.tagId+ tag.note}
                     tag={tag}
                     index={index}

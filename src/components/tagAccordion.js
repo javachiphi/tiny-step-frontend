@@ -4,7 +4,7 @@ import { getDate } from './helpers';
 import EditDeleteDropDown from './EditDeleteDropdown';
 
 
-export default function Tag({
+export default function TagAccordion({
     tag,
     open, 
     setOpen, 

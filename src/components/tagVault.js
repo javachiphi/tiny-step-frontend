@@ -8,7 +8,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function OnboardingPage(){
+export default function TagVault(){
     const [value, setValue] = useState(options[0]);
     const [inputValue, setInputValue] = useState('');
     const [selectedTags, setSelectedTags] = useState([]); 

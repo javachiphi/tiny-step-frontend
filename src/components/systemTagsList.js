@@ -3,7 +3,7 @@ import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import { BACKEND_URL } from '../constants';
 import axios from 'axios';
-import TagCard from './TagCard';
+import TagCard from './tagCard';
 
 export default function SystemTags({
   requestType, 
