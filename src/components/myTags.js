@@ -1,10 +1,9 @@
-import axios from 'axios';
+
 import React, {useState, useEffect } from 'react';
 import { BACKEND_URL } from '../constants';
-import {Button, Typography, AccordionGroup, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
-import { getDate } from './entryList';
-import EditDeleteDropDown from './EditDeleteDropdown';
-
+import {Button, AccordionGroup} from '@mui/joy';
+import axios from 'axios';
+import Tag from './myTag';
 import ModalForm from './modalForm';
 
 export default function MyTags({jwtToken}){
@@ -110,34 +109,4 @@ export default function MyTags({jwtToken}){
     </div>)
 }
 
-
-function Tag({tag, open, setOpen, onDelete, onEdit, modalOpen, setModalOpen}){    
-    return(
-        <>
-     <Accordion
-        expanded={open}
-        onChange={(event, expanded) => {
-            setOpen(expanded);
-        }}
-      >
-        <AccordionSummary>
-            <Typography level='body'>{tag.note} </Typography>
-        </AccordionSummary>
-            
-        <AccordionDetails>
-            <div style={{display: 'flex', alignItems: 'end', justifyContent: 'space-between'}}>
-             {  tag.type === 'user_generated' ? 
-            (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>added on {getDate(tag.user_tags.createdAt)}</Typography>)
-            : (<Typography color='neutral' level='body-sm' sx={{mb: 1}}>selected on {getDate(tag.user_tags.createdAt)}</Typography>)
-            }
-             <EditDeleteDropDown content={tag} onEdit={onEdit} onDelete={onDelete} contentId={tag.user_tags.tagId} tagType={tag.type}/>
-             </div>
-
-            <Typography sx={{mb: 1}} fontSize="md">{tag.description}</Typography>
-         
-        </AccordionDetails>
-      </Accordion>
-        </>
-    )
-}
 
