@@ -6,7 +6,13 @@ import { useAuthToken } from './useAuthToken';
 
 
 
-export default function TagForm({mode, editTagData, setModalOpen, setDataChanged}){
+export default function TagForm({
+    mode, 
+    editTagData, 
+    setModalOpen, 
+    setDataChanged,
+    setCheckTagCreation
+}){
     const [note, setNote ] = useState(mode === 'edit' ? editTagData.note : '');
     const [description, setDescription] = useState(mode === 'edit' ? editTagData.description : '');
     const jwtToken = useAuthToken();
@@ -23,6 +29,8 @@ export default function TagForm({mode, editTagData, setModalOpen, setDataChanged
     }
     const handleSubmit =(e) => {
         e.preventDefault();
+        e.stopPropagation();
+
         if(mode ==="edit") {
             console.log('edit submitted!')
             const tagId = editTagData.user_tags.tagId;
@@ -41,37 +49,39 @@ export default function TagForm({mode, editTagData, setModalOpen, setDataChanged
 
 
         } else { // mode === "create" 
-        console.log('hey creating');
-        axios.post(`${BACKEND_URL}/tags`, {
-            note: note,
-            description: description,
-            type: "user_generated"
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            }
-         }
-        )
-        .then((response) => {
-           console.log('response', response.data.id)
-           const idsToAdd = []
-           idsToAdd.push(response.data.id)
+                console.log('hey creating');
 
-           axios.post(`${BACKEND_URL}/tags/users/my`, { idsToAdd }, 
-           {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            }
-         })
-           .then((response) => {
-            setModalOpen(false)
-            console.log("add tag to a user", response.data)
-           })
+                axios.post(`${BACKEND_URL}/tags`, {
+                        note: note,
+                        description: description,
+                        type: "user_generated"
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${jwtToken}`,
+                        }
+                    }
+                )
+                .then((response) => {
+                    console.log('response', response.data.id)
+                    const idsToAdd = []
+                    idsToAdd.push(response.data.id)
 
-        } 
-        )
-        .catch((error) => console.log(error));
+                    axios.post(`${BACKEND_URL}/tags/users/my`, { idsToAdd }, 
+                    {
+                        headers: {
+                            Authorization: `Bearer ${jwtToken}`,
+                        }
+                    })
+                .then((response) => {
+                    setCheckTagCreation(true); //this updates tagSelect list
+                    setModalOpen(false)
+                    console.log("add tag to a user", response.data)
+                })
+
+                } 
+                )
+                .catch((error) => console.log(error));
         }
 
 
@@ -79,7 +89,7 @@ export default function TagForm({mode, editTagData, setModalOpen, setDataChanged
     return(
         <form onSubmit={handleSubmit}>
             <Box sx={{display: "flex", flexDirection:"column"}}>
-            <Typography level='h3'>Create a Tag</Typography>
+            <Typography level='h3'>{mode}</Typography>
             <Input
                 value={note}
                 onChange={(e) => handleChange(e, 'note')}
@@ -91,9 +101,7 @@ export default function TagForm({mode, editTagData, setModalOpen, setDataChanged
                 onChange={(e) => handleChange(e, 'description')}
                 placeholder="write a description"
             />
-             inputvalue: {note}
-             description: {description}
-            <Button type="submit" variant="outlined">click submit</Button>
+            <Button type="submit" variant="outlined">submit</Button>
             </Box>
         </form>
     )

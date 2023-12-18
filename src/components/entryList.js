@@ -118,6 +118,7 @@ function Entry({
                 anchor="right" 
                 open={isDrawerOpen} 
                 onClose={onClose}
+                size="lg"
             >
                 <EntryForm 
                     entry={selectedEntry}

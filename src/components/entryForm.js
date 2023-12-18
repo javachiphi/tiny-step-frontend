@@ -15,6 +15,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
     const [modalOpen, setModalOpen] = useState(false);
     const jwtToken = useAuthToken();
     const [tagValue, setTagValue] = useState('');
+    const [checkTagCreation, setCheckTagCreation] = useState(false);
     const navigate = useNavigate();
 
 
@@ -33,7 +34,8 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
         console.log('initialTag value', initialTagValue)
     },[entry, initialTagValue])
 
-    const handleClick = () => {
+    const handleOpenTagModal = (e) => {
+        e.stopPropagation();
         console.log('clicked')
         setModalOpen(true);
     }
@@ -49,9 +51,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
     const handleSubmit =(e) => {
         e.preventDefault();
   
-        if(entry && entry.id){ // edit action (if entry & entry Id )
-
-            
+        if(entry && entry.id){ 
             axios.put(`${BACKEND_URL}/entries/${entry.id}`, {
                 observation: observation,
                 solution: solution,
@@ -80,7 +80,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
                 })
                 .then((response) => {
                     console.log('response', response.data);
-                    navigate('/trends');
+                    navigate('/diary');
                 })
                 .catch((error) =>{
                     console.log("error")
@@ -88,46 +88,75 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
         }
     }
 
-    
-// FIX: frontend mechanism of sending tag id! right now tag id is not being sent. 
+
     return(
-        // <Sheet sx={{display: "flex", flexDirection: 'column', gap: "10px", margin: "100px"}}>
-        <div style={{width: '800px'}}>
-        <form onSubmit={handleSubmit}>
-        <Box sx={{display: "flex", alignContent:"center",  justifyContent: 'center' , alignItems: 'baseline'}}>
-            <Typography level="h1" sx={{marginTop: "50px", textAlign: "center"}}>
-            {getToday()}
-            </Typography>
-            <Button type="submit" variant="outlined" color="neutral" disabled={solution === '' && observation === ''}>Save</Button>
-            {/* {entry && <button onClick={onClose}>Close</button>} */}
-        </Box>
-        <TagSelect 
-            jwtToken={jwtToken}
-            tagValue={tagValue}
-            setTagValue={setTagValue}
-        /> 
-        <Button onClick={handleClick}>Create a tag</Button>
-         <ModalForm modalOpen={modalOpen} setModalOpen={setModalOpen} mode="create"/>
-        <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-            Observation
-            <Textarea
-                minRows={3}
-                value={observation}
-                onChange={(e) => handleChange(e, 'observation')}
-                placeholder={"Write your observation"}
-            />
-            Solution
-            <Textarea
-                minRows={3}
-                value={solution}
-                onChange={(e) => handleChange(e, 'solution')}
-                placeholder={"What will you do about it?"}
-            />
-        </Box>
-        
-        </form>
+        <div style={{display: 'flex', justifyContent:'center', alignItems: 'center'}}>
+            <div style={{width: '800px'}}>
+                <form onSubmit={handleSubmit}>
+                <div style={{
+                        display: "flex", 
+                        justifyContent: 'flex-end' 
+                        }}
+                >
+                    <Typography 
+                        level="h1" 
+                        sx={{
+                            margin: "0 auto",
+                            textAlign: "center"
+                            }}
+                    >
+                        {getToday()}
+                    </Typography>
+                    <Button 
+                        type="submit" 
+                        variant="outlined" 
+                        color="neutral"
+                        disabled={solution === '' && observation === ''}
+                        sx={{
+                            padding: '10px'
+                        }}
+                    >
+                        Save
+                    </Button>
+                </div>
+                <div>
+                    <TagSelect 
+                        jwtToken={jwtToken}
+                        tagValue={tagValue}
+                        setTagValue={setTagValue}
+                        checkTagCreation={checkTagCreation}
+                        setCheckTagCreation={setCheckTagCreation}
+                    /> 
+                    <Button type="button" onClick={(e) => handleOpenTagModal(e)}>
+                        Create a tag
+                    </Button>
+                    <ModalForm
+                        modalOpen={modalOpen}
+                        setModalOpen={setModalOpen}
+                        mode="create"
+                        setCheckTagCreation={setCheckTagCreation}
+                    />
+                </div>
+                <Box>
+                    Observation
+                    <Textarea
+                        minRows={3}
+                        value={observation}
+                        onChange={(e) => handleChange(e, 'observation')}
+                        placeholder={"Write your observation"}
+                    />
+                    Solution
+                    <Textarea
+                        minRows={3}
+                        value={solution}
+                        onChange={(e) => handleChange(e, 'solution')}
+                        placeholder={"What will you do about it?"}
+                    />
+                </Box>
+                
+                </form>
+            </div>
         </div>
-        // </Sheet>
     )
 }
 

@@ -11,7 +11,8 @@ export default function ModalForm({
   setModalOpen,
   mode,
   editTagData, 
-  setDataChanged
+  setDataChanged,
+  setCheckTagCreation
 }) {
 
   return (
@@ -37,6 +38,7 @@ export default function ModalForm({
               editTagData={editTagData} 
               setModalOpen={setModalOpen}
               setDataChanged={setDataChanged}
+              setCheckTagCreation={setCheckTagCreation}
               /> 
         </Sheet>
       </Modal>
