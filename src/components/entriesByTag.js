@@ -8,7 +8,7 @@ import { useAuthToken } from './useAuthToken';
 import { useAuth0 } from '@auth0/auth0-react';
 
 
-export default function Trends(){
+export default function EntriesByTag(){
     const jwtToken = useAuthToken();
     const [data, setData] = useState(null);
     const [dataChanged, setDataChanged] = useState(false);
@@ -64,11 +64,11 @@ export default function Trends(){
 
     return(
         <div>
-         <Typography level="h2" color="neutral">My Tags</Typography>
-         <MyTags jwtToken={jwtToken}/>
+         {/* <Typography level="h2" color="neutral">My Tags</Typography>
+         <MyTags jwtToken={jwtToken}/> */}
     
 
-         <Typography level="h2" color="neutral">My Diary</Typography>
+         <Typography level="h2" color="neutral">My Diary by Tags</Typography>
         {data && data.map((dataObject, index) => {
             const tagName = Object.keys(dataObject)[0];
             const tagId = dataObject[tagName].id; 
