@@ -47,7 +47,7 @@ export default function SystemTags({
                     flexWrap: "wrap"
                 }}
             >
-                {tags.map((tag) => 
+                {tags && tags.map((tag) => 
                   <TagCard 
                     key={tag.id} 
                     tag={tag}

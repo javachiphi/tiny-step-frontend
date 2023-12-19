@@ -17,23 +17,23 @@ export default function TagsAccorGroup(){
 
 
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/tags/users/my`, {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            }
-        })
-        .then((response) => {   
-            const myTags = response.data;
-            // console.log(response.data);
-            setTags(myTags)
-            setOpenStates(Array(myTags.length).fill(false)) // nice if you can add created at 
-        })
-        .catch((error)=> console.log(error))
+        if(jwtToken){
+            axios.get(`${BACKEND_URL}/tags/users/my`, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                }
+            })
+            .then((response) => {   
+                const myTags = response.data;
+                setTags(myTags)
+                setOpenStates(Array(myTags.length).fill(false))
+            })
+            .catch((error)=> console.log(error))
 
-        if(dataChanged === true){
-            setDataChanged(false);
+            if(dataChanged === true){
+                setDataChanged(false);
+            }
         }
-        
     },[jwtToken, dataChanged])
     
 
@@ -57,7 +57,6 @@ export default function TagsAccorGroup(){
           })
           .then((response) => {
             console.log('delete', response.data.message)
-            // if user created the tag, then destroy the tag
             if(tagType === 'user_generated'){
                 axios.delete(`${BACKEND_URL}/tags/${tagId}`)
                 .then((response) => {
