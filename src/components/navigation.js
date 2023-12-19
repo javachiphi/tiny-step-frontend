@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BACKEND_URL } from "../constants";
 import { useUserProfile } from "./useUserProfile";
+import { Link } from "react-router-dom";
 
 // decide whehter to put this in navigation or specific components that need access token 
 export default function Navigation() {
@@ -13,6 +14,13 @@ export default function Navigation() {
             isAuthenticated ? (
                 <>
                 <Profile />
+                 ✅  Checklist
+                <Link to="/diary">Diary Page  </Link>
+
+                <Link to="/situation">Situation ✅  </Link>
+                <Link to="/mindfulness">Mindfulness ✅  </Link>
+
+                <Link to="/tags">Tags Page</Link>
                 <LogoutButton />
                 </>
             ): (
@@ -43,12 +51,12 @@ const LogoutButton = () => {
 
 const Profile = () => {
     const { user, isLoading } = useAuth0();
-    const userProfile = useUserProfile();
+    // const userProfile = useUserProfile();
   
     if (isLoading) {
         return <div>Loading ...</div>;
       }
-    //   figure out why i am not getting user email,photo,
+ 
     return (
         <div>
            hello

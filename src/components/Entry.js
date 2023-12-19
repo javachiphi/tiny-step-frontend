@@ -26,16 +26,25 @@ export default function Entry({
         }}
       >
         <AccordionSummary>
-            {getDate(entry.createdAt)}
+            <div style={{display: 'flex', gap: '20px', justifyContent: 'space-between'}}>
+            <Typography color='neutral' level='body-sm'>{getDate(entry.createdAt)}</Typography>
+            <Typography fontSize="md" sx={{ml: '10px'}}>{entry.solution}</Typography>
+            </div>
         </AccordionSummary>
         <AccordionDetails>
-            <EditDeleteDropDown 
-                content={entry} 
-                onEdit={onEdit} 
-                onDelete={onDelete} 
-                contentId={entry.id} 
-                tagValue={tagValue}
-            />
+            <Typography color="neutral" fontSize="sm" fontWeight="lg">Observation</Typography>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <Typography sx={{mb: 1}} fontSize="md">{entry.observation}</Typography>
+                <EditDeleteDropDown 
+                    content={entry} 
+                    onEdit={onEdit} 
+                    onDelete={onDelete} 
+                    contentId={entry.id} 
+                    tagValue={tagValue}
+                />
+                 
+                </div>      
+
             <Drawer 
                 anchor="right" 
                 open={isDrawerOpen} 
@@ -49,10 +58,6 @@ export default function Entry({
                     setDataChanged={setDataChanged}
                 />
             </Drawer>
-            <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Solution</Typography>
-            <Typography sx={{mb: 1}} fontSize="md">{entry.solution}</Typography>
-            <Typography sx={{mb: 0.5}} color="neutral" fontSize="sm" fontWeight="lg">Situation</Typography>
-            <Typography sx={{mb: 1}} fontSize="md">{entry.observation}</Typography>
         </AccordionDetails>
       </Accordion>
     )

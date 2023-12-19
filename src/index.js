@@ -10,6 +10,10 @@ import EntryForm from './components/entryForm';
 import { Auth0Provider } from '@auth0/auth0-react';
 import Welcome from './components/welcome';
 import EntriesByTag from './components/entriesByTag';
+import TagsPage from './pages/tagsPage';
+import DiaryPage from './pages/diaryPage';
+import SituationPage from './pages/situationPage';
+import MindFulnessPage from './pages/mindfulPage';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -26,9 +30,11 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Welcome />} />
-          <Route path="diary" element={<EntriesByTag />} />
-          <Route path="tags" element={<TagsAccorGroup />} />
+          {/* <Route index element={<Welcome />} /> */}
+          <Route path="diary" index element={<DiaryPage />} />
+          <Route path="tags" element={<TagsPage />} />
+          <Route path="mindfulness" element={<MindFulnessPage />} />
+          <Route path="situation" element={<SituationPage />} />
           <Route path="onboarding" element={<TagVault />} />
           <Route path="create" element={<EntryForm />} />
           <Route path="*" element={"Nothing here!"} />
