@@ -57,7 +57,7 @@ export default function EntryList({
                 <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
                 <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
             </div>
-            <AccordionGroup sx={{ maxWidth: 400 }}>
+            <AccordionGroup sx={{ maxWidth: 700 }}>
                 {entries.map((entry, index) =>
                     <Entry 
                         key={entry.id} 
