@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect} from 'react'; 
 import { AccordionGroup, Typography, Button } from '@mui/joy';
 import { BACKEND_URL } from '../constants';
 import { useAuthToken } from './useAuthToken';
@@ -14,8 +14,17 @@ export default function EntryList({
     const [selectedEntry, setSelectedEntry] = useState(null);
     const [selectedTag, setSelectedTag] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
-    const [openStates, setOpenStates] = useState(Array(entries.length).fill(false));
+    const [openStates, setOpenStates] = useState([]);
     const jwtToken = useAuthToken();
+
+    
+    useEffect(() => {
+        if (entries && entries.length > 0) {
+            setOpenStates(Array(entries.length).fill(false));
+        } else {
+            setOpenStates([]);
+        }
+    }, [entries])
  
     const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
@@ -53,13 +62,13 @@ export default function EntryList({
             </div>
             <AccordionGroup sx={{ maxWidth: 700 }}>
                 {entries && entries.map((entry, index) => {
-                    const tagValueFromAllDiaries = entries.tags && { label : entries.tags[0].note , id: entries.tags[0].id }
-                    
-        
+                    const tagValueFromAllDiaries = entries.tags && { label : entries.tags[0].note , id: entries.tags[0].id };
+                    const indexExist = index && index; 
+                    const openState = openStates[indexExist] || false;
                     return (
                     <Entry 
                         key={entry.id} 
-                        index={index} 
+                        index={indexExist} 
                         entry={entry} 
                         onEdit={handleEdit}
                         onDelete={handleDelete}
@@ -69,10 +78,10 @@ export default function EntryList({
                         selectedEntry={selectedEntry}
                         selectedTag={selectedTag}
                         setDataChanged={setDataChanged}
-                        open={openStates[index]} 
+                        open={openState} 
                         setOpen={(value) => {
                             const newOpenStates = [...openStates];
-                            newOpenStates[index] = value;
+                            newOpenStates[indexExist] = value;
                             setOpenStates(newOpenStates);
                         }} 
                     />

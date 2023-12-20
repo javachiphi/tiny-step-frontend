@@ -15,7 +15,6 @@ export default function TagSelect({
     const { tagDropDownOptions } = contextValue;
 
     useEffect(() => {
-        console.log('tagDropDownOptions', tagDropDownOptions)
         if(tagDropDownOptions){
             setOptions(tagDropDownOptions);
         }
