@@ -57,10 +57,19 @@ const FormattedDataProvider = ({ children }) => {
       })
 
       const formattedData = Object.keys(formatted).map(note => {
-          return { [note]: formatted[note] }
+          return {
+            label: note, 
+            id: formatted[note].id,
+            type: formatted[note].type,
+            count: formatted[note].count,
+            entries: formatted[note].entries
+           }
       })
       const tagDropDown = Object.keys(formatted).map(note => {
-          return { label: note, id: formatted[note].id }
+          return { 
+            label: note, 
+            id: formatted[note].id,
+          }
       })
           setTagDropDownOptions(tagDropDown);
           setFormattedData(formattedData);

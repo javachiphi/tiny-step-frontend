@@ -2,6 +2,9 @@ import React, {useEffect, useState } from "react";
 import EntryList from "./entryList";
 import { Typography } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
+import {TabTitle} from './verticalTabs';
+import { Tabs, TabPanel } from '@mui/joy';
+
 
 import { useEntriesByTagData } from '../context/entriesByTagProvider';
 
@@ -12,9 +15,10 @@ export default function EntriesByTag({tagType}){
     const { formattedData, dataChanged, setDataChanged } = contextValue; 
 
     useEffect(() => {
-        console.log('formattedData available?', formattedData)
         if(formattedData){
-            setData(formattedData)
+            const filteredData = formattedData.filter((item) => item.type === tagType)
+            console.log('filteredData', filteredData)
+            setData(filteredData)
         }
 
         if(dataChanged === true){
@@ -27,36 +31,43 @@ export default function EntriesByTag({tagType}){
     }
     return(
         <div>
-        {tagType && 
-             <Typography level="h2" color="neutral">{tagType}</Typography>
-        }
-         {data &&
-            data.map((dataObject, index) => {
-                const tagName = Object.keys(dataObject)[0];
-                const tagId = dataObject[tagName].id;
-                const tagDataType = dataObject[tagName].type;
-                const entries = dataObject[tagName].entries;
-
-                if (tagDataType === tagType) {
-                const tagGrouping = {label: tagName, id: tagId}
-
-                return (
-                    <div  key={index}>
-                        <Typography level="h3" fontWeight="lg">
-                            {tagName}
-                        </Typography>
-                        <EntryList
-                            entries={entries}
-                            tagValue={tagGrouping} // initial tag dropdown value for entries 
-                            setDataChanged={setDataChanged}
-                        />
-                    </div>
-                );
+            {tagType && 
+                <Typography level="h2" color="neutral">{tagType}</Typography>
+            }
+            <Tabs 
+                aria-label="Vertical tabs"
+                orientation="vertical"
+                sx={{ minWidth: 300, height: 160 }}
+            >
+                {data && 
+                    <TabTitle data={data}/>
                 }
-                return null;
-            })}
+                {data &&
+                    data.map((tag, index) => {
+                        const tagDataType = tag.type;
+                        if (tagDataType === tagType) {
+                        const tagGrouping = {label: tag.label, id: tag.id}
+
+                        return (
+                            <TabPanel key={index} value={index}>
+                                <Typography level="h3" fontWeight="lg">
+                                    {tag.label}
+                                </Typography>
+                                <EntryList
+                                    entries={tag.entries}
+                                    tagValue={tagGrouping} // initial tag dropdown value for entries 
+                                    setDataChanged={setDataChanged}
+                                />
+                            </TabPanel>
+                        );
+                        }
+                        return null;
+                    })}
+            </Tabs>
         </div>
     )
 }
+
+
 
 
