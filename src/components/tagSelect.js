@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { Autocomplete, Button } from '@mui/joy';
-import axios from 'axios';
-import { BACKEND_URL } from "../constants";
-
-
+import { Autocomplete } from '@mui/joy';
+import { useEntriesByTagData } from '../context/entriesByTagProvider';
 
 export default function TagSelect({
-    jwtToken, 
+    jwtToken,
     tagValue, 
     setTagValue, 
     checkTagCreation,
@@ -14,37 +11,23 @@ export default function TagSelect({
 }){
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions ] = useState([]);
+    const  contextValue = useEntriesByTagData();
+    const { tagDropDownOptions } = contextValue;
 
-
-    useEffect(() => {  
-        if (jwtToken) {
-            axios.get(`${BACKEND_URL}/tags/users/my`, {
-                headers: {
-                    Authorization: `Bearer ${jwtToken}`,
-                }
-            })
-            .then((response) => {
-                const received = response.data;
-                let formatted = received.map(tag => ({
-                    label: tag.note, 
-                    id: tag.user_tags.tagId
-                }));
-    
-                setOptions(formatted);
-    
-                // Set the tag value only if it's not already set or if a new tag is created
-                if (!tagValue || checkTagCreation) {
-                    const newTagValue = checkTagCreation ? formatted[formatted.length - 1] : formatted[0];
-                    setTagValue(newTagValue);
-                    setCheckTagCreation(false);
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching tags:', error);
-            });
+    useEffect(() => {
+        console.log('tagDropDownOptions', tagDropDownOptions)
+        if(tagDropDownOptions){
+            setOptions(tagDropDownOptions);
         }
-    }, [jwtToken, checkTagCreation]);
-    
+
+        if (!tagValue || checkTagCreation) {
+            const options = tagDropDownOptions ? tagDropDownOptions : [];
+            const newTagValue = checkTagCreation ? options[options.length - 1] : options[0];
+            setTagValue(newTagValue);
+            setCheckTagCreation(false);
+        }
+
+    }, [tagDropDownOptions, checkTagCreation]);
 
     return(
         <Autocomplete

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../constants';
 import { Button, Box, Textarea, Input, Typography } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
+import { useEntriesByTagData } from '../context/entriesByTagProvider';
 
 
 
@@ -16,6 +17,7 @@ export default function TagForm({
     const [note, setNote ] = useState(mode === 'edit' ? editTagData.note : '');
     const [description, setDescription] = useState(mode === 'edit' ? editTagData.description : '');
     const jwtToken = useAuthToken();
+    const { updateTagOptions } = useEntriesByTagData(); 
 
     const handleChange = (e,type) => {
 
@@ -43,6 +45,7 @@ export default function TagForm({
             .then((response) => {
                 console.log(response.data)
                 setDataChanged(true); // this will trigger a re-render of the tag list
+                // using context provider now. check how to edit 
                 setModalOpen(false);
                 
             })
@@ -63,24 +66,13 @@ export default function TagForm({
                     }
                 )
                 .then((response) => {
-                    console.log('response', response.data.id)
-                    const idsToAdd = []
-                    idsToAdd.push(response.data.id)
-
-                    axios.post(`${BACKEND_URL}/tags/users/my`, { idsToAdd }, 
-                    {
-                        headers: {
-                            Authorization: `Bearer ${jwtToken}`,
-                        }
-                    })
-                .then((response) => {
-                    setCheckTagCreation(true); //this updates tagSelect list
+                    const newTag = response.data;
+                    const newOption = {label: newTag.note, id: newTag.id}
+                    updateTagOptions(newOption);
+                    setCheckTagCreation(true);
                     setModalOpen(false)
                     console.log("add tag to a user", response.data)
                 })
-
-                } 
-                )
                 .catch((error) => console.log(error));
         }
 
