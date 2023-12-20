@@ -2,8 +2,7 @@ import React, {useEffect, useState } from "react";
 import EntryList from "./entryList";
 import { Typography } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
-import {TabTitle} from './verticalTabs';
-import { Tabs, TabPanel } from '@mui/joy';
+import { Tabs, TabPanel, TabList, Tab } from '@mui/joy';
 
 
 import { useEntriesByTagData } from '../context/entriesByTagProvider';
@@ -17,7 +16,6 @@ export default function EntriesByTag({tagType}){
     useEffect(() => {
         if(formattedData){
             const filteredData = formattedData.filter((item) => item.type === tagType)
-            console.log('filteredData', filteredData)
             setData(filteredData)
         }
 
@@ -39,9 +37,11 @@ export default function EntriesByTag({tagType}){
                 orientation="vertical"
                 sx={{ minWidth: 300, height: 160 }}
             >
-                {data && 
-                    <TabTitle data={data}/>
-                }
+                <TabList>
+                    {data && data.map((item, index) => {
+                        return (<Tab key={index}>{item.label} {item.count}</Tab>)
+                    })}
+                </TabList>
                 {data &&
                     data.map((tag, index) => {
                         const tagDataType = tag.type;
