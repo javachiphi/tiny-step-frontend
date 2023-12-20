@@ -7,8 +7,7 @@ import axios from 'axios';
 
 export default function EntryList({
     entries, 
-    tagName, 
-    tagId, 
+    tagValue,
     setDataChanged
 }){
    
@@ -17,9 +16,7 @@ export default function EntryList({
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
     const [openStates, setOpenStates] = useState(Array(entries.length).fill(false));
     const jwtToken = useAuthToken();
-    const tagValue = {label: tagName, id: tagId}
-
-
+ 
     const toggleAll = (value) => {    
         const newOpenStates = Array(openStates.length).fill(value);
         setOpenStates(newOpenStates);
@@ -27,7 +24,7 @@ export default function EntryList({
 
     const handleEdit = (entry, tagValue) => {
         setSelectedEntry(entry);
-        setSelectedTag(tagValue);
+        setSelectedTag(tagValue); // initial value for tag autocomplete
         setIsDrawerOpen(true);
     };
 
@@ -47,18 +44,19 @@ export default function EntryList({
             setDataChanged(true);
         })
     }
-
-   
     return(
         <div>
-            <Typography level="h3" fontWeight="lg">{tagName}</Typography>
             <div>
 
                 <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
                 <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
             </div>
             <AccordionGroup sx={{ maxWidth: 700 }}>
-                {entries.map((entry, index) =>
+                {entries && entries.map((entry, index) => {
+                    const tagValueFromAllDiaries = entries.tags && { label : entries.tags[0].note , id: entries.tags[0].id }
+                    
+        
+                    return (
                     <Entry 
                         key={entry.id} 
                         index={index} 
@@ -66,7 +64,7 @@ export default function EntryList({
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onClose={handleCloseDrawer}
-                        tagValue={tagValue}
+                        tagValue={tagValue ? tagValue : tagValueFromAllDiaries}
                         isDrawerOpen={isDrawerOpen}
                         selectedEntry={selectedEntry}
                         selectedTag={selectedTag}
@@ -77,7 +75,9 @@ export default function EntryList({
                             newOpenStates[index] = value;
                             setOpenStates(newOpenStates);
                         }} 
-                    />)}
+                    />
+                )}
+            )}
             </AccordionGroup>
         </div>
     )

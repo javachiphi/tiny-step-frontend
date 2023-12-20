@@ -1,12 +1,15 @@
 import React from "react";
 import EntriesByTag from "../components/entriesByTag";
+import  FormattedDataProvider from "../context/entriesByTagProvider";
 
 
 export default function MindFulnessPage() {
     return(
         <div>
             <h1>Mindfulness Checklist</h1>
-            <EntriesByTag tagType="mind" />  
+            <FormattedDataProvider>
+             <EntriesByTag tagType="mind" />  
+             </FormattedDataProvider>
         </div>
     )
 }

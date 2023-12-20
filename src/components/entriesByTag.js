@@ -1,93 +1,56 @@
 import React, {useEffect, useState } from "react"; 
 import EntryList from "./entryList";
 import { Typography } from '@mui/joy';
-import axios from "axios";
-import { BACKEND_URL } from "../constants";
-import MyTags from './tagsAccorGroup';
 import { useAuthToken } from './useAuthToken';
-import { useAuth0 } from '@auth0/auth0-react';
 
+import { useEntriesByTagData } from '../context/entriesByTagProvider';
 
 export default function EntriesByTag({tagType}){
     const jwtToken = useAuthToken();
     const [data, setData] = useState(null);
-    const [dataChanged, setDataChanged] = useState(false);
+    const  contextValue = useEntriesByTagData()
+    const { formattedData, dataChanged, setDataChanged } = contextValue; 
 
     useEffect(() => {
-
-        if (jwtToken) {
-            // Now that the token is available, make the API call
-            axios.get(`${BACKEND_URL}/entries/tagCount`, {
-                headers: { Authorization: `Bearer ${jwtToken}` }
-            })
-            .then(response => {
-                // setData(response.data);
-
-                const received = response.data;
-                let formatted = {}; 
-
-                received.forEach(item => {
-                    const note = item.note;
-                    const entry = item.entries; 
-
-                    if(!formatted[note]){
-                        formatted[note] = {
-                            id: item.id,
-                            type: item.type,
-                            count: 0,
-                            entries:[]
-                        };
-                    }
-
-                    formatted[note].entries.push(entry);
-                    formatted[note].count += 1; 
-                })
-
-                const formattedData = Object.keys(formatted).map(note => {
-                    return { [note]: formatted[note] }
-                })
-                
-                // console.log("formatted", formattedData);
-                setData(formattedData);
-            })
-            .catch(error => {
-                console.error('Error fetching data', error);
-            });
+        console.log('formattedData available?', formattedData)
+        if(formattedData){
+            setData(formattedData)
         }
 
         if(dataChanged === true){
             setDataChanged(false);
         }
-    }, [jwtToken, dataChanged]); // Dependency on jwtToken
+    }, [formattedData, dataChanged]);
 
     if (!jwtToken) {
         return <div>Loading...</div>;
     }
-
     return(
         <div>
-         {/* <Typography level="h2" color="neutral">My Tags</Typography>
-         <MyTags jwtToken={jwtToken}/> */}
-    
-
-         <Typography level="h2" color="neutral">{tagType}</Typography>
+        {tagType && 
+             <Typography level="h2" color="neutral">{tagType}</Typography>
+        }
          {data &&
             data.map((dataObject, index) => {
                 const tagName = Object.keys(dataObject)[0];
                 const tagId = dataObject[tagName].id;
                 const tagDataType = dataObject[tagName].type;
-
-                if (tagDataType === tagType) {
                 const entries = dataObject[tagName].entries;
 
+                if (tagDataType === tagType) {
+                const tagGrouping = {label: tagName, id: tagId}
+
                 return (
-                    <EntryList
-                    key={index}
-                    entries={entries}
-                    tagName={tagName}
-                    tagId={tagId}
-                    setDataChanged={setDataChanged}
-                    />
+                    <div  key={index}>
+                        <Typography level="h3" fontWeight="lg">
+                            {tagName}
+                        </Typography>
+                        <EntryList
+                            entries={entries}
+                            tagValue={tagGrouping} // initial tag dropdown value for entries 
+                            setDataChanged={setDataChanged}
+                        />
+                    </div>
                 );
                 }
                 return null;
