@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../constants";
 import { useUserProfile } from "./useUserProfile";
 import { Link } from "react-router-dom";
 
-// decide whehter to put this in navigation or specific components that need access token 
+// error handle when no internet & cannot get jwt 
 export default function Navigation() {
     const {  isAuthenticated } = useAuth0();
 
@@ -16,6 +16,7 @@ export default function Navigation() {
                 <Profile />
                  ✅  Checklist
                 <Link to="/diary">Diary Page  </Link>
+                <Link to="/reflect">Reflect Page  </Link>
 
                 <Link to="/situation">Situation ✅  </Link>
                 <Link to="/mindfulness">Mindfulness ✅  </Link>

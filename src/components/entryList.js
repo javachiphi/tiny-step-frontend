@@ -55,39 +55,42 @@ export default function EntryList({
     }
     return(
         <div>
-            <div>
-
-                <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
-                <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
-            </div>
-            <AccordionGroup sx={{ maxWidth: 700 }}>
-                {entries && entries.map((entry, index) => {
-                    const tagValueFromAllDiaries = entries.tags && { label : entries.tags[0].note , id: entries.tags[0].id };
-                    const indexExist = index && index; 
-                    const openState = openStates[indexExist] || false;
-                    return (
-                    <Entry 
-                        key={entry.id} 
-                        index={indexExist} 
-                        entry={entry} 
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        onClose={handleCloseDrawer}
-                        tagValue={tagValue ? tagValue : tagValueFromAllDiaries}
-                        isDrawerOpen={isDrawerOpen}
-                        selectedEntry={selectedEntry}
-                        selectedTag={selectedTag}
-                        setDataChanged={setDataChanged}
-                        open={openState} 
-                        setOpen={(value) => {
-                            const newOpenStates = [...openStates];
-                            newOpenStates[indexExist] = value;
-                            setOpenStates(newOpenStates);
-                        }} 
-                    />
-                )}
+            {entries && (
+                <>
+                    <div>
+                        <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
+                        <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
+                    </div>
+                    <AccordionGroup sx={{ maxWidth: 700 }}>
+                        {entries && entries.map((entry, index) => {
+                            const tagValueFromAllDiaries = entries.tags && { label : entries.tags[0].note , id: entries.tags[0].id };
+                            const indexExist = index && index; 
+                            const openState = openStates[indexExist] || false;
+                            return (
+                                <Entry 
+                                    key={entry.id} 
+                                    index={indexExist} 
+                                    entry={entry} 
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
+                                    onClose={handleCloseDrawer}
+                                    tagValue={tagValue ? tagValue : tagValueFromAllDiaries}
+                                    isDrawerOpen={isDrawerOpen}
+                                    selectedEntry={selectedEntry}
+                                    selectedTag={selectedTag}
+                                    setDataChanged={setDataChanged}
+                                    open={openState} 
+                                    setOpen={(value) => {
+                                        const newOpenStates = [...openStates];
+                                        newOpenStates[indexExist] = value;
+                                        setOpenStates(newOpenStates);
+                                    }} 
+                                />
+                        )}
+                    )}
+                    </AccordionGroup>
+                </>
             )}
-            </AccordionGroup>
         </div>
     )
 }
