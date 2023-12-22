@@ -17,16 +17,16 @@ export const fetchData = async (endpoint, token) => {
 
 
 
-// export const createData = async (endpoint, data, token) => {
-//     console.log('data', data)
-//     console.log('token', token)
-//     try {
-//         const response = await axios.post(`${BACKEND_URL}/${endpoint}`, {data}, getHeaders(token));
-//         return response.data;
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
+export const createData = async (endpoint, data, token) => {
+    console.log('received data', data)
+    try {
+        const response = await axios.post(`${BACKEND_URL}/${endpoint}`, data , getHeaders(token));
+        console.log('response data', response.data)
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 // export const updateData = async (endpoint, data, token) => {
    

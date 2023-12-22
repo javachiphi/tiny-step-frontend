@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { fetchData } from "../api/apiService";
-import { useAuthToken } from "../components/useAuthToken";
-import TableEntryList from "../components/entryTable";
+import { fetchData } from "../../api/apiService";
+import { useAuthToken } from "../../components/useAuthToken";
+import TableEntryList from "./entryTable";
 
 export default function ReflectPage(){
     const [entries, setEntries] = useState([]);
@@ -10,7 +10,6 @@ export default function ReflectPage(){
     const jwtToken = useAuthToken();
 
     useEffect(() => {
-        console.log('use effect triggered after data changed?')
         if(jwtToken){
             fetchData("entries", jwtToken)
             .then(data => {
@@ -40,7 +39,10 @@ export default function ReflectPage(){
         <div>
 
             <h1>Reflect Page</h1>
-            <TableEntryList data={entries} setDataChanged={setDataChanged}/>
+            <TableEntryList 
+                data={entries} 
+                setDataChanged={setDataChanged}
+            />
         </div>
     )
 }

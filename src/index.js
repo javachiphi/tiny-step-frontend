@@ -10,7 +10,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import TagsPage from './pages/tagsPage';
 import DiaryPage from './pages/diaryPage';
 import SituationPage from './pages/situationPage';
-import ReflectPage from './pages/reflectPage';
+import  ReflectPage from './pages/reflectPage';
 import MindFulnessPage from './pages/mindfulPage';
 
 
