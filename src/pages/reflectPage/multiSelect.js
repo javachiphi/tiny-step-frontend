@@ -15,7 +15,8 @@ export const WrappedChip = styled(Chip)(({ theme }) => ({
 export default function MultiSelect({
   tagType, 
   setTags, 
-  setTagsToCreate
+  setTagsToCreate,
+  // defaultValues
 }) {
   const { formattedData } = useEntriesByTagData();
   const [openModal, setOpenModal] = useState(false);
@@ -55,10 +56,7 @@ export default function MultiSelect({
     setOpenModal(false);
   };
 
-  const newItem = {id: 37, label: 'know when to stop or perserve'}
-  const defaultValue = JSON.stringify(newItem);
   
-
   return (
     <>
     <Select 

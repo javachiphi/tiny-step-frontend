@@ -18,8 +18,10 @@ export default function EntryRow({
 }) {
     const [observation, setObservation] = useState(row.observation || '' );
     const [solution, setSolution] = useState(row.solution || '');
-    const [ tags, setTags] = useState(row.tags || []);
-    const [ tagsToCreate, setTagsToCreate] = useState([])
+    const [ tagIdsToAdd, setTagIdsToAdd] = useState([]);
+    const [ tagsToCreate, setTagsToCreate] = useState([]);
+
+    
 
     const editing = selectedEntry && selectedEntry.id === row.id;
     const rowId = row && row.id;
@@ -36,8 +38,8 @@ export default function EntryRow({
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('entry row handle submit')
-        console.log('tagIds available?', tags)
-        onSave(rowId, observation, solution, tags, tagsToCreate);
+        // console.log('tagIds available?', tags)
+        onSave(rowId, observation, solution, tagIdsToAdd, tagsToCreate);
         setSelectedEntry(null);
     };
 
@@ -81,12 +83,14 @@ export default function EntryRow({
             </td> 
             <td> 
             {editing ? (
-                <div>hey</div>
-                // <FormattedDataProvider>
-                //     <MultiSelect 
-                //         tagType="situation"
-                //     />
-                // </FormattedDataProvider>
+                <FormattedDataProvider>
+                    <MultiSelect 
+                        tagType="situation"
+                        setTags={setTagIdsToAdd}
+                        setTagsToCreate={setTagsToCreate}
+                        // defaultValues={row.tags}
+                    />
+                </FormattedDataProvider>
                 ) : (
                     <>
                     {row.tags
@@ -104,7 +108,7 @@ export default function EntryRow({
                 <FormattedDataProvider>
                     <MultiSelect 
                         tagType="mind"
-                        setTags={setTags}
+                        setTags={setTagIdsToAdd}
                         setTagsToCreate={setTagsToCreate}
                     />
                 </FormattedDataProvider>
