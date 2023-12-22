@@ -18,10 +18,31 @@ export default function EntryRow({
 }) {
     const [observation, setObservation] = useState(row.observation || '' );
     const [solution, setSolution] = useState(row.solution || '');
-    const [ tagIdsToAdd, setTagIdsToAdd] = useState([]);
-    const [ tagsToCreate, setTagsToCreate] = useState([]);
+    const [tagsData, setTagsData] = useState({
+        situation: { tagIdsToAdd: [], tagsToCreate: [] },
+        mind: { tagIdsToAdd: [], tagsToCreate: [] }
+      });
 
     
+      const handleTagIdsToAdd = (tagType, tagIdsToAdd) => {
+        setTagsData(prevData => ({
+            ...prevData,
+            [tagType]: {
+                ...prevData[tagType],
+                tagIdsToAdd: tagIdsToAdd
+                }
+        }));
+    };
+
+    const handleTagsToCreate = (tagType, tagsToCreate) => { 
+        setTagsData(prevData => ({
+            ...prevData,
+            [tagType]: {
+                ...prevData[tagType],
+                tagsToCreate: tagsToCreate
+                }
+        }));
+    };
 
     const editing = selectedEntry && selectedEntry.id === row.id;
     const rowId = row && row.id;
@@ -39,7 +60,7 @@ export default function EntryRow({
         e.preventDefault();
         console.log('entry row handle submit')
         // console.log('tagIds available?', tags)
-        onSave(rowId, observation, solution, tagIdsToAdd, tagsToCreate);
+        onSave(rowId, observation, solution, tagsData);
         setSelectedEntry(null);
     };
 
@@ -86,9 +107,9 @@ export default function EntryRow({
                 <FormattedDataProvider>
                     <MultiSelect 
                         tagType="situation"
-                        setTags={setTagIdsToAdd}
-                        setTagsToCreate={setTagsToCreate}
-                        // defaultValues={row.tags}
+                        onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
+                        onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
+                        defaultValues={row.tags}
                     />
                 </FormattedDataProvider>
                 ) : (
@@ -108,8 +129,9 @@ export default function EntryRow({
                 <FormattedDataProvider>
                     <MultiSelect 
                         tagType="mind"
-                        setTags={setTagIdsToAdd}
-                        setTagsToCreate={setTagsToCreate}
+                        onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
+                        onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
+                        defaultValues={row.tags}
                     />
                 </FormattedDataProvider>
                 ) : (

@@ -2,7 +2,7 @@
 import React , {useState } from "react";
 import { useAuthToken } from "../../components/useAuthToken";
 import { Table } from "@mui/joy";
-import axios from "axios";
+import axios, { all } from "axios";
 import { BACKEND_URL } from "../../constants";
 import EntryRow from "./entryRow";
 import { createData } from "../../api/apiService";
@@ -32,9 +32,16 @@ export default function TableEntryList({data, setDataChanged}) {
         })
     }
 
-    const handleSave = (entryId, observation, solution, tags, tagsToCreate) => {
-        
-        if(tagsToCreate.length > 0){
+    const handleSave = (entryId, observation, solution, tagsData) => {
+
+        let allCreateTagPromises = [];
+        let allTagIds = [];
+
+        Object.keys(tagsData).forEach((tagType) => {
+            const {tagIdsToAdd, tagsToCreate} = tagsData[tagType];
+
+            allTagIds.push(...tagIdsToAdd);
+
             const createTagPromises = tagsToCreate.map(item => {
                 const data = { note: item.label, type: item.tagType };
                 return createData("tags", data, jwtToken)
@@ -44,13 +51,17 @@ export default function TableEntryList({data, setDataChanged}) {
                 });
             });
 
-            Promise.all(createTagPromises)
-                .then((responses) => {
-                    console.log('promise all', tags)
-                    const newlyCreatedTagsId = responses.map(response => response.id);
-                    let combined = [...newlyCreatedTagsId, ...tags];
+            allCreateTagPromises.push(...createTagPromises);
+        });
 
-                console.log('combined', combined)
+        Promise.all(allCreateTagPromises)
+            .then((responses) => {
+                const newlyCreatedTagsId 
+                    = responses
+                        .filter(response => response !== null)
+                        .map(response => response.id);
+
+                let combined = [...allTagIds, ...newlyCreatedTagsId];
 
                 return axios.put(`${BACKEND_URL}/entries/${entryId}`, {
                     observation: observation,
@@ -63,43 +74,13 @@ export default function TableEntryList({data, setDataChanged}) {
                     }
                 })
                 })
-                .then(updateResponse => {
-                    // Handle the successful update of the entry
-                    console.log('Entry updated:', updateResponse);
-                    setDataChanged(true);
-                })
-                .catch(error => {
-                    // Handle any errors that occurred during tag creation or entry update
-                    console.error('Error in creating tags or updating entry:', error);
-                });
-        }
-        else { // no new tags to create. just add tags 
-            
-            axios.put(`${BACKEND_URL}/entries/${entryId}`, {
-                observation: observation,
-                solution: solution,
-                tagId: tags 
-            }, {
-                headers: {
-                    Authorization: `Bearer ${jwtToken}`,
-                }
-            })
-            .then((response) => {
+            .then(updateResponse => {
+                console.log('Entry updated:', updateResponse);
                 setDataChanged(true);
-                console.log('response', response); 
-                
-                // Further actions on success
             })
-            .catch((error) => {
-                console.error(error);
-                // Handle errors
+            .catch(error => {
+                console.error('Error in creating tags or updating entry:', error);
             });
-        }
-
-
-        // if there is tags to create, then add to the entry 
-        // axios. call create tags 
-        // then call update entry with new tags  (use let )
     };
   
   return (

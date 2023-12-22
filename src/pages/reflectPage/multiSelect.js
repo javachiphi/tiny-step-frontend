@@ -14,14 +14,15 @@ export const WrappedChip = styled(Chip)(({ theme }) => ({
 
 export default function MultiSelect({
   tagType, 
-  setTags, 
-  setTagsToCreate,
-  // defaultValues
+  onTagIdsChange, 
+  onTagsToCreateChange,
+  defaultValues
 }) {
   const { formattedData } = useEntriesByTagData();
   const [openModal, setOpenModal] = useState(false);
   const [newOption, setNewOption] = useState('');
   const [options, setOptions] = useState([]);
+  const [initialSelect, setInitialSelect] = useState([]);
  
   
   useEffect(() => {
@@ -31,7 +32,18 @@ export default function MultiSelect({
           .map(({ id, label }) => ({ id, label }));
       setOptions(filteredData);
   }
-  },[formattedData, tagType])
+
+  const selectValues
+        = defaultValues
+          .filter(item => item.type === tagType)
+          .map(item => ({ id: item.id, label: item.note }))  
+        //  .map(item => JSON.stringify(item));
+
+          console.log('selectValues', selectValues)
+
+  setInitialSelect(selectValues);
+
+  },[formattedData, tagType, defaultValues])
 
   const handleChange = (event, newValue) => {
     if (event && event.target.innerText === '+ Create an Option') {
@@ -39,12 +51,11 @@ export default function MultiSelect({
     }
 
     const parsedValue = newValue.map(item => JSON.parse(item))
-    console.log('parsed value', parsedValue)
     const extractTagIds = parsedValue.filter(item => Number.isInteger(item.id)).map(item => item.id)
     const extractCreate = parsedValue.filter(item => item.action === 'create')
-    console.log('extractCreate', extractCreate)
-    setTagsToCreate(extractCreate);
-    setTags(extractTagIds);
+
+    onTagsToCreateChange(extractCreate);
+    onTagIdsChange(extractTagIds);
   };
 
 
@@ -62,23 +73,26 @@ export default function MultiSelect({
     <Select 
       multiple
       size="sm"
+      defaultValue={initialSelect}
       onChange={handleChange}
       renderValue={(selected) => 
        { 
+        console.log('selected', selected)
         return(
         <Box sx={{ display: 'flex', gap: '0.25rem' }}>
           {selected
           .filter(option => option.label !== "+ Create an Option")
-          .map((selectedOption, index) => (
-            <WrappedChip key={index} variant="soft" color="primary">
-              {selectedOption.label}
-            </WrappedChip>
-          ))}
+          .map((selectedOption, index) => {
+              return(
+                  <WrappedChip key={index} variant="soft" color="primary">
+                    {selectedOption.label}
+                  </WrappedChip>
+                );
+              })};
         </Box>
       )
        }
       }
- 
       sx={{
         minWidth: '15rem',
       }}
