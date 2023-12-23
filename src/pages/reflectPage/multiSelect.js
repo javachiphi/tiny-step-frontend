@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Box, Chip, styled, Select, Option } from '@mui/joy';
-import { useEntriesByTagData } from '../../context/entriesByTagProvider';
 import OptionModal from './optionModal';
+import  useCombinedTags from '../../api/useCombinedTags';
 
 export const WrappedChip = styled(Chip)(({ theme }) => ({
   '& .MuiChip-label': {
@@ -11,39 +11,42 @@ export const WrappedChip = styled(Chip)(({ theme }) => ({
   },
 }));
 
-
 export default function MultiSelect({
   tagType, 
   onTagIdsChange, 
   onTagsToCreateChange,
   defaultValues
 }) {
-  const { formattedData } = useEntriesByTagData();
+  const { combinedTags, loading: combinedTagsLoading } = useCombinedTags();
   const [openModal, setOpenModal] = useState(false);
   const [newOption, setNewOption] = useState('');
   const [options, setOptions] = useState([]);
  
-  
   useEffect(() => {
-    if(formattedData){
-            const filteredData = formattedData
+    if(combinedTags){
+            console.log('combinedTags', combinedTags)
+            const filtered = combinedTags
                 .filter((item) => item.type === tagType)
-                .map(({ id, label }) => ({ id, label }));
-            setOptions(filteredData);
+                .map(({ id, note }) => ({ id: id, label: note }));
+                console.log('filtered', filtered)
+            setOptions(filtered);
         }
     
-  },[formattedData, tagType, defaultValues])
+  },[combinedTags, tagType, defaultValues])
 
   const handleChange = (event, newValue) => {
     if (event && event.target.innerText === '+ Create an Option') {
       setOpenModal(true);
     }
 
-    const parsedValue = newValue.map(item => JSON.parse(item))
-    const extractTagIds = parsedValue.filter(item => Number.isInteger(item.id)).map(item => item.id)
-    const extractCreate = parsedValue.filter(item => item.action === 'create')
-    //for extracreate, if parsed string is not integer, then it is create (it would come with label)
+    const extractTagIds = 
+      newValue.filter(item => Number.isInteger(item))
 
+
+    const extractCreate = newValue
+      .filter(item => !Number.isInteger(item) && item !== 'noOption')
+      .map(item => ({ note: item, type: tagType }))
+      
     onTagsToCreateChange(extractCreate);
     onTagIdsChange(extractTagIds);
   };
@@ -51,18 +54,21 @@ export default function MultiSelect({
 
   const handleAddOption = () => {
     if (newOption) {
-      setOptions([...options, { id: `create-${newOption}`, label: newOption, action: 'create', tagType: tagType }]);
-      // for option send to only id
-      // for create send label // id can be also just newOption (label)
-      
+      setOptions([...options, { id: newOption, label: newOption }]);
       setNewOption('');
     }
     setOpenModal(false);
   };
+
+  if(combinedTagsLoading){
+    return <div>Loading combinedTags...</div>
+  }
+
+
   const initialIds = defaultValues && defaultValues.map(item => item.id)
   return (
     <>
-    { options.length > 0 && defaultValues.length > 0 ?
+    { options.length > 0 && defaultValues ?
     (
       <>
       <Select 
@@ -103,7 +109,7 @@ export default function MultiSelect({
             key={index}
             value={option.id}
           >
-            {option.label} {option.id}
+            {option.label}
           </Option>
         )
       }
@@ -131,12 +137,3 @@ export default function MultiSelect({
 
 
 
-
-
-// to do to switch from json stringify to just {id: a , label: x} 
-// goal is match default value
-// 1. set value = item.id ;  display item.label 
-//2. set default value to item id (ensure that both option value and default value match) in terms of string or id. check 
-//3. handle add new option -> when add new option, set value to {id: create-{index}, label: newOption}
-//4. handle change -> CREATE: if id is not integer then should send those 'label information' along with tagType (received) -format data item = {label: newOption, type: tagType}
-  // add -> just simply send ids (check entryTable handleSave function)

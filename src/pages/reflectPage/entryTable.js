@@ -43,8 +43,7 @@ export default function TableEntryList({data, setDataChanged}) {
             allTagIds.push(...tagIdsToAdd);
 
             const createTagPromises = tagsToCreate.map(item => {
-                const data = { note: item.label, type: item.tagType };
-                return createData("tags", data, jwtToken)
+                return createData("tags", item, jwtToken)
                 .catch(error => {
                     console.error('Error creating tag:', item, error);
                     return null; 
