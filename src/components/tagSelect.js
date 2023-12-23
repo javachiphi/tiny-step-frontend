@@ -12,6 +12,7 @@ export default function TagSelect({
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions ] = useState([]);
     const  contextValue = useEntriesByTagData();
+    // use groupedTags instead. and then create two inputs for types
     const { tagDropDownOptions } = contextValue;
 
     useEffect(() => {

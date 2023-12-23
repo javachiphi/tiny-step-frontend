@@ -1,30 +1,28 @@
 import React, {useEffect, useState } from "react"; 
 import EntryList from "./entryList";
 import { Typography } from '@mui/joy';
-import { useAuthToken } from './useAuthToken';
 import { Tabs, TabPanel, TabList, Tab } from '@mui/joy';
+import useGroupTags from "../api/useGroupTags";
 
 
-import { useEntriesByTagData } from '../context/entriesByTagProvider';
-
-export default function EntriesByTag({tagType}){
-    const jwtToken = useAuthToken();
+export default function GroupedEntries({tagType}){
     const [data, setData] = useState(null);
-    const  contextValue = useEntriesByTagData()
-    const { formattedData, dataChanged, setDataChanged } = contextValue; 
+    const { groupTags, loading: groupTagsloading } = useGroupTags();
+    const [dataChanged, setDataChanged] = useState(false);
+    
 
     useEffect(() => {
-        if(formattedData){
-            const filteredData = formattedData.filter((item) => item.type === tagType)
-            setData(filteredData)
+        if(groupTagsloading === false && groupTags.length > 0){
+            const filtered = groupTags.filter((item) => item.type === tagType)
+            setData(filtered)
         }
 
         if(dataChanged === true){
             setDataChanged(false);
         }
-    }, [formattedData, dataChanged]);
+    }, [groupTags, dataChanged]);
 
-    if (!jwtToken) {
+    if (groupTagsloading) {
         return <div>Loading...</div>;
     }
     return(
@@ -39,7 +37,7 @@ export default function EntriesByTag({tagType}){
             >
                 <TabList>
                     {data && data.map((item, index) => {
-                        return (<Tab key={index}>{item.label} {item.count}</Tab>)
+                        return (<Tab key={index}>{item.note} {item.count}</Tab>)
                     })}
                 </TabList>
                 {data &&

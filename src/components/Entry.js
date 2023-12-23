@@ -17,7 +17,6 @@ export default function Entry({
     tagValue,
     setDataChanged
 }){    
-
     return(
      <Accordion
         expanded={open}
@@ -27,7 +26,7 @@ export default function Entry({
       >
         <AccordionSummary>
             <div style={{display: 'flex', gap: '20px', justifyContent: 'space-between'}}>
-            <Typography color='neutral' level='body-sm'>{getDate(entry.createdAt)}</Typography>
+            <Typography color='neutral' level='body-sm'>{getDate(entry.created_at)}</Typography>
             <Typography fontSize="md" sx={{ml: '10px'}}>{entry.solution}</Typography>
             </div>
         </AccordionSummary>
