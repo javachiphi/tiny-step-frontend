@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect, useMemo } from 'react'; 
 import { Box, Typography, Textarea, Button } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
 import { useNavigate } from 'react-router-dom';
 import useEntry from '../api/useEntry';
 import useTagHandler from '../api/useTagHandler';
 import MultiSelect from '../pages/reflectPage/multiSelect';
+import { getTagIdsByType } from '../utils/tagUtils'
 
 export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const [observation, setObservation] = useState('');
@@ -13,23 +14,37 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const navigate = useNavigate();
      
     const {entry: entryTags, loading: entryTagsLoading} = useEntry(entry && entry.id);
-    const { 
-            tagsData, 
-            handleTagIdsToAdd, 
-            handleTagsToCreate, 
-            handleSave 
-        } = useTagHandler(jwtToken, setDataChanged);
 
-        // when have time, decouple setDataChange from taghandler.
-        // use it in .then statement, not in tagHandler 
+    const { 
+        tagsData,
+        handleTagIdsToAdd, 
+        handleTagsToCreate, 
+        handleSave, 
+        handleInitialTagIds 
+    } = useTagHandler(jwtToken, setDataChanged);
+
 
     useEffect(() => {
         if(entry && entry.id){
             setObservation(entry.observation || '');
             setSolution(entry.solution || '');
-            //set entryTags data with useEntry hook
+            const tags = entryTags?.tags || [];
+         
+            const situationTags = getTagIdsByType(tags, 'situation');
+            const mindTags = getTagIdsByType(tags, 'mind');
+
+            const initialState = {
+                situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
+                mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
+            }
+
+            console.log('entryForm initialState sending to tagHandler', initialState)
+            handleInitialTagIds(initialState);
         }
+
     },[entry, entryTags])
+
+
 
     const handleChange = (e, type) => {
         const value = e.target.value;
@@ -43,13 +58,13 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
         e.preventDefault();
 
         if(entry && entry.id){
-        handleSave("edit", entry.id, observation, solution, tagsData)
+        handleSave("edit", entry.id, observation, solution)
         .then(() => {
             setDataChanged(true); 
             onClose();
         })
         } else {
-            handleSave("create", null, observation, solution, tagsData)
+            handleSave("create", null, observation, solution)
             .then(() => {
                 navigate('/reflect');
                console.log('then is working?')
@@ -94,12 +109,17 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                     <Typography>
                         Situation
                     </Typography>
-                    <MultiSelect 
-                        tagType="situation"
-                        onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
-                        onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
-                        defaultValues={entryTags && entryTags.tags || []}
-                    />
+       
+                        <MultiSelect 
+                            tagType="situation"
+                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
+                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
+                            defaultValues={entryTags && entryTags.tags || []}
+                            // mode={mode}
+                            // initialState={initialState}
+                        />
+
+        
                     </>
                     )
                 }

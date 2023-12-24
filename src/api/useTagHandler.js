@@ -1,16 +1,21 @@
 // useTagHandler.js
 import { useState } from 'react';
 import { createData, updateData } from './apiService';
-import { BACKEND_URL } from '../constants';
-import axios from 'axios';
+
+export const defaultState = {
+    situation: { tagIdsToAdd: [], tagsToCreate: [] },
+    mind: { tagIdsToAdd: [], tagsToCreate: [] }
+};
 
 
 const useTagHandler = (jwtToken, setDataChanged) => {
-    const [tagsData, setTagsData] = useState({
-        situation: { tagIdsToAdd: [], tagsToCreate: [] },
-        mind: { tagIdsToAdd: [], tagsToCreate: [] }
-      });
+    const [tagsData, setTagsData] = useState(defaultState);
 
+    const handleInitialTagIds = (initialState) => {
+        console.log('initial state received', initialState)
+        setTagsData(initialState);
+    };
+ 
     const handleTagIdsToAdd = (tagType, tagIdsToAdd) => {
         setTagsData(prevData => ({
             ...prevData,
@@ -31,7 +36,8 @@ const useTagHandler = (jwtToken, setDataChanged) => {
         }));
     };
 
-    const handleSave = async (mode, entryId, observation, solution, tagsData) => {
+    const handleSave = async (mode, entryId, observation, solution) => {
+        console.log('tagData', tagsData)
         // mode accepts "create" or "edit"
         let allCreateTagPromises = [];
         let allTagIds = [];
@@ -81,7 +87,13 @@ const useTagHandler = (jwtToken, setDataChanged) => {
     };
     
 
-    return { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleSave };
+    return { 
+        tagsData, 
+        handleInitialTagIds,
+        handleTagIdsToAdd, 
+        handleTagsToCreate, 
+        handleSave
+    };
 };
 
 export default useTagHandler;
