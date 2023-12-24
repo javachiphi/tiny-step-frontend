@@ -28,15 +28,16 @@ export const createData = async (endpoint, data, token) => {
     }
 };
 
-// export const updateData = async (endpoint, data, token) => {
-   
-//     try {
-//         const response = await axios.put(`${BACKEND_URL}/${endpoint}`, {data}, getHeaders(token));
-//         return response.data;
-//     } catch (error) {
-//         throw error;
-//     }
-// };
+export const updateData = async (endpoint, data, token) => {
+    console.log('received data', data)
+    try {
+        const response = await axios.put(`${BACKEND_URL}/${endpoint}`, data , getHeaders(token));
+        console.log('response data', response.data)
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 // export const deleteData = async (endpoint, data, token) => {
 //     try {

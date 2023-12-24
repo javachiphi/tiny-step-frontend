@@ -2,15 +2,14 @@ import React, {useState} from "react";
 import { Textarea } from "@mui/joy";
 import SaveCancelDropDown from "../../components/saveCancelDropdown";
 import EditDeleteDropDown from "../../components/EditDeleteDropdown";
+import useTagHandler from "../../api/useTagHandler";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
-
-import FormattedDataProvider from "../../context/entriesByTagProvider";
 
 export default function EntryRow({
     row, 
     onEdit, 
-    onSave,
+    onSave, 
     onDelete,
     selectedEntry, 
     setSelectedEntry
@@ -18,32 +17,8 @@ export default function EntryRow({
 }) {
     const [observation, setObservation] = useState(row.observation || '' );
     const [solution, setSolution] = useState(row.solution || '');
-    const [tagsData, setTagsData] = useState({
-        situation: { tagIdsToAdd: [], tagsToCreate: [] },
-        mind: { tagIdsToAdd: [], tagsToCreate: [] }
-      });
-
+    const { tagsData, handleTagIdsToAdd, handleTagsToCreate } = useTagHandler();
     
-      const handleTagIdsToAdd = (tagType, tagIdsToAdd) => {
-        setTagsData(prevData => ({
-            ...prevData,
-            [tagType]: {
-                ...prevData[tagType],
-                tagIdsToAdd: tagIdsToAdd
-                }
-        }));
-    };
-
-    const handleTagsToCreate = (tagType, tagsToCreate) => { 
-        setTagsData(prevData => ({
-            ...prevData,
-            [tagType]: {
-                ...prevData[tagType],
-                tagsToCreate: tagsToCreate
-                }
-        }));
-    };
-
     const editing = selectedEntry && selectedEntry.id === row.id;
     const rowId = row && row.id;
 
@@ -58,9 +33,7 @@ export default function EntryRow({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('entry row handle submit')
-        // console.log('tagIds available?', tags)
-        onSave(rowId, observation, solution, tagsData);
+        onSave("edit", rowId, observation, solution, tagsData);
         setSelectedEntry(null);
     };
 
@@ -75,7 +48,6 @@ export default function EntryRow({
                         placeholder={"Write your observation"}
                     />)
                 : row.observation}
-
             </td>
             <td>
                 {editing ? 
@@ -104,14 +76,12 @@ export default function EntryRow({
             </td> 
             <td> 
             {editing ? (
-                <FormattedDataProvider>
                     <MultiSelect 
                         tagType="situation"
                         onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
                         onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
                         defaultValues={row.tags}
                     />
-                </FormattedDataProvider>
                 ) : (
                     <>
                     {row.tags
@@ -126,14 +96,12 @@ export default function EntryRow({
             </td> 
             <td>
             {editing ? (
-                <FormattedDataProvider>
                     <MultiSelect 
                         tagType="mind"
                         onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
                         onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
                         defaultValues={row.tags}
                     />
-                </FormattedDataProvider>
                 ) : (
                     <>
                         {row.tags

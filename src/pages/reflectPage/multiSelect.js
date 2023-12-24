@@ -24,11 +24,11 @@ export default function MultiSelect({
  
   useEffect(() => {
     if(combinedTags){
-            console.log('combinedTags', combinedTags)
+           
             const filtered = combinedTags
                 .filter((item) => item.type === tagType)
                 .map(({ id, note }) => ({ id: id, label: note }));
-                console.log('filtered', filtered)
+               
             setOptions(filtered);
         }
     
