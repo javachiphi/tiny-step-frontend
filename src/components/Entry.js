@@ -12,9 +12,7 @@ export default function Entry({
     onEdit, 
     onClose, 
     selectedEntry,
-    selectedTag, 
     isDrawerOpen, 
-    tagValue,
     setDataChanged
 }){    
     return(
@@ -39,7 +37,6 @@ export default function Entry({
                     onEdit={onEdit} 
                     onDelete={onDelete} 
                     contentId={entry.id} 
-                    tagValue={tagValue}
                 />
                  
                 </div>      
@@ -51,9 +48,9 @@ export default function Entry({
                 size="lg"
             >
                 <EntryForm 
+                    mode="edit"
                     entry={selectedEntry}
                     onClose={onClose}
-                    tagValue={selectedTag}
                     setDataChanged={setDataChanged}
                 />
             </Drawer>

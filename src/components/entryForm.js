@@ -6,18 +6,15 @@ import useEntry from '../api/useEntry';
 import useTagHandler from '../api/useTagHandler';
 import MultiSelect from '../pages/reflectPage/multiSelect';
 
-export default function EntryForm({entry, onClose, tagValue: initialTagValue, setDataChanged}){
+export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
-    const [data, setData] = useState({});
-    const [modalOpen, setModalOpen] = useState(false);
     const jwtToken = useAuthToken();
-    const [tagValue, setTagValue] = useState('');
-    const [checkTagCreation, setCheckTagCreation] = useState(false);
     const navigate = useNavigate();
      
     const {entry: entryTags, loading: entryTagsLoading} = useEntry(entry && entry.id);
-    const { tagsData, 
+    const { 
+            tagsData, 
             handleTagIdsToAdd, 
             handleTagsToCreate, 
             handleSave 
@@ -30,20 +27,14 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
         if(entry && entry.id){
             setObservation(entry.observation || '');
             setSolution(entry.solution || '');
-            setTagValue(initialTagValue || tagValue);
+            //set entryTags data with useEntry hook
         }
-    },[entry, initialTagValue, entryTags])
+    },[entry, entryTags])
 
-    const handleOpenTagModal = (e) => {
-        e.stopPropagation();
-        console.log('clicked')
-        setModalOpen(true);
-    }
     const handleChange = (e, type) => {
         const value = e.target.value;
         if(type === "observation"){
             setObservation(value);
-            setData({"observation": value})
         } else if(type === "solution"){
             setSolution(value)
         }
@@ -96,7 +87,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
                 </div>
                 <div>
                 {
-                    entryTagsLoading ? (
+                    entryTagsLoading && mode !== "create" ? (
                         <div>loading</div>
                     ): (
                     <>

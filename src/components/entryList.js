@@ -7,7 +7,6 @@ import axios from 'axios';
 
 export default function EntryList({
     entries, 
-    tagValue,
     setDataChanged
 }){
    
@@ -31,9 +30,8 @@ export default function EntryList({
         setOpenStates(newOpenStates);
       };
 
-    const handleEdit = (entry, tagValue) => {
+    const handleEdit = (entry) => {
         setSelectedEntry(entry);
-        setSelectedTag(tagValue); // initial value for tag autocomplete
         setIsDrawerOpen(true);
     };
 
@@ -74,7 +72,6 @@ export default function EntryList({
                                     onEdit={handleEdit}
                                     onDelete={handleDelete}
                                     onClose={handleCloseDrawer}
-                                    tagValue={tagValue ? tagValue : tagValueFromAllDiaries}
                                     isDrawerOpen={isDrawerOpen}
                                     selectedEntry={selectedEntry}
                                     selectedTag={selectedTag}

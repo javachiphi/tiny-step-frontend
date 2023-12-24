@@ -35,7 +35,7 @@ root.render(
           <Route path="mindfulness" element={<MindFulnessPage />} />
           <Route path="situation" element={<SituationPage />} />
           <Route path="onboarding" element={<TagVault />} />
-          <Route path="create" element={<EntryForm />} />
+          <Route path="create" element={<EntryForm mode="create" setDataChanged={null}/>} />
           <Route path="*" element={"Nothing here!"} />
         </Route>
       </Routes>
