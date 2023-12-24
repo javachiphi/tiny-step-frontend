@@ -8,7 +8,7 @@ function formatDate(date) {
   const year = date.getFullYear();
   const formattedMonth = new Intl.DateTimeFormat("en-US", options).format(date);
 
-  return `${formattedMonth} ${day}, ${year}`;
+  return `${formattedMonth} ${day}`;
 }
 
 export function getDate(dateString) {

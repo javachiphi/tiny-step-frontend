@@ -4,6 +4,7 @@ import SaveCancelDropDown from "../../components/saveCancelDropdown";
 import EditDeleteDropDown from "../../components/EditDeleteDropdown";
 import useTagHandler from "../../api/useTagHandler";
 import { getTagIdsByType } from "../../utils/tagUtils";
+import { getDate } from "../../utils/helpers";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
 
@@ -56,6 +57,7 @@ export default function EntryRow({
 
     return(
         <tr>
+            <td>{getDate(row.createdAt)}</td>
             <td>
                 {editing ? 
                     (<Textarea
@@ -136,6 +138,4 @@ export default function EntryRow({
 }
 
 
-// when add clicked, then multiselect is rendered 
-// if there are tags -> then provide multiselect
 

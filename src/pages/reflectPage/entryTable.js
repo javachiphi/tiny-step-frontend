@@ -32,11 +32,12 @@ export default function TableEntryList({data, setDataChanged}) {
   
   return (
     <form onSubmit={(e) => {console.log('table form'); e.preventDefault()}}>
-    <Table sx={{ maxWidth: '900px' }}>
+    <Table sx={{ maxWidth: '1200px' }}>
       <thead>
         <tr>
-            <th>Observation</th>   
-            <th>Solution</th>   
+            <th>Date</th>
+            <th style={{ width: '30%' }}>Observation</th>   
+            <th style={{ width: '30%' }}>Solution</th>   
             <th>Action</th>
             <th>Situation</th>
             <th>Mind</th>
