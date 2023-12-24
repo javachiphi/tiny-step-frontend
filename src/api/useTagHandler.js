@@ -36,15 +36,14 @@ const useTagHandler = (jwtToken, setDataChanged) => {
         }));
     };
 
-    const handleSave = async (mode, entryId, observation, solution) => {
-        console.log('tagData', tagsData)
+    const handleSave = async (mode, entryId, observation, solution, receivedTags) => {
         // mode accepts "create" or "edit"
         let allCreateTagPromises = [];
         let allTagIds = [];
     
         // step 1. Create all tags that don't exist yet
-        Object.keys(tagsData).forEach((tagType) => {
-            const { tagIdsToAdd, tagsToCreate } = tagsData[tagType];
+        Object.keys(receivedTags).forEach((tagType) => {
+            const { tagIdsToAdd, tagsToCreate } = receivedTags[tagType];
             allTagIds.push(...tagIdsToAdd);
             const createTagPromises = tagsToCreate.map(item => createData("tags", item, jwtToken));
             allCreateTagPromises.push(...createTagPromises);

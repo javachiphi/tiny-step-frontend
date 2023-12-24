@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Textarea } from "@mui/joy";
 import SaveCancelDropDown from "../../components/saveCancelDropdown";
 import EditDeleteDropDown from "../../components/EditDeleteDropdown";
 import useTagHandler from "../../api/useTagHandler";
+import { getTagIdsByType } from "../../utils/tagUtils";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
 
@@ -17,10 +18,26 @@ export default function EntryRow({
 }) {
     const [observation, setObservation] = useState(row.observation || '' );
     const [solution, setSolution] = useState(row.solution || '');
-    const { tagsData, handleTagIdsToAdd, handleTagsToCreate } = useTagHandler();
+    const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleInitialTagIds } = useTagHandler();
     
     const editing = selectedEntry && selectedEntry.id === row.id;
     const rowId = row && row.id;
+    
+    useEffect(() => {
+        if(selectedEntry && row && selectedEntry.id === row.id){
+            const tags = selectedEntry.tags;
+            const situationTags = getTagIdsByType(tags, 'situation');
+            const mindTags = getTagIdsByType(tags, 'mind');
+
+            const initialState = {
+                situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
+                mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
+            }   
+
+            handleInitialTagIds(initialState);
+
+        }
+    },[selectedEntry])
 
 
     const handleChange = (e, field) => {

@@ -37,9 +37,8 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                 situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
                 mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
             }
-
-            console.log('entryForm initialState sending to tagHandler', initialState)
-            handleInitialTagIds(initialState);
+            
+            handleInitialTagIds(initialState); // display default in multiselect & iniital id set are different 
         }
 
     },[entry, entryTags])
@@ -58,13 +57,13 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
         e.preventDefault();
 
         if(entry && entry.id){
-        handleSave("edit", entry.id, observation, solution)
+        handleSave("edit", entry.id, observation, solution, tagsData)
         .then(() => {
             setDataChanged(true); 
             onClose();
         })
         } else {
-            handleSave("create", null, observation, solution)
+            handleSave("create", null, observation, solution, tagsData)
             .then(() => {
                 navigate('/reflect');
                console.log('then is working?')
