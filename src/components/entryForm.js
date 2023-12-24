@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'; 
-import { Box, Sheet, Typography, Textarea, Button } from '@mui/joy';
-import axios from 'axios';
-import { BACKEND_URL } from '../constants';
-import TagSelect from './tagSelect';
-import ModalForm from './modalForm';
+import { Box, Typography, Textarea, Button } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
 import { useNavigate } from 'react-router-dom';
-
+import useEntry from '../api/useEntry';
+import useTagHandler from '../api/useTagHandler';
+import MultiSelect from '../pages/reflectPage/multiSelect';
 
 export default function EntryForm({entry, onClose, tagValue: initialTagValue, setDataChanged}){
     const [observation, setObservation] = useState('');
@@ -17,7 +15,16 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
     const [tagValue, setTagValue] = useState('');
     const [checkTagCreation, setCheckTagCreation] = useState(false);
     const navigate = useNavigate();
+     
+    const {entry: entryTags, loading: entryTagsLoading} = useEntry(entry && entry.id);
+    const { tagsData, 
+            handleTagIdsToAdd, 
+            handleTagsToCreate, 
+            handleSave 
+        } = useTagHandler(jwtToken, setDataChanged);
 
+        // when have time, decouple setDataChange from taghandler.
+        // use it in .then statement, not in tagHandler 
 
     useEffect(() => {
         if(entry && entry.id){
@@ -25,7 +32,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
             setSolution(entry.solution || '');
             setTagValue(initialTagValue || tagValue);
         }
-    },[entry, initialTagValue])
+    },[entry, initialTagValue, entryTags])
 
     const handleOpenTagModal = (e) => {
         e.stopPropagation();
@@ -43,44 +50,22 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
     }
     const handleSubmit =(e) => {
         e.preventDefault();
-  
-        if(entry && entry.id){ 
-            axios.put(`${BACKEND_URL}/entries/${entry.id}`, {
-                observation: observation,
-                solution: solution,
-                tagId: tagValue ?  [tagValue.id] : null
-            }, {
-                headers: {
-                    Authorization: `Bearer ${jwtToken}`,
-                }
-            })
-            .then((response) => {
-                console.log('response', response.data)
-                setDataChanged(true);
-                onClose();
-            })
-            .catch((error) => console.log(error))
 
-        } else { // create action
-                axios.post(`${BACKEND_URL}/entries`, {
-                    observation: observation, 
-                    solution: solution,
-                    tagId: tagValue ? tagValue.id : null
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${jwtToken}`,
-                    }
-                })
-                .then((response) => {
-                    console.log('response', response.data);
-                    navigate('/diary');
-                })
-                .catch((error) =>{
-                    console.log("error")
-                })
+        if(entry && entry.id){
+        handleSave("edit", entry.id, observation, solution, tagsData)
+        .then(() => {
+            setDataChanged(true); 
+            onClose();
+        })
+        } else {
+            handleSave("create", null, observation, solution, tagsData)
+            .then(() => {
+                navigate('/reflect');
+               console.log('then is working?')
+            })
+
         }
     }
-
 
     return(
         <div style={{display: 'flex', justifyContent:'center', alignItems: 'center'}}>
@@ -93,10 +78,7 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
                 >
                     <Typography 
                         level="h1" 
-                        sx={{
-                            margin: "0 auto",
-                            textAlign: "center"
-                            }}
+                        sx={{margin: "0 auto",textAlign: "center"}}
                     >
                         {getToday()}
                     </Typography>
@@ -113,22 +95,23 @@ export default function EntryForm({entry, onClose, tagValue: initialTagValue, se
                     </Button>
                 </div>
                 <div>
-                    <TagSelect 
-                        jwtToken={jwtToken}
-                        tagValue={tagValue}
-                        setTagValue={setTagValue}
-                        checkTagCreation={checkTagCreation}
-                        setCheckTagCreation={setCheckTagCreation}
-                    /> 
-                    <Button type="button" onClick={(e) => handleOpenTagModal(e)}>
-                        Create a tag
-                    </Button>
-                    <ModalForm
-                        modalOpen={modalOpen}
-                        setModalOpen={setModalOpen}
-                        mode="create"
-                        setCheckTagCreation={setCheckTagCreation}
+                {
+                    entryTagsLoading ? (
+                        <div>loading</div>
+                    ): (
+                    <>
+                    <Typography>
+                        Situation
+                    </Typography>
+                    <MultiSelect 
+                        tagType="situation"
+                        onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
+                        onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
+                        defaultValues={entryTags && entryTags.tags || []}
                     />
+                    </>
+                    )
+                }
                 </div>
                 <Box>
                     Observation

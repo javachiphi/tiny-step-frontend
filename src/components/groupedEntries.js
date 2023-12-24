@@ -7,7 +7,7 @@ import useGroupTags from "../api/useGroupTags";
 
 export default function GroupedEntries({tagType}){
     const [data, setData] = useState(null);
-    const { groupTags, loading: groupTagsloading } = useGroupTags();
+    const { groupTags, refreshGroupTags, loading: groupTagsloading } = useGroupTags();
     const [dataChanged, setDataChanged] = useState(false);
     
 
@@ -18,6 +18,7 @@ export default function GroupedEntries({tagType}){
         }
 
         if(dataChanged === true){
+            refreshGroupTags();
             setDataChanged(false);
         }
     }, [groupTags, dataChanged]);

@@ -31,9 +31,8 @@ const useTagHandler = (jwtToken, setDataChanged) => {
         }));
     };
 
-  
-   
     const handleSave = async (mode, entryId, observation, solution, tagsData) => {
+        // mode accepts "create" or "edit"
         let allCreateTagPromises = [];
         let allTagIds = [];
     
@@ -55,14 +54,14 @@ const useTagHandler = (jwtToken, setDataChanged) => {
                 .map(response => response.id);
     
             let combined = [...allTagIds, ...newlyCreatedTagsId];
-    
+            console.log('combined', combined)
             // step 2.2 call the API to update the entry with tag ids
             const entryData = {
-                observation,
-                solution,
+                observation: observation,
+                solution: solution,
                 tagId: combined
             }
-
+            console.log('entryData', entryData)
             const modeActions = {
                 create: () => createData("entries", entryData, jwtToken),
                 edit: () => updateData(`entries/${entryId}`, entryData, jwtToken)

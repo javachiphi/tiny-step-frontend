@@ -24,7 +24,21 @@ export default function useGroupTags() {
     }
   }, [jwtToken]);
 
-  return useMemo(() => ({ groupTags, loading, error }), [groupTags, loading, error]);
+  const refreshGroupTags = () => {
+    setLoading(true);
+    fetchData('entries/groupedEntriesByTag', jwtToken)
+      .then((data) => {
+        setGroupTags(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  };
+
+  return useMemo(() => ({ groupTags, refreshGroupTags, loading, error }), 
+  [groupTags, refreshGroupTags, loading, error]);
   
 };
 
