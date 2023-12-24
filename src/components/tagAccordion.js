@@ -1,6 +1,6 @@
 import React from 'react';
 import {Typography, Accordion, AccordionDetails,AccordionSummary } from '@mui/joy';
-import { getDate } from './helpers';
+import { getDate } from '../utils/helpers';
 import EditDeleteDropDown from './EditDeleteDropdown';
 
 

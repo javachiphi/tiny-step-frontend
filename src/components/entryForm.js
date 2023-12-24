@@ -6,6 +6,7 @@ import useEntry from '../api/useEntry';
 import useTagHandler from '../api/useTagHandler';
 import MultiSelect from '../pages/reflectPage/multiSelect';
 import { getTagIdsByType } from '../utils/tagUtils'
+import { getToday } from '../utils/helpers';
 
 export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const [observation, setObservation] = useState('');
@@ -113,9 +114,29 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                             tagType="situation"
                             onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
                             onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
-                            defaultValues={entryTags && entryTags.tags || []}
-                            // mode={mode}
-                            // initialState={initialState}
+                            defaultValues={(entryTags && entryTags.tags) || []}
+                        />
+
+        
+                    </>
+                    )
+                }
+                </div>
+                <div>
+                {
+                    entryTagsLoading && mode !== "create" ? (
+                        <div>loading</div>
+                    ): (
+                    <>
+                    <Typography>
+                        Mind
+                    </Typography>
+       
+                        <MultiSelect 
+                            tagType="mind"
+                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
+                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
+                            defaultValues={(entryTags && entryTags.tags) || []}
                         />
 
         
@@ -144,19 +165,6 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
             </div>
         </div>
     )
-}
-
-
-
-
-function getToday(){
-    const today = new Date();
-    const date = today.getDate();
-    const options = {month: "short"};
-    const year = today.getFullYear();
-    const formattedMonth = new Intl.DateTimeFormat("en-US", options).format(today)
-    
-    return formattedMonth.concat(` ${date}, ${year}`)
 }
 
 
