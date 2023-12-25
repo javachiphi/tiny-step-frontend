@@ -7,6 +7,7 @@ import { getTagIdsByType } from "../../utils/tagUtils";
 import { getDate } from "../../utils/helpers";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
+import './reflectPage.css';
 
 export default function EntryRow({
     row, 
@@ -21,21 +22,12 @@ export default function EntryRow({
     const [solution, setSolution] = useState(row.solution || '');
     const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleInitialTagIds } = useTagHandler();
     
-    const editing = selectedEntry && selectedEntry.id === row.id;
     const rowId = row && row.id;
+    const editing = selectedEntry && selectedEntry.id === rowId;
     
     useEffect(() => {
-        if(selectedEntry && row && selectedEntry.id === row.id){
-            const tags = selectedEntry.tags;
-            const situationTags = getTagIdsByType(tags, 'situation');
-            const mindTags = getTagIdsByType(tags, 'mind');
-
-            const initialState = {
-                situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
-                mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
-            }   
-
-            handleInitialTagIds(initialState);
+        if(selectedEntry && editing){
+            handleInitialTagIds(selectedEntry);
 
         }
     },[selectedEntry])
@@ -56,7 +48,7 @@ export default function EntryRow({
     };
 
     return(
-        <tr>
+        <tr className={editing ? 'editing-row' : ''}>
             <td>{getDate(row.createdAt)}</td>
             <td>
                 {editing ? 

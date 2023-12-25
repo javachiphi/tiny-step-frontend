@@ -32,15 +32,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
             const tags = entryTags?.tags 
 
             if(tags){
-                const situationTags = getTagIdsByType(tags, 'situation');
-                const mindTags = getTagIdsByType(tags, 'mind');
-
-                const initialState = {
-                    situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
-                    mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
-                }
-                
-                handleInitialTagIds(initialState); // display default in multiselect & iniital id set are different 
+                handleInitialTagIds(entryTags); // display default in multiselect & iniital id set are different 
             }
         
         }

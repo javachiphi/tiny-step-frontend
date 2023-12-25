@@ -1,6 +1,7 @@
 // useTagHandler.js
 import { useState } from 'react';
 import { createData, updateData } from './apiService';
+import { getTagIdsByType } from '../utils/tagUtils';
 
 export const defaultState = {
     situation: { tagIdsToAdd: [], tagsToCreate: [] },
@@ -10,8 +11,18 @@ export const defaultState = {
 const useTagHandler = (jwtToken, setDataChanged) => {
     const [tagsData, setTagsData] = useState(defaultState); 
 
-    const handleInitialTagIds = (initialState) => {
-        console.log('initial state received', initialState)
+    const handleInitialTagIds = (selectedEntry) => {
+        const tags = selectedEntry.tags;
+
+        const situationTags = getTagIdsByType(tags, 'situation');
+        const mindTags = getTagIdsByType(tags, 'mind');
+
+        const initialState = {
+            situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
+            mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
+        }   
+
+            console.log('setting initial state')
         setTagsData(initialState);
     };
  
