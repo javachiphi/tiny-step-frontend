@@ -10,8 +10,7 @@ export default function useEntry(entryId) {
   const jwtToken = useAuthToken();
 
   useEffect(() => {
-    if(jwtToken && entryId){
-        console.log('now fetching entry')
+    if(jwtToken && entryId !== null){
     fetchData(`entries/${entryId}`, jwtToken)
       .then((data) => {
         setEntry(data);

@@ -29,17 +29,20 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
         if(entry && entry.id){
             setObservation(entry.observation || '');
             setSolution(entry.solution || '');
-            const tags = entryTags?.tags || [];
-         
-            const situationTags = getTagIdsByType(tags, 'situation');
-            const mindTags = getTagIdsByType(tags, 'mind');
+            const tags = entryTags?.tags 
 
-            const initialState = {
-                situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
-                mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
+            if(tags){
+                const situationTags = getTagIdsByType(tags, 'situation');
+                const mindTags = getTagIdsByType(tags, 'mind');
+
+                const initialState = {
+                    situation: { tagIdsToAdd: situationTags, tagsToCreate: [] },
+                    mind: { tagIdsToAdd: mindTags, tagsToCreate: [] }
+                }
+                
+                handleInitialTagIds(initialState); // display default in multiselect & iniital id set are different 
             }
-            
-            handleInitialTagIds(initialState); // display default in multiselect & iniital id set are different 
+        
         }
 
     },[entry, entryTags])
@@ -72,11 +75,12 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
 
         }
     }
-
+    
+    const formId = mode === 'edit' ? entry && entry.id : 'create';
     return(
         <div style={{display: 'flex', justifyContent:'center', alignItems: 'center'}}>
             <div style={{width: '800px'}}>
-                <form onSubmit={handleSubmit}>
+                <form id={formId} onSubmit={handleSubmit}>
                 <div style={{
                         display: "flex", 
                         justifyContent: 'flex-end' 

@@ -9,24 +9,23 @@ export default function EntryList({
     entries, 
     setDataChanged
 }){
-   
-    const [selectedEntry, setSelectedEntry] = useState(null);
-    const [selectedTag, setSelectedTag] = useState(null);
+    const initialStates = entries.reduce((states, entry) => {
+        states[entry.id] = false;
+        return states;
+    }, {});
+    
+    const [openStates, setOpenStates] = useState(initialStates);
     const [openDrawerId, setOpenDrawerId] = useState(null);
-    const [openStates, setOpenStates] = useState([]);
+
+    const [selectedEntry, setSelectedEntry] = useState(null);
     const jwtToken = useAuthToken();
 
-    
-    useEffect(() => {
-        if (entries && entries.length > 0) {
-            setOpenStates(Array(entries.length).fill(false));
-        } else {
-            setOpenStates([]);
-        }
-    }, [entries])
- 
+   
     const toggleAll = (value) => {    
-        const newOpenStates = Array(openStates.length).fill(value);
+        const newOpenStates = entries.reduce((states, entry) => {
+            states[entry.id] = value;
+            return states;
+        }, {});
         setOpenStates(newOpenStates);
       };
 
@@ -37,6 +36,10 @@ export default function EntryList({
     
     const handleCloseDrawer = () => {
         setOpenDrawerId(null);
+    };
+
+    const setOpenStateForEntry = (entryId, isOpen) => {
+        setOpenStates(prev => ({ ...prev, [entryId]: isOpen }));
     };
 
     const handleDelete = (entryId) => {
@@ -61,27 +64,18 @@ export default function EntryList({
                     </div>
                     <AccordionGroup sx={{ maxWidth: 700 }}>
                         {entries && entries.map((entry, index) => {
-                            const tagValueFromAllDiaries = entries.tags && { label : entries.tags[0].note , id: entries.tags[0].id };
-                            const indexExist = index && index; 
-                            const openState = openStates[indexExist] || false;
                             return (
                                 <Entry 
                                     key={entry.id} 
-                                    index={indexExist} 
                                     entry={entry} 
                                     onEdit={handleEdit}
                                     onDelete={handleDelete}
                                     onClose={handleCloseDrawer}
                                     openDrawerId={openDrawerId}
                                     selectedEntry={selectedEntry}
-                                    selectedTag={selectedTag}
                                     setDataChanged={setDataChanged}
-                                    open={openState} 
-                                    setOpen={(value) => {
-                                        const newOpenStates = [...openStates];
-                                        newOpenStates[indexExist] = value;
-                                        setOpenStates(newOpenStates);
-                                    }} 
+                                    open={openStates[entry.id]} 
+                                    setOpen={(value) => setOpenStateForEntry(entry.id, value)} 
                                 />
                         )}
                     )}

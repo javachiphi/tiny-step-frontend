@@ -7,9 +7,8 @@ export const defaultState = {
     mind: { tagIdsToAdd: [], tagsToCreate: [] }
 };
 
-
 const useTagHandler = (jwtToken, setDataChanged) => {
-    const [tagsData, setTagsData] = useState(defaultState);
+    const [tagsData, setTagsData] = useState(defaultState); 
 
     const handleInitialTagIds = (initialState) => {
         console.log('initial state received', initialState)
@@ -78,7 +77,9 @@ const useTagHandler = (jwtToken, setDataChanged) => {
             
         
             console.log('Entry updated:', response);
-            setDataChanged(true);
+            if(mode === 'edit'){
+                setDataChanged(true);
+            }
         } catch (error) {
             // Handle any errors that occurred during tag creation or entry update
             console.error('Error in creating tags or updating entry:', error);
