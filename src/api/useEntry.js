@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchData } from './apiService';
 import { useAuthToken } from "../components/useAuthToken";
 
@@ -10,7 +10,7 @@ export default function useEntry(entryId) {
   const jwtToken = useAuthToken();
 
   useEffect(() => {
-    if(jwtToken && entryId !== null){
+    if(jwtToken && entryId !== (null || undefined)){
     fetchData(`entries/${entryId}`, jwtToken)
       .then((data) => {
         setEntry(data);
