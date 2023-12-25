@@ -12,7 +12,7 @@ export default function EntryList({
    
     const [selectedEntry, setSelectedEntry] = useState(null);
     const [selectedTag, setSelectedTag] = useState(null);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
+    const [openDrawerId, setOpenDrawerId] = useState(null);
     const [openStates, setOpenStates] = useState([]);
     const jwtToken = useAuthToken();
 
@@ -30,13 +30,13 @@ export default function EntryList({
         setOpenStates(newOpenStates);
       };
 
-    const handleEdit = (entry) => {
+      const handleEdit = (entry) => {
         setSelectedEntry(entry);
-        setIsDrawerOpen(true);
+        setOpenDrawerId(entry.id);
     };
-
+    
     const handleCloseDrawer = () => {
-        setIsDrawerOpen(false);
+        setOpenDrawerId(null);
     };
 
     const handleDelete = (entryId) => {
@@ -72,7 +72,7 @@ export default function EntryList({
                                     onEdit={handleEdit}
                                     onDelete={handleDelete}
                                     onClose={handleCloseDrawer}
-                                    isDrawerOpen={isDrawerOpen}
+                                    openDrawerId={openDrawerId}
                                     selectedEntry={selectedEntry}
                                     selectedTag={selectedTag}
                                     setDataChanged={setDataChanged}

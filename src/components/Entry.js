@@ -12,7 +12,7 @@ export default function Entry({
     onEdit, 
     onClose, 
     selectedEntry,
-    isDrawerOpen, 
+    openDrawerId,
     setDataChanged
 }){    
     return(
@@ -43,16 +43,18 @@ export default function Entry({
 
             <Drawer 
                 anchor="right" 
-                open={isDrawerOpen} 
+                open={entry.id === openDrawerId} 
                 onClose={onClose}
                 size="lg"
             >
-                <EntryForm 
-                    mode="edit"
-                    entry={selectedEntry}
-                    onClose={onClose}
-                    setDataChanged={setDataChanged}
-                />
+                {entry.id === openDrawerId && (
+                    <EntryForm 
+                        mode="edit"
+                        entry={selectedEntry}
+                        onClose={onClose}
+                        setDataChanged={setDataChanged}
+                    /> 
+                )}
             </Drawer>
         </AccordionDetails>
       </Accordion>
