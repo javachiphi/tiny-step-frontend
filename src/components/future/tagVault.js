@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import SystemTags from "./systemTagsList";
 import { Button, Box, Typography, Sheet, Autocomplete } from '@mui/joy';
 import axios from 'axios';
-import { BACKEND_URL } from "../constants";
-import { useAuthToken } from './useAuthToken';
+import { BACKEND_URL } from "../../constants";
+import { useAuthToken } from '../useAuthToken';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router-dom';
 

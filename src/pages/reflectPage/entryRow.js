@@ -6,7 +6,6 @@ import useTagHandler from "../../api/useTagHandler";
 import { getDate } from "../../utils/helpers";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
-import './reflectPage.css';
 
 export default function EntryRow({
     row, 
@@ -47,7 +46,7 @@ export default function EntryRow({
     };
 
     return(
-        <tr className={editing ? 'editing-row' : ''}>
+        <tr>
             <td>{getDate(row.createdAt)}</td>
             <td>
                 {editing ? 

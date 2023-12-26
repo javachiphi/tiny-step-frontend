@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react'; 
-import { AccordionGroup, Typography, Button } from '@mui/joy';
-import { BACKEND_URL } from '../constants';
-import { useAuthToken } from './useAuthToken';
+import { AccordionGroup, Typography, Button, Card} from '@mui/joy';
+import { BACKEND_URL } from '../../constants';
+import { useAuthToken } from '../useAuthToken';
 import Entry from './Entry';
 import axios from 'axios';
 
@@ -55,12 +55,15 @@ export default function EntryList({
         })
     }
     return(
-        <div>
+        <Card>
             {entries && (
-                <>
+                <div style={{display: "flex", flexDirection: "column"}}>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <Typography sx={{ fontWeight: 700 }}>Solutions</Typography>
                     <div>
                         <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
                         <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
+                    </div>
                     </div>
                     <AccordionGroup sx={{ maxWidth: 700 }}>
                         {entries && entries.map((entry, index) => {
@@ -80,8 +83,8 @@ export default function EntryList({
                         )}
                     )}
                     </AccordionGroup>
-                </>
+                </div>
             )}
-        </div>
+        </Card>
     )
 }

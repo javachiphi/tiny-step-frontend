@@ -1,5 +1,5 @@
 import React from "react";
-import GroupedEntries from "../components/groupedEntries";
+import GroupedEntries from "../components/groupedEntries/groupedEntries";
 
 export default function MindFulnessPage() {
     return(

@@ -4,11 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TagVault from './components/tagVault';
+import TagVault from './components/future/tagVault';
 import EntryForm from './components/entryForm';
 import { Auth0Provider } from '@auth0/auth0-react';
-import TagsPage from './pages/tagsPage';
-import DiaryPage from './pages/diaryPage';
 import SituationPage from './pages/situationPage';
 import  ReflectPage from './pages/reflectPage';
 import MindFulnessPage from './pages/mindfulPage';
@@ -28,13 +26,10 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          {/* <Route index element={<Welcome />} /> */}
-          <Route path="diary" index element={<DiaryPage />} />
           <Route path="reflect" index element={<ReflectPage />} />
-          <Route path="tags" element={<TagsPage />} />
           <Route path="mindfulness" element={<MindFulnessPage />} />
           <Route path="situation" element={<SituationPage />} />
-          <Route path="onboarding" element={<TagVault />} />
+          {/* <Route path="onboarding" element={<TagVault />} /> */}
           <Route path="create" element={<EntryForm mode="create" setDataChanged={null}/>} />
           <Route path="*" element={"Nothing here!"} />
         </Route>

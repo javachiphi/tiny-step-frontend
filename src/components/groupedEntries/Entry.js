@@ -1,8 +1,8 @@
 import React from 'react'; 
-import { getDate } from '../utils/helpers';
+import { getDate } from '../../utils/helpers';
 import { Accordion, AccordionDetails, AccordionSummary, Typography, Drawer } from '@mui/joy';
-import EntryForm from './entryForm';
-import EditDeleteDropDown from './EditDeleteDropdown';
+import EntryForm from '../entryForm';
+import EditDeleteDropDown from '../EditDeleteDropdown';
 
 export default function Entry({
     entry, 

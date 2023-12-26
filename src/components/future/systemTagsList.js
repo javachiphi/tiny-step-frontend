@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
-import { BACKEND_URL } from '../constants';
+import { BACKEND_URL } from '../../constants';
 import axios from 'axios';
-import TagCard from './tagCard';
+import TagCard from '../tagCard';
 
 export default function SystemTags({
   requestType, 

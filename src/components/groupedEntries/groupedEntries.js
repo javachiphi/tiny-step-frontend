@@ -1,8 +1,8 @@
 import React, {useEffect, useState } from "react"; 
 import EntryList from "./entryList";
 import { Tabs, TabPanel, TabList, Tab } from '@mui/joy';
-import useGroupTags from "../api/useGroupTags";
-import TagDetails from "./tagManage";
+import useGroupTags from "../../api/useGroupTags";
+import TagDetails from "../tagManage";
 
 export default function GroupedEntries({tagType}){
     const [data, setData] = useState(null);
