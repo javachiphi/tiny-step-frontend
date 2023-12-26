@@ -64,6 +64,8 @@ export default function MultiSelect({
 
 
   const initialIds = defaultValues && defaultValues.map(item => item.id)
+  const placeholder = tagType === "mind" ? "Select your tendency(mind)" : "Select your situation"
+  const addLabel = tagType === "mind" ? "+ Add tendency(mind)" : "+ Add situation"
   return (
     <>
     { options.length > 0 && defaultValues ?
@@ -72,26 +74,36 @@ export default function MultiSelect({
       <Select 
         defaultValue={initialIds}
         multiple
-        size="sm"
+        placeholder={placeholder}
+        variant="outlined"
         onChange={handleChange}
-        renderValue={(selected) => 
-         { 
-          return(
-          <Box sx={{ display: 'flex', gap: '0.25rem' }}>
-          {selected
-          .filter(option => option.label !== "+ Create an Option")
-          .map((selectedOption, index) => {
-              return(
-                  <WrappedChip key={index} variant="soft" color="primary">
+        renderValue={(selected) => {
+          if (selected.length > 1) {
+            return (
+              <Box sx={{ display: 'flex', gap: '0.25rem' }}>
+                <WrappedChip variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
+                  {selected[0].label}
+                </WrappedChip>
+                <WrappedChip color={tagType === "situation" ? "primary" : "neutral"}>
+                  + {selected.length - 1}
+                 </WrappedChip>
+              </Box>
+            );
+          } else {
+            return (
+              <Box sx={{ display: 'flex', gap: '0.25rem' }}>
+                {selected.map((selectedOption, index) => (
+                  <WrappedChip key={index} variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
                     {selectedOption.label}
                   </WrappedChip>
-                );
-              })};
-        </Box>
-        )
-         }}
+                ))}
+              </Box>
+            );
+          }
+        }}
+        
         sx={{
-          minWidth: '15rem',
+          minWidth: '12rem',
         }}
         slotProps={{
           listbox: {
@@ -101,6 +113,11 @@ export default function MultiSelect({
           },
         }}
       >
+        <Option       
+          value={"noOption"}
+          >
+            {addLabel}
+          </Option>
         {options && options.map((option, index) => {
         return(
           <Option 
@@ -112,11 +129,6 @@ export default function MultiSelect({
         )
       }
         )}
-        <Option       
-          value={"noOption"}
-          >
-              + Create an Option
-          </Option>
       </Select>
       <OptionModal
         open={openModal}
