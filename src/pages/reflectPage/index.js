@@ -2,16 +2,10 @@ import React, {useEffect, useState} from "react";
 import { fetchData } from "../../api/apiService";
 import { useAuthToken } from "../../components/useAuthToken";
 import TableEntryList from "./entryTable";
-import { Button, Sheet } from "@mui/joy";
+import { Button, Sheet, Typography } from "@mui/joy";
 import Add from '@mui/icons-material/Add';
 import {Link } from "react-router-dom";
-
-// onboarding page -> if user choose systemTags, then create the copy on userTags with tagType = 'mind'
-// replace entryProvider with useGroupTags();
-// create custom hooks for states s
-    // const { entries, loading: entriesLoading } = useEntries(); 
-    // add pagination ; remove diary page. use this as a default. 
-
+import { MoreHoriz } from "@mui/icons-material";
 
 export default function ReflectPage(){
     const [entries, setEntries] = useState([]); // useEntries
@@ -40,8 +34,15 @@ export default function ReflectPage(){
         <div>
             <h1 className="text-center">Reflect Page</h1>
             <Sheet>
+            <Typography sx={{fontWeight: 700}}>How To</Typography>
+            <ol>
+                <li>Click on <MoreHoriz/> to revisit observation to detect a pattern such as natural tendency, bias, or mental space.</li>
+                <li>Think about how you'd approach it differently next time when similar situation arises. </li>
+                <li>Come up with a solution in 1 sentence. think clearly</li>
+                <li>tag your mental tendency, approach and situation. </li>
+            </ol>
             <Button 
-            sx={{ float: 'right', margin: '10px', padding: '10px' }}
+            sx={{ float: 'right'}}
             component={Link} to="/create" startDecorator={<Add />}>Write</Button>
             <TableEntryList 
                 data={entries} 

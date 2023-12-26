@@ -17,7 +17,7 @@ export default function EditDeleteDropDown({onDelete, contentId, tagType, onEdit
             </MenuButton>
             <Menu>
                 <MenuItem onClick={() => onEdit(content)}>
-                    Edit
+                    Revisit
                 </MenuItem>
                 <MenuItem onClick={() => onDelete(contentId, tagType)}>Delete</MenuItem>
             </Menu>
