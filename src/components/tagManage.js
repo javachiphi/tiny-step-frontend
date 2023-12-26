@@ -1,10 +1,12 @@
-import React, {useState } from "react"; 
+import React, { useState } from "react"; 
 import { IconButton, Typography, Card } from '@mui/joy';
 import TagForm from "./tagForm";
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 
-export default function TagDetails({tag,tagType}){
+
+export default function TagDetails({tag,tagType, setDataChanged}){
     const [editing, setEditing] = useState(false); 
+
     return(
         <Card variant="plain">
             {editing ? (
@@ -13,6 +15,7 @@ export default function TagDetails({tag,tagType}){
                     selectedTag={tag} 
                     tagType={tagType}
                     onClose={() => setEditing(false)}
+                    setDataChanged={setDataChanged}
                     />
                 ) : (
                 <>
@@ -39,9 +42,6 @@ export default function TagDetails({tag,tagType}){
 
             }
         </Card>
-
-        
-
     )
 }
 

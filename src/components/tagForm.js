@@ -8,7 +8,8 @@ export default function TagForm({
     mode, 
     selectedTag, 
     onClose, 
-    tagType
+    tagType,
+    setDataChanged
 }){
     const [note, setNote ] = useState(mode === 'Edit' ? selectedTag.note : '');
     const [description, setDescription] = useState(mode === 'Edit' ? selectedTag.description : '');
@@ -35,15 +36,13 @@ export default function TagForm({
         if(mode ==="Edit") {
             updateData(`tags/${selectedTag.id}`, data, jwtToken)
             .then((response) => {
-                console.log(response) // need to refresh data? 
-                onClose(); // Edit mode close
+                setDataChanged(true);
             })
         } else { // mode === "create" 
             console.log('hey creating');
             createData('tags', data, jwtToken)
             .then((response) => {
-                console.log('hey need to refresh combinedTags')
-                onClose(); // close the drawer
+                setDataChanged(true);
             })
             .catch((error) => console.log(error));
         }

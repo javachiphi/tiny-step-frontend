@@ -8,6 +8,7 @@ export default function GroupedEntries({tagType}){
     const [data, setData] = useState(null);
     const { groupTags, refreshGroupTags, loading: groupTagsloading } = useGroupTags();
     const [dataChanged, setDataChanged] = useState(false);
+    const [selectedTabIndex, setSelectedTabIndex] = useState(0);
     
 
     useEffect(() => {
@@ -22,12 +23,18 @@ export default function GroupedEntries({tagType}){
         }
     }, [groupTags, dataChanged]);
 
+    const handleTabChange = (event, newValue) => {
+        setSelectedTabIndex(newValue);
+    };
+
     if (groupTagsloading) {
         return <div>Loading...</div>;
     }
     return(
         <div>
             <Tabs 
+                value={selectedTabIndex}
+                onChange={handleTabChange}
                 aria-label="Vertical tabs"
                 orientation="vertical"
                 sx={{ minWidth: 300, height: 160 }}
@@ -41,14 +48,15 @@ export default function GroupedEntries({tagType}){
                     data.map((tag, index) => {
                         const tagDataType = tag.type;
                         if (tagDataType === tagType) {
-                        const tagGrouping = {label: tag.label, id: tag.id};
                         return (
                             <TabPanel key={index} value={index}>
-                                <TagDetails tag={tag} tagType={tagType}/>
-
+                                <TagDetails 
+                                    tag={tag} 
+                                    tagType={tagType}
+                                    setDataChanged={setDataChanged}
+                                />
                                 <EntryList
                                     entries={tag.entries}
-                                    tagValue={tagGrouping} // initial tag dropdown value for entries 
                                     setDataChanged={setDataChanged}
                                 />
                             </TabPanel>
