@@ -10,12 +10,12 @@ export default function SaveCancelDropDown({onSave, onCancel}) {
             <IconButton 
             type="submit" 
             onClick={onSave}
-            // onClick={}
             >
                 <CheckIcon />
-
             </IconButton>
-            <IconButton onClick={onCancel}><ClearIcon /></IconButton>
+            <IconButton onClick={onCancel}>
+                <ClearIcon />
+            </IconButton>
         </div>
     )
 }   

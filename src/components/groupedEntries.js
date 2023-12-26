@@ -1,9 +1,8 @@
 import React, {useEffect, useState } from "react"; 
 import EntryList from "./entryList";
-import { Typography } from '@mui/joy';
 import { Tabs, TabPanel, TabList, Tab } from '@mui/joy';
 import useGroupTags from "../api/useGroupTags";
-
+import TagDetails from "./tagManage";
 
 export default function GroupedEntries({tagType}){
     const [data, setData] = useState(null);
@@ -28,9 +27,6 @@ export default function GroupedEntries({tagType}){
     }
     return(
         <div>
-            {tagType && 
-                <Typography level="h2" color="neutral">{tagType}</Typography>
-            }
             <Tabs 
                 aria-label="Vertical tabs"
                 orientation="vertical"
@@ -45,13 +41,11 @@ export default function GroupedEntries({tagType}){
                     data.map((tag, index) => {
                         const tagDataType = tag.type;
                         if (tagDataType === tagType) {
-                        const tagGrouping = {label: tag.label, id: tag.id}
-
+                        const tagGrouping = {label: tag.label, id: tag.id};
                         return (
                             <TabPanel key={index} value={index}>
-                                <Typography level="h3" fontWeight="lg">
-                                    {tag.label}
-                                </Typography>
+                                <TagDetails tag={tag} tagType={tagType}/>
+
                                 <EntryList
                                     entries={tag.entries}
                                     tagValue={tagGrouping} // initial tag dropdown value for entries 
@@ -66,7 +60,6 @@ export default function GroupedEntries({tagType}){
         </div>
     )
 }
-
 
 
 
