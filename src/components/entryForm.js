@@ -70,8 +70,8 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     
     const formId = mode === 'edit' ? entry && entry.id : 'create';
     return(
-        <div style={{display: 'flex', justifyContent:'center', alignItems: 'center'}}>
-            <div style={{width: '800px'}}>
+        <div>
+            <div style={{width: '800px', padding: "20px"}}>
                 <form id={formId} onSubmit={handleSubmit}>
                 <div style={{
                         display: "flex", 

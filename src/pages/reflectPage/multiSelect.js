@@ -59,7 +59,7 @@ export default function MultiSelect({
   };
 
   if(combinedTagsLoading){
-    return <div>Loading combinedTags...</div>
+    return <div>Loading...</div>
   }
 
 

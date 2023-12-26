@@ -11,7 +11,9 @@ function App() {
       <header>
         <Navigation />
       </header>
+      <div className="App-center">
       <Outlet />
+      </div>
     </div>
   );
 }
