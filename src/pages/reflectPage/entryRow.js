@@ -3,7 +3,6 @@ import { Textarea } from "@mui/joy";
 import SaveCancelDropDown from "../../components/saveCancelDropdown";
 import EditDeleteDropDown from "../../components/EditDeleteDropdown";
 import useTagHandler from "../../api/useTagHandler";
-import { getTagIdsByType } from "../../utils/tagUtils";
 import { getDate } from "../../utils/helpers";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
@@ -53,7 +52,7 @@ export default function EntryRow({
             <td>
                 {editing ? 
                     (<Textarea
-                        minRows={3}
+                        minRows={4}
                         value={observation}
                         onChange={(e) => handleChange(e, 'observation')}
                         placeholder={"Write your observation"}
@@ -63,7 +62,7 @@ export default function EntryRow({
             <td>
                 {editing ? 
                     (<Textarea
-                        minRows={3}
+                        minRows={4}
                         value={solution}
                         onChange={(e) => handleChange(e, 'solution')}
                         placeholder={"Write your observation"}
@@ -87,42 +86,33 @@ export default function EntryRow({
             </td> 
             <td> 
             {editing ? (
+                <>
                     <MultiSelect 
                         tagType="situation"
                         onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
                         onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
                         defaultValues={row.tags}
                     />
-                ) : (
-                    <>
-                    {row.tags
-                        .filter((tag) => (
-                            tag.type === 'situation'
-                            ))
-                        .map((tag) => (
-                        <WrappedChip key={tag.id}>{tag.note}</WrappedChip>
-                    ))}
-                    </>
-                )} 
-            </td> 
-            <td>
-            {editing ? (
                     <MultiSelect 
                         tagType="mind"
                         onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
                         onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
                         defaultValues={row.tags}
                     />
+                </>
                 ) : (
-                    <>
-                        {row.tags
-                            .filter((tag) => (
-                                tag.type === 'mind'
-                                ))
-                            .map((tag) => (
-                            <WrappedChip key={tag.id}>{tag.note}</WrappedChip>
-                        ))}
-                    </>
+                <>
+                    {row.tags
+                        .filter((tag) => (tag.type === 'situation'))
+                        .map((tag) => (
+                        <WrappedChip color="primary" key={tag.id}>{tag.note}</WrappedChip>))
+                    }
+                    {row.tags
+                        .filter((tag) => (tag.type === 'mind'))
+                        .map((tag) => (
+                        <WrappedChip key={tag.id}>{tag.note}</WrappedChip>))
+                    }
+                </>
                 )} 
             </td> 
      </tr>

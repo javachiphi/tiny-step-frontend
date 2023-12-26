@@ -1,12 +1,13 @@
 
 import React , {useState } from "react";
 import { useAuthToken } from "../../components/useAuthToken";
-import { Table } from "@mui/joy";
+import { Table, Tooltip } from "@mui/joy";
 import axios from "axios";
 import { BACKEND_URL } from "../../constants";
 import EntryRow from "./entryRow";
 import { createData } from "../../api/apiService";
 import useTagHandler from "../../api/useTagHandler";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export default function TableEntryList({data, setDataChanged}) {
     const jwtToken = useAuthToken();
@@ -35,12 +36,23 @@ export default function TableEntryList({data, setDataChanged}) {
     <Table sx={{ maxWidth: '1200px' }}>
       <thead>
         <tr>
-            <th>Date</th>
-            <th style={{ width: '30%' }}>Observation</th>   
-            <th style={{ width: '30%' }}>Solution</th>   
-            <th>Action</th>
-            <th>Situation</th>
-            <th>Mind</th>
+            <th style={{ width: '5%' }}>Date</th>
+            <th style={{ width: '50%' }}>Observation</th>   
+            <th style={{ width: '20%'}}>
+              <div style={{ display: 'flex'}}>
+                Solution
+                <Tooltip 
+                  title="Write in 1 sentence for a cleaner view on checklist." 
+                  variant="soft"
+                  placement="top"
+                >
+                  <InfoOutlinedIcon fontSize="small"/>
+                </Tooltip>
+              </div>
+            </th>   
+            <th style={{ width: '5%' }}>Action</th>
+            <th>Awareness</th>
+            {/* <th>Mind</th> */}
         </tr>
       </thead>
       <tbody>
