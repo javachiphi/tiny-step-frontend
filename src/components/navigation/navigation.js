@@ -1,9 +1,12 @@
 import React, { useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-import { AppBar, Button, Toolbar, Box, Typography, Menu, MenuItem, IconButton } from "@mui/material";
-import { pages } from "../../constants";
+import { AppBar, Button, Toolbar, Box, Typography  } from "@mui/material";
 import MobileMenuDropDown from "./mobileMenuDropDown";
+import { pages } from "../../constants";
+import { navBtn, navTitle } from "./navigationStyles";
+
+
 
 export default function Navigation() {
     const {  isAuthenticated } = useAuth0();
@@ -18,9 +21,13 @@ export default function Navigation() {
       };
 
     return(
-        <AppBar position="static">
+        <AppBar position="static" color="primary">
             <Toolbar>
-            <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+            <Typography 
+              variant="h6" 
+              component="div" 
+              sx={navTitle}
+            >
             ✅ CHECKLIST
             </Typography>
         {
@@ -57,14 +64,17 @@ export default function Navigation() {
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
-  return <Button  sx={{ my: 2, color: 'white', display: 'block' }} onClick={() => loginWithRedirect()}>Log In</Button>;
+  return <Button  sx={navBtn} onClick={() => loginWithRedirect()}>Log In</Button>;
 };
 
 const LogoutButton = () => {
     const { logout } = useAuth0();
 
     return(
-        <Button sx={{ my: 2, color: 'white', display: 'block' }} onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+        <Button 
+         sx={navBtn} 
+        onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+        >
             Log Out 
         </Button>
     )
@@ -96,7 +106,7 @@ function DesktopMenu({items, handleCloseNavMenu}){
         //   onClick={handleCloseNavMenu}
           component={Link}
           to={page.href}
-          sx={{ my: 2, color: 'white', display: 'block' }} 
+          sx={navBtn} 
         >
           {page.title}
         </Button>
