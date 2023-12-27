@@ -37,6 +37,16 @@ export const joyTheme = extendTheme({
         }),
       },
     },
+    JoySelect: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          ...(ownerState.color === 'primary' && {
+            backgroundColor: theme.vars.palette.colors.background.main,
+            color: theme.vars.palette.colors.text,
+          }),
+        }),
+      },
+    },
     JoyTabs: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'; 
-import { Box, Typography, Textarea, Button } from '@mui/joy';
+import { Box, Typography, Textarea, Button, Card } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
 import { useNavigate } from 'react-router-dom';
 import useEntry from '../api/useEntry';
@@ -71,7 +71,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const formId = mode === 'edit' ? entry && entry.id : 'create';
     return(
         <Box>
-            <div style={{padding: "50px"}}>
+            <Card style={{padding: "50px", marginTop: "20px", backgroundColor: "#fdf5eb"}}>
                 <form id={formId} onSubmit={handleSubmit}>
                 <div style={{
                         display: "flex", 
@@ -80,7 +80,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                 >
                     <Typography 
                         level="h1" 
-                        sx={{margin: "0 auto",textAlign: "center"}}
+                        sx={{margin: "0 auto",textAlign: "center",  backgroundColor: "#fdf5eb"}}
                     >
                         {getToday()}
                     </Typography>
@@ -91,6 +91,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                         disabled={solution === '' && observation === ''}
                         sx={{
                             padding: '10px'
+
                         }}
                     >
                         Save
@@ -146,6 +147,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                         value={observation}
                         onChange={(e) => handleChange(e, 'observation')}
                         placeholder={"Write your observation"}
+                        sx={{backgroundColor: "#fdf5eb"}}
                     />
                     Solution
                     <Textarea
@@ -153,11 +155,12 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                         value={solution}
                         onChange={(e) => handleChange(e, 'solution')}
                         placeholder={"What will you do about it?"}
+                        sx={{backgroundColor: "#fdf5eb"}}
                     />
                 </Box>
                 
                 </form>
-            </div>
+            </Card>
         </Box>
     )
 }

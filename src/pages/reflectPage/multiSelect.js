@@ -72,6 +72,7 @@ export default function MultiSelect({
     (
       <>
       <Select 
+        color="primary"
         defaultValue={initialIds}
         multiple
         placeholder={placeholder}
