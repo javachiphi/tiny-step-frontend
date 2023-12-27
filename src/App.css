@@ -2,6 +2,11 @@
   text-align: center;
 } */
 
+body {
+  background-color: #fdf5eb;
+  color: #4b5161;
+}
+
 .App-center {
   display: flex;
   justify-content: center;

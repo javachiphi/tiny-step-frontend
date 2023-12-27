@@ -4,6 +4,13 @@ import { Tabs, TabPanel, TabList, Tab } from '@mui/joy';
 import useGroupTags from "../../api/useGroupTags";
 import TagDetails from "../tagManage";
 
+const styledTab = {
+    '&.Mui-selected, &&:hover': {
+      backgroundColor: "#F4E6D4", 
+    }
+  };
+
+
 export default function GroupedEntries({tagType}){
     const [data, setData] = useState(null);
     const { groupTags, refreshGroupTags, loading: groupTagsloading } = useGroupTags();
@@ -33,15 +40,16 @@ export default function GroupedEntries({tagType}){
     return(
         <div>
             <Tabs 
+                color="primary"
                 value={selectedTabIndex}
                 onChange={handleTabChange}
                 aria-label="Vertical tabs"
                 orientation="vertical"
-                sx={{ minWidth: 300}}
+                // sx={styledTab}
             >
                 <TabList>
                     {data && data.map((item, index) => {
-                        return (<Tab key={index}>{item.note} {item.count}</Tab>)
+                        return (<Tab sx={styledTab} key={index}>{item.note} {item.count}</Tab>)
                     })}
                 </TabList>
                 {data &&

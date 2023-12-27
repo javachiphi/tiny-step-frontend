@@ -31,12 +31,13 @@ export default function ReflectPage(){
     }
     
     return(
-        <div>
-            <h1 className="text-center">Reflect Page</h1>
-            <Sheet>
+        <Sheet color='primary' sx={{mt: "20px"}}>
+            <Typography level="h1" sx={{color: "#4b5161", textAlign: "center" , fontWeight: 700}}>Reflect</Typography>
+            {/* <h1 className="text-center">Reflect Page</h1> */}
                 <HowToDescription />
                 <div style={{display: "flex", flexDirection: "column", gap: "20px"}}>
                 <Button 
+                    color='primary'
                     sx={{alignSelf: "flex-end"}}
                     component={Link} 
                     to="/create" 
@@ -53,8 +54,8 @@ export default function ReflectPage(){
                     </div>
                 </Box>
                 </div>
+
             </Sheet>
-        </div>
     )
 }
 

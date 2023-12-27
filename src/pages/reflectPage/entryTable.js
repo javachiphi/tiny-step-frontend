@@ -5,7 +5,6 @@ import { Table, Tooltip } from "@mui/joy";
 import axios from "axios";
 import { BACKEND_URL } from "../../constants";
 import EntryRow from "./entryRow";
-import { createData } from "../../api/apiService";
 import useTagHandler from "../../api/useTagHandler";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { styledTable } from "./entryTableStyles";

@@ -8,7 +8,7 @@ export default function TagDetails({tag,tagType, setDataChanged}){
     const [editing, setEditing] = useState(false); 
 
     return(
-        <Card variant="plain">
+        <Card color="background">
             {editing ? (
                 <TagForm 
                     mode="Edit" 

@@ -56,7 +56,7 @@ export default function EntryList({
         })
     }
     return(
-        <Card>
+        <Card variant="outlined" sx={{backgroundColor: "#fdf5eb"}}>
             {entries && (
                 <div style={{display: "flex", flexDirection: "column"}}>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
