@@ -19,10 +19,9 @@ export default function EntryRow({
     const [observation, setObservation] = useState(row.observation || '' );
     const [solution, setSolution] = useState(row.solution || '');
     const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleInitialTagIds } = useTagHandler();
-    
     const rowId = row && row.id;
     const editing = selectedEntry && selectedEntry.id === rowId;
-    
+
     useEffect(() => {
         if(selectedEntry && editing){
             handleInitialTagIds(selectedEntry);
@@ -68,7 +67,7 @@ export default function EntryRow({
                     />)
                 : row.solution}
             </td>
-            <td>
+            <td className="hide-on-mobile">
                 {editing ? 
                     (<SaveCancelDropDown 
                         onSave={(e)=> {
@@ -84,36 +83,36 @@ export default function EntryRow({
                 )}
             </td> 
             <td> 
-            {editing ? (
-                <>
-                    <MultiSelect 
-                        tagType="situation"
-                        onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
-                        onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
-                        defaultValues={row.tags}
-                    />
-                    <MultiSelect 
-                        tagType="mind"
-                        onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
-                        onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
-                        defaultValues={row.tags}
-                    />
-                </>
-                ) : (
-                <>
-                    {row.tags
-                        .filter((tag) => (tag.type === 'situation'))
-                        .map((tag) => (
-                        <WrappedChip color="primary" key={tag.id}>{tag.note}</WrappedChip>))
-                    }
-                    {row.tags
-                        .filter((tag) => (tag.type === 'mind'))
-                        .map((tag) => (
-                        <WrappedChip key={tag.id}>{tag.note}</WrappedChip>))
-                    }
-                </>
-                )} 
-            </td> 
+                {editing ? (
+                    <>
+                        <MultiSelect 
+                            tagType="situation"
+                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
+                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
+                            defaultValues={row.tags}
+                        />
+                        <MultiSelect 
+                            tagType="mind"
+                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
+                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
+                            defaultValues={row.tags}
+                        />
+                    </>
+                    ) : (
+                    <>
+                        {row.tags
+                            .filter((tag) => (tag.type === 'situation'))
+                            .map((tag) => (
+                            <WrappedChip color="primary" key={tag.id}>{tag.note}</WrappedChip>))
+                        }
+                        {row.tags
+                            .filter((tag) => (tag.type === 'mind'))
+                            .map((tag) => (
+                            <WrappedChip key={tag.id}>{tag.note}</WrappedChip>))
+                        }
+                    </>
+                    )} 
+            </td>  
      </tr>
     )
 }

@@ -9,6 +9,7 @@ import { createData } from "../../api/apiService";
 import useTagHandler from "../../api/useTagHandler";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
+
 export default function TableEntryList({data, setDataChanged}) {
     const jwtToken = useAuthToken();
     const [selectedEntry, setSelectedEntry] = useState(null);
@@ -17,6 +18,8 @@ export default function TableEntryList({data, setDataChanged}) {
         console.log('entry', entry)
         setSelectedEntry(entry);
     }
+    
+
 
     const handleDelete = (entryId) => {
         axios({
@@ -37,8 +40,8 @@ export default function TableEntryList({data, setDataChanged}) {
       <thead>
         <tr>
             <th style={{ width: '5%' }}>Date</th>
-            <th style={{ width: '50%' }}>Observation</th>   
-            <th style={{ width: '20%'}}>
+            <th className="mobile-width-30">Observation</th>   
+            <th style={{ width: '20%' }}>
               <div style={{ display: 'flex'}}>
                 Solution
                 <Tooltip 
@@ -50,9 +53,8 @@ export default function TableEntryList({data, setDataChanged}) {
                 </Tooltip>
               </div>
             </th>   
-            <th style={{ width: '5%' }}>Action</th>
+            <th className="hide-on-mobile" style={{ width: '5%' }}>Action</th>
             <th>Awareness</th>
-            {/* <th>Mind</th> */}
         </tr>
       </thead>
       <tbody>
