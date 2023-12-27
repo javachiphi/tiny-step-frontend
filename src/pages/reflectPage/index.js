@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { fetchData } from "../../api/apiService";
 import { useAuthToken } from "../../components/useAuthToken";
 import TableEntryList from "./entryTable";
-import { Button, Sheet, Typography, Card } from "@mui/joy";
+import { Button, Sheet, Typography, Box } from "@mui/joy";
 import Add from '@mui/icons-material/Add';
 import {Link } from "react-router-dom";
 import { MoreHoriz } from "@mui/icons-material";
@@ -44,14 +44,14 @@ export default function ReflectPage(){
                 >
                     Write
                 </Button>
-                <Card variant="outlined">
+                <Box variant="outlined">
                     <div className="table-container">
                     <TableEntryList 
                         data={entries} 
                         setDataChanged={setDataChanged}
                     />
                     </div>
-                </Card>
+                </Box>
                 </div>
             </Sheet>
         </div>

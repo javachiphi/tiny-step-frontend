@@ -61,7 +61,7 @@ export default function EntryList({
                 <div style={{display: "flex", flexDirection: "column"}}>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
                     <Typography sx={{ fontWeight: 700 }}>Solutions</Typography>
-                    <div>
+                    <div className="hide-on-mobile">
                         <Button color="neutral" variant="outlined" onClick={() => toggleAll(true)}> Open All</Button>
                         <Button color="neutral" variant="outlined" onClick={() => toggleAll(false)}>Close All</Button>
                     </div>

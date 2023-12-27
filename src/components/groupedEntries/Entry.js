@@ -28,7 +28,9 @@ export default function Entry({
       >
         <AccordionSummary>
             <div style={{display: 'flex', gap: '20px', justifyContent: 'space-between'}}>
-                <Typography color='neutral' level='body-sm'>{getDate(entry.created_at)}</Typography>
+                <div className="hide-on-mobile">
+                    <Typography color='neutral' level='body-sm'>{getDate(entry.created_at)}</Typography>
+                </div>
                 <Typography fontSize="md" sx={{ml: '10px'}}>{entry.solution}</Typography>
             </div>
         </AccordionSummary>

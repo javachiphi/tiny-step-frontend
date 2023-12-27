@@ -37,7 +37,7 @@ export default function GroupedEntries({tagType}){
                 onChange={handleTabChange}
                 aria-label="Vertical tabs"
                 orientation="vertical"
-                sx={{ minWidth: 300, height: 160 }}
+                sx={{ minWidth: 300}}
             >
                 <TabList>
                     {data && data.map((item, index) => {
