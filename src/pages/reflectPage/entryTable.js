@@ -8,6 +8,7 @@ import EntryRow from "./entryRow";
 import { createData } from "../../api/apiService";
 import useTagHandler from "../../api/useTagHandler";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { styledTable } from "./entryTableStyles";
 
 
 export default function TableEntryList({data, setDataChanged}) {
@@ -36,7 +37,10 @@ export default function TableEntryList({data, setDataChanged}) {
   
   return (
     <form onSubmit={(e) => {console.log('table form'); e.preventDefault()}}>
-    <Table sx={{ maxWidth: '1200px' }}>
+    <Table 
+      variant="soft"
+      sx={styledTable}
+    >
       <thead>
         <tr>
             <th style={{ width: '5%' }}>Date</th>
