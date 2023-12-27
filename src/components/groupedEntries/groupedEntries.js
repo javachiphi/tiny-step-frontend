@@ -57,6 +57,7 @@ export default function GroupedEntries({tagType}){
                                 />
                                 <EntryList
                                     entries={tag.entries}
+                                    tagType={tagType}
                                     setDataChanged={setDataChanged}
                                 />
                             </TabPanel>

@@ -7,6 +7,7 @@ import axios from 'axios';
 
 export default function EntryList({
     entries, 
+    tagType,
     setDataChanged
 }){
     const initialStates = entries.reduce((states, entry) => {
@@ -78,6 +79,7 @@ export default function EntryList({
                                     selectedEntry={selectedEntry}
                                     setDataChanged={setDataChanged}
                                     open={openStates[entry.id]} 
+                                    tagType={tagType}
                                     setOpen={(value) => setOpenStateForEntry(entry.id, value)} 
                                 />
                         )}
