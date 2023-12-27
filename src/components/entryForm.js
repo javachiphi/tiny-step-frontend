@@ -70,8 +70,8 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     
     const formId = mode === 'edit' ? entry && entry.id : 'create';
     return(
-        <div>
-            <div style={{width: '800px', padding: "20px"}}>
+        <Box>
+            <div style={{padding: "50px"}}>
                 <form id={formId} onSubmit={handleSubmit}>
                 <div style={{
                         display: "flex", 
@@ -127,7 +127,6 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                     <Typography>
                         Mind
                     </Typography>
-       
                         <MultiSelect 
                             tagType="mind"
                             onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
@@ -143,7 +142,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                 <Box>
                     Observation
                     <Textarea
-                        minRows={3}
+                        minRows={5}
                         value={observation}
                         onChange={(e) => handleChange(e, 'observation')}
                         placeholder={"Write your observation"}
@@ -159,7 +158,7 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                 
                 </form>
             </div>
-        </div>
+        </Box>
     )
 }
 
