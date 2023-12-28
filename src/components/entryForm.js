@@ -86,9 +86,10 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
         })
         } else {
             handleSave("create", null, observation, solution, tagsData)
-            .then(() => {
-                navigate('/reflect');
-               console.log('then is working?')
+            .then((response) => {
+               if(response){
+                     navigate('/reflect');
+               }
             })
 
         }

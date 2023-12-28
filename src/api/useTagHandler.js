@@ -91,6 +91,10 @@ const useTagHandler = (jwtToken, setDataChanged) => {
             if(mode === 'edit'){
                 setDataChanged(true);
             }
+
+            if(mode === 'create'){
+                return response;
+            }
         } catch (error) {
             // Handle any errors that occurred during tag creation or entry update
             console.error('Error in creating tags or updating entry:', error);
