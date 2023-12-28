@@ -12,41 +12,23 @@ export const WrappedChip = styled(Chip)(({ theme }) => ({
 }));
 
 export default function MultiSelect({
+  options,
   tagType, 
-  onTagIdsChange, 
-  onTagsToCreateChange,
-  defaultValues
+  onSelectionChange,
+  defaultValues,
+  setOptions,
 }) {
-  const { combinedTags, loading: combinedTagsLoading } = useCombinedTags();
   const [openModal, setOpenModal] = useState(false);
   const [newOption, setNewOption] = useState('');
-  const [options, setOptions] = useState([]);
- 
-  useEffect(() => {
-    if(combinedTags){
-            const filtered = combinedTags
-                .filter((item) => item.type === tagType)
-                .map(({ id, note }) => ({ id: id, label: note }));
-            setOptions(filtered);
-        }
-    
-  },[combinedTags, tagType, defaultValues])
+  const addLabel = tagType === "mind" ? "+ Add tendency(mind)" : "+ Add situation"
 
   const handleChange = (event, newValue) => {
-    if (event && event.target.innerText === '+ Create an Option') {
+    if (event && event.target.innerText === addLabel) {
       setOpenModal(true);
     }
 
-    const extractTagIds = 
-      newValue.filter(item => Number.isInteger(item))
-
-
-    const extractCreate = newValue
-      .filter(item => !Number.isInteger(item) && item !== 'noOption')
-      .map(item => ({ note: item, type: tagType }))
-      
-    onTagsToCreateChange(extractCreate);
-    onTagIdsChange(extractTagIds);
+    onSelectionChange(tagType, newValue)
+    
   };
 
 
@@ -58,17 +40,14 @@ export default function MultiSelect({
     setOpenModal(false);
   };
 
-  if(combinedTagsLoading){
-    return <div>Loading...</div>
-  }
 
 
   const initialIds = defaultValues && defaultValues.map(item => item.id)
   const placeholder = tagType === "mind" ? "Select your tendency(mind)" : "Select your situation"
-  const addLabel = tagType === "mind" ? "+ Add tendency(mind)" : "+ Add situation"
+
   return (
     <>
-    { options.length > 0 && defaultValues ?
+    {options &&
     (
       <>
       <Select 
@@ -114,11 +93,6 @@ export default function MultiSelect({
           },
         }}
       >
-        <Option       
-          value={"noOption"}
-          >
-            {addLabel}
-          </Option>
         {options && options.map((option, index) => {
         return(
           <Option 
@@ -130,6 +104,11 @@ export default function MultiSelect({
         )
       }
         )}
+        <Option       
+          value={"noOption"}
+          >
+            {addLabel}
+          </Option>
       </Select>
       <OptionModal
         open={openModal}
@@ -139,8 +118,8 @@ export default function MultiSelect({
         handleAddOption={handleAddOption} 
       />
       </>
-    ) : <div>loading...</div>
-  }
+    ) 
+    }
     </>
   );
 }

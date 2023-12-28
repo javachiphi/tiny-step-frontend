@@ -5,25 +5,38 @@ import { useNavigate } from 'react-router-dom';
 import useEntry from '../api/useEntry';
 import useTagHandler from '../api/useTagHandler';
 import MultiSelect from '../pages/reflectPage/multiSelect';
-import { getTagIdsByType } from '../utils/tagUtils'
 import { getToday } from '../utils/helpers';
+import  useCombinedTags from '../api/useCombinedTags';
 
 export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
+    const [mindOptions, setMindOptions] = useState([]);
+    const [situOptions, setSituOptions] = useState([]);
+
     const jwtToken = useAuthToken();
     const navigate = useNavigate();
      
     const {entry: entryTags, loading: entryTagsLoading} = useEntry(entry && entry.id);
+    const { combinedTags, loading: combinedTagsLoading } = useCombinedTags();
 
-    const { 
-        tagsData,
-        handleTagIdsToAdd, 
-        handleTagsToCreate, 
-        handleSave, 
-        handleInitialTagIds 
-    } = useTagHandler(jwtToken, setDataChanged);
+    const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleSave, handleInitialTagIds } = useTagHandler(jwtToken, setDataChanged);
 
+
+    useEffect(() => { // prepare for multiselect dropdown 
+        if(combinedTags){
+            console.log('preparing options')
+            const filterMind = combinedTags
+                .filter((item) => item.type === "mind")
+                .map(item => ({id: item.id, label: item.note}))
+            setMindOptions(filterMind);
+
+            const filterSitu = combinedTags
+                .filter((item) => item.type === "situation")
+                .map(item => ({id: item.id, label: item.note}))
+            setSituOptions(filterSitu);
+        }
+    },[combinedTags])
 
     useEffect(() => {
         if(entry && entry.id){
@@ -49,6 +62,19 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
             setSolution(value)
         }
     }
+
+    const handleMultiSelectChange = (tagType, newValue) => {
+        
+        const extractTagIds = newValue.filter(item => Number.isInteger(item))
+        
+        const extractCreate = newValue
+            .filter(item => !Number.isInteger(item) && item !== 'noOption')
+            .map(item => ({ note: item, type: tagType }))      
+        handleTagsToCreate(tagType, extractCreate);
+        handleTagIdsToAdd(tagType, extractTagIds);
+    };
+    
+
     const handleSubmit =(e) => {
         e.preventDefault();
 
@@ -69,6 +95,11 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     }
     
     const formId = mode === 'edit' ? entry && entry.id : 'create';
+    const editExistingTags = mode === 'edit' ? entryTags?.tags : [];
+
+    if( combinedTagsLoading || (entryTagsLoading && mode === "edit")){
+        return <div>loading</div>
+    }
     return(
         <Box>
             <Card style={{padding: "50px", marginTop: "20px", backgroundColor: "#fdf5eb"}}>
@@ -97,48 +128,27 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                         Save
                     </Button>
                 </div>
+                <Typography>
+                    Situation
+                </Typography>
+                <MultiSelect
+                    options={situOptions}
+                    tagType="situation"
+                    defaultValues={editExistingTags}
+                    onSelectionChange={handleMultiSelectChange}
+                    setOptions={setSituOptions}   
+                />
                 <div>
-                {
-                    entryTagsLoading && mode !== "create" ? (
-                        <div>loading</div>
-                    ): (
-                    <>
-                    <Typography>
-                        Situation
-                    </Typography>
-       
-                        <MultiSelect 
-                            tagType="situation"
-                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
-                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
-                            defaultValues={(entryTags && entryTags.tags) || []}
-                        />
-
-        
-                    </>
-                    )
-                }
-                </div>
-                <div>
-                {
-                    entryTagsLoading && mode !== "create" ? (
-                        <div>loading</div>
-                    ): (
-                    <>
                     <Typography>
                         Mind
                     </Typography>
-                        <MultiSelect 
-                            tagType="mind"
-                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
-                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
-                            defaultValues={(entryTags && entryTags.tags) || []}
-                        />
-
-        
-                    </>
-                    )
-                }
+                    <MultiSelect 
+                        options={mindOptions}
+                        tagType="mind"
+                        defaultValues={editExistingTags}
+                        onSelectionChange={handleMultiSelectChange}
+                        setOptions={setMindOptions}                       
+                    />
                 </div>
                 <Box>
                     Observation

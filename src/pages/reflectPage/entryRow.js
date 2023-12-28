@@ -4,6 +4,7 @@ import SaveCancelDropDown from "../../components/saveCancelDropdown";
 import EditDeleteDropDown from "../../components/EditDeleteDropdown";
 import useTagHandler from "../../api/useTagHandler";
 import { getDate } from "../../utils/helpers";
+import useCombinedTags from "../../api/useCombinedTags";
 
 import MultiSelect, {WrappedChip} from "./multiSelect";
 
@@ -16,18 +17,41 @@ export default function EntryRow({
     setSelectedEntry
 
 }) {
+    const { combinedTags, loading: combinedTagsLoading } = useCombinedTags();
     const [observation, setObservation] = useState(row.observation || '' );
     const [solution, setSolution] = useState(row.solution || '');
+    const [mindOptions, setMindOptions] = useState([]);
+    const [situOptions, setSituOptions] = useState([]);
+
+    
     const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleInitialTagIds } = useTagHandler();
+
     const rowId = row && row.id;
     const editing = selectedEntry && selectedEntry.id === rowId;
 
     useEffect(() => {
         if(selectedEntry && editing){
+            // console.log('selectedEntry', selectedEntry)
             handleInitialTagIds(selectedEntry);
 
         }
     },[selectedEntry])
+
+    useEffect(() => { // prepare for multiselect dropdown 
+        if(combinedTags){
+            console.log('preparing options')
+            const filterMind = combinedTags
+                .filter((item) => item.type === "mind")
+                .map(item => ({id: item.id, label: item.note}))
+            setMindOptions(filterMind);
+
+            const filterSitu = combinedTags
+                .filter((item) => item.type === "situation")
+                .map(item => ({id: item.id, label: item.note}))
+            setSituOptions(filterSitu);
+        }
+    },[combinedTags])
+
 
 
     const handleChange = (e, field) => {
@@ -43,6 +67,17 @@ export default function EntryRow({
         onSave("edit", rowId, observation, solution, tagsData);
         setSelectedEntry(null);
     };
+
+    const handleMultiSelectChange = (tagType, newValue) => {
+        const extractTagIds = newValue.filter(item => Number.isInteger(item))
+        const extractCreate = newValue
+            .filter(item => !Number.isInteger(item) && item !== 'noOption')
+            .map(item => ({ note: item, type: tagType }))   
+
+        handleTagsToCreate(tagType, extractCreate);
+        handleTagIdsToAdd(tagType, extractTagIds);
+    };
+    
 
     return(
         <tr>
@@ -86,16 +121,18 @@ export default function EntryRow({
                 {editing ? (
                     <>
                         <MultiSelect 
+                            options={situOptions}
                             tagType="situation"
-                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("situation", newTagIds)}
-                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("situation", newTagsToCreate)}
                             defaultValues={row.tags}
+                            onSelectionChange={handleMultiSelectChange}
+                            setOptions={setSituOptions}   
                         />
                         <MultiSelect 
-                            tagType="mind"
-                            onTagIdsChange={(newTagIds) => handleTagIdsToAdd("mind", newTagIds)}
-                            onTagsToCreateChange={(newTagsToCreate) => handleTagsToCreate("mind", newTagsToCreate)}
-                            defaultValues={row.tags}
+                             options={mindOptions}
+                             tagType="mind"
+                             defaultValues={row.tags}
+                             onSelectionChange={handleMultiSelectChange}
+                             setOptions={setMindOptions} 
                         />
                     </>
                     ) : (
