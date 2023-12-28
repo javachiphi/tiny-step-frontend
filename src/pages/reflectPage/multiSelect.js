@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Box, Chip, styled, Select, Option } from '@mui/joy';
 import OptionModal from './optionModal';
-import  useCombinedTags from '../../api/useCombinedTags';
 
 export const WrappedChip = styled(Chip)(({ theme }) => ({
   '& .MuiChip-label': {
@@ -17,16 +16,20 @@ export default function MultiSelect({
   onSelectionChange,
   defaultValues,
   setOptions,
+  mode,
 }) {
   const [openModal, setOpenModal] = useState(false);
   const [newOption, setNewOption] = useState('');
+  const [selectedValues, setSelectedValues] = useState(defaultValues.map(item => item.id));
+
   const addLabel = tagType === "mind" ? "+ Add tendency(mind)" : "+ Add situation"
+
 
   const handleChange = (event, newValue) => {
     if (event && event.target.innerText === addLabel) {
       setOpenModal(true);
     }
-
+    setSelectedValues(newValue);
     onSelectionChange(tagType, newValue)
     
   };
@@ -34,7 +37,11 @@ export default function MultiSelect({
 
   const handleAddOption = () => {
     if (newOption) {
-      setOptions([...options, { id: newOption, label: newOption }]);
+      const newOptions = [...options, { id: newOption, label: newOption }];
+    
+      setOptions(newOptions);
+      setSelectedValues([...selectedValues, newOption]);
+      onSelectionChange(tagType, [...selectedValues, newOption]);
       setNewOption('');
     }
     setOpenModal(false);
@@ -45,6 +52,48 @@ export default function MultiSelect({
   const initialIds = defaultValues && defaultValues.map(item => item.id)
   const placeholder = tagType === "mind" ? "Select your tendency(mind)" : "Select your situation"
 
+  const renderValueFormVersion = (selected, tagType) => {
+    return (
+      <Box sx={{ display: 'flex', gap: '0.25rem' }}>
+        {selected
+        .filter((selectedOption, index) => selectedOption.label !== addLabel)
+        .map((selectedOption, index) => (
+          <WrappedChip key={index} variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
+            {selectedOption.label}
+          </WrappedChip>
+        ))}
+      </Box>
+    );
+}
+
+
+const renderValueTableVersion = (selected, tagType) => {
+  const selectedItems = selected.filter((selectedOption, index) => selectedOption.label !== addLabel)
+  if (selectedItems.length > 1) {
+    return (
+      <Box sx={{ display: 'flex', gap: '0.25rem' }}>
+        <WrappedChip variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
+          {selectedItems[0].label}
+        </WrappedChip>
+        <WrappedChip color={tagType === "situation" ? "primary" : "neutral"}>
+          + {selectedItems.length - 1}
+         </WrappedChip>
+      </Box>
+    );
+  } else {
+    return (
+      <Box sx={{ display: 'flex', gap: '0.25rem' }}>
+        {selectedItems.map((selectedOption, index) => (
+          <WrappedChip key={index} variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
+            {selectedOption.label}
+          </WrappedChip>
+        ))}
+      </Box>
+    );
+  }
+}
+
+
   return (
     <>
     {options &&
@@ -52,35 +101,16 @@ export default function MultiSelect({
       <>
       <Select 
         color="primary"
-        defaultValue={initialIds}
+        value={selectedValues} 
         multiple
         placeholder={placeholder}
         variant="outlined"
         onChange={handleChange}
-        renderValue={(selected) => {
-          if (selected.length > 1) {
-            return (
-              <Box sx={{ display: 'flex', gap: '0.25rem' }}>
-                <WrappedChip variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
-                  {selected[0].label}
-                </WrappedChip>
-                <WrappedChip color={tagType === "situation" ? "primary" : "neutral"}>
-                  + {selected.length - 1}
-                 </WrappedChip>
-              </Box>
-            );
-          } else {
-            return (
-              <Box sx={{ display: 'flex', gap: '0.25rem' }}>
-                {selected.map((selectedOption, index) => (
-                  <WrappedChip key={index} variant="soft" color={tagType === "situation" ? "primary" : "neutral"}>
-                    {selectedOption.label}
-                  </WrappedChip>
-                ))}
-              </Box>
-            );
-          }
-        }}
+        // renderValue={(selected) => renderValue(selected, tagType)}
+        renderValue={mode === 'tableVersion' ? 
+        (selected) => renderValueTableVersion(selected, tagType) 
+        :  (selected) => renderValueFormVersion(selected, tagType) 
+      }
         
         sx={{
           minWidth: '12rem',
@@ -123,6 +153,7 @@ export default function MultiSelect({
     </>
   );
 }
+
 
 
 

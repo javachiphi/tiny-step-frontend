@@ -69,7 +69,6 @@ export default function EntryRow({
         const extractCreate = newValue
             .filter(item => !Number.isInteger(item) && item !== 'noOption')
             .map(item => ({ note: item, type: tagType }))   
-
         handleTagsToCreate(tagType, extractCreate);
         handleTagIdsToAdd(tagType, extractTagIds);
     };
@@ -121,7 +120,8 @@ export default function EntryRow({
                             tagType="situation"
                             defaultValues={row.tags}
                             onSelectionChange={handleMultiSelectChange}
-                            setOptions={setSituOptions}   
+                            setOptions={setSituOptions}
+                            mode="tableVersion"   
                         />
                         <MultiSelect 
                              options={mindOptions}
@@ -129,6 +129,7 @@ export default function EntryRow({
                              defaultValues={row.tags}
                              onSelectionChange={handleMultiSelectChange}
                              setOptions={setMindOptions} 
+                             mode="tableVersion"  
                         />
                     </>
                     ) : (

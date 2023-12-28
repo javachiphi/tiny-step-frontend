@@ -136,7 +136,8 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                     tagType="situation"
                     defaultValues={editExistingTags}
                     onSelectionChange={handleMultiSelectChange}
-                    setOptions={setSituOptions}   
+                    setOptions={setSituOptions}
+                    mode="formVersion"   
                 />
                 <div>
                     <Typography>
@@ -147,7 +148,8 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                         tagType="mind"
                         defaultValues={editExistingTags}
                         onSelectionChange={handleMultiSelectChange}
-                        setOptions={setMindOptions}                       
+                        setOptions={setMindOptions} 
+                        mode="formVersion"                      
                     />
                 </div>
                 <Box>
