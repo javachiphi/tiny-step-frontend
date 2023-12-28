@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {  Box, Textarea, Input, Typography } from '@mui/joy';
+import {  Box, Textarea, Input, Typography, IconButton } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
 import { updateData, createData } from '../api/apiService';
 import SaveCancelDropDown from './saveCancelDropdown';
@@ -24,6 +24,7 @@ export default function TagForm({
         }
 
     }
+
     const handleSubmit =(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -32,8 +33,8 @@ export default function TagForm({
             description: description,
             type: tagType
         }
-        console.log('data', data)
-        if(mode ==="Edit") {
+
+        if(mode ==="edit") {
             updateData(`tags/${selectedTag.id}`, data, jwtToken)
             .then((response) => {
                 setDataChanged(true);

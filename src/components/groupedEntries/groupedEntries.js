@@ -2,7 +2,7 @@ import React, {useEffect, useState } from "react";
 import EntryList from "./entryList";
 import { Tabs, TabPanel, TabList, Tab } from '@mui/joy';
 import useGroupTags from "../../api/useGroupTags";
-import TagDetails from "../tagManage";
+import TagDetails from "./tagDetails";
 
 const styledTab = {
     '&.Mui-selected, &&:hover': {
@@ -45,7 +45,6 @@ export default function GroupedEntries({tagType}){
                 onChange={handleTabChange}
                 aria-label="Vertical tabs"
                 orientation="vertical"
-                // sx={styledTab}
             >
                 <TabList>
                     {data && data.map((item, index) => {
