@@ -7,12 +7,15 @@ import useTagHandler from '../api/useTagHandler';
 import MultiSelect from '../pages/reflectPage/multiSelect';
 import { getToday } from '../utils/helpers';
 import  useCombinedTags from '../api/useCombinedTags';
+import { useTheme } from '@mui/joy/styles';
+
 
 export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const [observation, setObservation] = useState('');
     const [solution, setSolution] = useState('');
     const [mindOptions, setMindOptions] = useState([]);
     const [situOptions, setSituOptions] = useState([]);
+    
 
     const jwtToken = useAuthToken();
     const navigate = useNavigate();
@@ -20,8 +23,11 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     const {entry: entryTags, loading: entryTagsLoading} = useEntry(entry && entry.id);
     const { combinedTags, loading: combinedTagsLoading } = useCombinedTags();
 
-    const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleSave, handleInitialTagIds } = useTagHandler(jwtToken, setDataChanged);
+    const [showAdditionalFields, setShowAdditionalFields] = useState(mode === "edit");
 
+    const { tagsData, handleTagIdsToAdd, handleTagsToCreate, handleSave, handleInitialTagIds } = useTagHandler(jwtToken, setDataChanged);
+    const theme = useTheme();
+    const primaryColor = theme.vars.palette.colors.primary.light;
 
     useEffect(() => { // prepare for multiselect dropdown 
         if(combinedTags){
@@ -53,6 +59,9 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     },[entry, entryTags])
 
 
+    const toggleAdditionalFields = () => {
+        setShowAdditionalFields(!showAdditionalFields);
+    };
 
     const handleChange = (e, type) => {
         const value = e.target.value;
@@ -69,7 +78,8 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
         
         const extractCreate = newValue
             .filter(item => !Number.isInteger(item) && item !== 'noOption')
-            .map(item => ({ note: item, type: tagType }))      
+            .map(item => ({ note: item, type: tagType }))  
+                
         handleTagsToCreate(tagType, extractCreate);
         handleTagIdsToAdd(tagType, extractTagIds);
     };
@@ -103,15 +113,10 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
     }
     return(
         <Box>
-            <Card style={{padding: "50px", marginTop: "20px", backgroundColor: "#fdf5eb"}}>
+            <Card style={{padding: "30px", width: "320px", marginTop: "50px", backgroundColor: "#fdf5eb"}}>
                 <form id={formId} onSubmit={handleSubmit}>
-                <div style={{
-                        display: "flex", 
-                        justifyContent: 'flex-end' 
-                        }}
-                >
-                    <Typography 
-                        level="h1" 
+                <div style={{display: "flex", justifyContent: 'flex-end'}}>
+                    <Typography level="h1" 
                         sx={{margin: "0 auto",textAlign: "center",  backgroundColor: "#fdf5eb"}}
                     >
                         {getToday()}
@@ -120,62 +125,52 @@ export default function EntryForm({mode, entry, onClose, setDataChanged}){
                         type="submit" 
                         variant="outlined" 
                         color="neutral"
-                        disabled={solution === '' && observation === ''}
-                        sx={{
-                            padding: '10px'
-
-                        }}
+                        disabled={observation === ''}
+                        sx={{padding: '10px'}}
                     >
                         Save
                     </Button>
                 </div>
-                <Typography>
-                    Situation
-                </Typography>
-                <MultiSelect
-                    options={situOptions}
-                    tagType="situation"
-                    defaultValues={editExistingTags}
-                    onSelectionChange={handleMultiSelectChange}
-                    setOptions={setSituOptions}
-                    mode="formVersion"   
+                <Textarea
+                    minRows={5}
+                    value={observation}
+                    onChange={(e) => handleChange(e, 'observation')}
+                    placeholder={"Observation"}
+                    sx={{backgroundColor: "#fdf5eb", marginTop: "20px"}}
                 />
-                <div>
-                    <Typography>
-                        Mind
-                    </Typography>
-                    <MultiSelect 
-                        options={mindOptions}
-                        tagType="mind"
-                        defaultValues={editExistingTags}
-                        onSelectionChange={handleMultiSelectChange}
-                        setOptions={setMindOptions} 
-                        mode="formVersion"                      
-                    />
-                </div>
-                <Box>
-                    Observation
-                    <Textarea
-                        minRows={5}
-                        value={observation}
-                        onChange={(e) => handleChange(e, 'observation')}
-                        placeholder={"Write your observation"}
-                        sx={{backgroundColor: "#fdf5eb"}}
-                    />
-                    Solution
-                    <Textarea
-                        minRows={3}
-                        value={solution}
-                        onChange={(e) => handleChange(e, 'solution')}
-                        placeholder={"What will you do about it?"}
-                        sx={{backgroundColor: "#fdf5eb"}}
-                    />
-                </Box>
-                
+                { showAdditionalFields && (
+                    <Box sx={{ marginTop: "20px"}}>
+                        <MultiSelect
+                            options={situOptions}
+                            tagType="situation"
+                            defaultValues={editExistingTags}
+                            onSelectionChange={handleMultiSelectChange}
+                            setOptions={setSituOptions}
+                            mode="formVersion"   
+                        />         
+                        <MultiSelect 
+                            options={mindOptions}
+                            tagType="mind"
+                            defaultValues={editExistingTags}
+                            onSelectionChange={handleMultiSelectChange}
+                            setOptions={setMindOptions} 
+                            mode="formVersion"                      
+                        />
+                        <Textarea
+                            minRows={1}
+                            value={solution}
+                            onChange={(e) => handleChange(e, 'solution')}
+                            placeholder={"Solution: what will you do about it?"}
+                            sx={{backgroundColor: "#fdf5eb"}}
+                        />
+                    </Box>
+                    )
+                }
+                {mode === "create" && !showAdditionalFields && (
+                        <Typography component="span" sx={{cursor: 'pointer', color: primaryColor, textDecoration: 'underline', paddingTop: "20px"}} onClick={toggleAdditionalFields}>+ Show More</Typography>
+                )}
                 </form>
             </Card>
         </Box>
     )
 }
-
-
