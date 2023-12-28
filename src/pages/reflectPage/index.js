@@ -8,51 +8,52 @@ import {Link } from "react-router-dom";
 import { MoreHoriz } from "@mui/icons-material";
 import ToggleButton from "../../components/toggleButton";
 
+const rowsPerPage = 10;
+
 export default function ReflectPage(){
-    const [entries, setEntries] = useState([]); // useEntries
-    const [ original, setOriginal ] = useState([]); // useAll entries
+    const [entries, setEntries] = useState([]);
     const [dataChanged, setDataChanged] = useState(false);
     const jwtToken = useAuthToken();
     const [checked, setChecked] = useState(true);
-
-    const unfinished = (entries) => {
-        return entries.filter((entry) => 
-        (entry.tags.length === 0) || (entry.solution === (null || '' || undefined))        
-        )
-    }
+    
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(null);
+    
 
     useEffect(() => {
-        if(jwtToken){
-            fetchData("entries", jwtToken)
+        if (!jwtToken) return;
+    
+        const endpoint = checked ? `entries/filtered?page=${page}&limit=${rowsPerPage}` : `entries?page=${page}&limit=${rowsPerPage}`;
+        
+        fetchData(endpoint, jwtToken)
             .then(data => {
-                setOriginal(data);
-                const incomplete = unfinished(data);
-                setEntries(incomplete)
+                console.log('fetched data', data);
+                setEntries(data?.rows || []);
+                setTotalPages(data?.totalPages || null);
             });
-         }
-
-        if(dataChanged === true){
+    
+        if (dataChanged) {
             setDataChanged(false);
         }
-    }, [jwtToken, dataChanged])
+    }, [jwtToken, dataChanged, checked, page]);
+    
 
+
+
+    
     const handleChecked = (event) => {
-        console.log('event checked!', event.target.checked)
         setChecked(event.target.checked);
-        if (event.target.checked === true) {
-            setEntries(unfinished(original))
-           
-        } else {
-            setEntries(original)
-        }
-      
-    }
+    };
+    
 
 
-    if (!jwtToken) {
+    const handleChangePage = (newPage) => {
+        setPage(newPage);
+      };
+    
+      if (!jwtToken) {
         return <div>Loading...</div>;
     }
-
 
     const label = checked === true ? 'Reflect to Complete' : 'View All';
     return(
@@ -82,8 +83,11 @@ export default function ReflectPage(){
                 <Box variant="outlined">
                     <div className="table-container">
                     <TableEntryList 
-                        data={entries} 
+                        entries={entries} 
                         setDataChanged={setDataChanged}
+                        page={page}
+                        totalPages={totalPages}
+                        onChangePage={handleChangePage}
                     />
                     </div>
                 </Box>

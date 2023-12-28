@@ -8,9 +8,18 @@ import EntryRow from "./entryRow";
 import useTagHandler from "../../api/useTagHandler";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { styledTable } from "./entryTableStyles";
+import TablePagination from "./tablePagination";
 
 
-export default function TableEntryList({data, setDataChanged}) {
+const rowsPerPage = 10;
+
+export default function TableEntryList({
+  entries, 
+  page,
+  totalPages,
+  setDataChanged,
+  onChangePage,
+}) {
     const jwtToken = useAuthToken();
     const [selectedEntry, setSelectedEntry] = useState(null);
     const { handleSave } = useTagHandler(jwtToken, setDataChanged);
@@ -19,8 +28,6 @@ export default function TableEntryList({data, setDataChanged}) {
         setSelectedEntry(entry);
     }
     
-
-
     const handleDelete = (entryId) => {
         axios({
             url: `${BACKEND_URL}/entries/${entryId}`,
@@ -33,7 +40,6 @@ export default function TableEntryList({data, setDataChanged}) {
             setDataChanged(true);
         })
     }
-  
   return (
     <form onSubmit={(e) => {console.log('table form'); e.preventDefault()}}>
     <Table 
@@ -61,7 +67,7 @@ export default function TableEntryList({data, setDataChanged}) {
         </tr>
       </thead>
       <tbody>
-        {data.map((row) => (  
+        {entries.map((row) => (  
             <EntryRow 
                 key={row.id}
                 row={row} 
@@ -73,7 +79,16 @@ export default function TableEntryList({data, setDataChanged}) {
             />
         ))}
       </tbody>
+      <TablePagination 
+        rows={entries}
+        page={page}
+        totalPages={totalPages}
+        onChangePage={onChangePage}
+      />
     </Table>
     </form>
   );
 }
+
+
+
