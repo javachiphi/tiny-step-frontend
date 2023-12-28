@@ -21,7 +21,7 @@ export default function Entry({
     const oppositeTags = entry.tags.filter((tag) => tag.type === showOppositeTags)
     return(
      <Accordion
-        expanded={open}s
+        expanded={open}
         onChange={(event, expanded) => {
             setOpen(expanded);
         }}
@@ -37,7 +37,9 @@ export default function Entry({
         <AccordionDetails>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <div>
-                    <Typography color="neutral" fontSize="sm" fontWeight="lg">{showOppositeTags}</Typography>
+                    <Typography color="neutral" fontSize="sm" fontWeight="lg">
+                        {showOppositeTags}
+                    </Typography>
                         {
                             oppositeTags && oppositeTags.map((tag) => {
                                 return (
