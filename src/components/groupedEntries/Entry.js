@@ -64,12 +64,18 @@ export default function Entry({
                 />
                  
                 </div>      
-
             <Drawer 
                 anchor="right" 
                 open={entry.id === openDrawerId} 
                 onClose={onClose}
-                size="lg"
+                size="md"
+                sx={{
+                    display: 'flex', 
+                    '& .MuiDrawer-content': {
+                    alignItems: "center",
+                      backgroundColor: '#fdf5eb', // Replace 'desired-color' with your color
+                    }
+                  }}
             >
                 {entry.id === openDrawerId && (
                     <EntryForm 
