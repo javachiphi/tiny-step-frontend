@@ -14,7 +14,7 @@ export const pages = [
       href: "/reflect", 
     },
     { 
-        title: "+ Write",
+        title: "+ Add",
         href: "/create",    
     },
 ]

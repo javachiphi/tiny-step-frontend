@@ -73,7 +73,6 @@ export default function EntryRow({
         handleTagIdsToAdd(tagType, extractTagIds);
     };
     
-
     return(
         <tr>
             <td>{getDate(row.createdAt)}</td>
@@ -97,21 +96,6 @@ export default function EntryRow({
                     />)
                 : row.solution}
             </td>
-            <td className="hide-on-mobile">
-                {editing ? 
-                    (<SaveCancelDropDown 
-                        onSave={(e)=> {
-                             handleSubmit(e)}
-                            }
-                        onCancel={() => setSelectedEntry(null)}
-                    />)
-                : (
-                    <EditDeleteDropDown 
-                        onDelete={() => onDelete(row.id)}
-                        onEdit={() => onEdit(row)}
-                    />
-                )}
-            </td> 
             <td> 
                 {editing ? (
                     <>
@@ -124,12 +108,12 @@ export default function EntryRow({
                             mode="tableVersion"   
                         />
                         <MultiSelect 
-                             options={mindOptions}
-                             tagType="mind"
-                             defaultValues={row.tags}
-                             onSelectionChange={handleMultiSelectChange}
-                             setOptions={setMindOptions} 
-                             mode="tableVersion"  
+                            options={mindOptions}
+                            tagType="mind"
+                            defaultValues={row.tags}
+                            onSelectionChange={handleMultiSelectChange}
+                            setOptions={setMindOptions} 
+                            mode="tableVersion"  
                         />
                     </>
                     ) : (
@@ -147,6 +131,21 @@ export default function EntryRow({
                     </>
                     )} 
             </td>  
+            <td className="hide-on-mobile">
+                {editing ? 
+                    (<SaveCancelDropDown 
+                        onSave={(e)=> {
+                             handleSubmit(e)}
+                            }
+                        onCancel={() => setSelectedEntry(null)}
+                    />)
+                : (
+                    <EditDeleteDropDown 
+                        onDelete={() => onDelete(row.id)}
+                        onEdit={() => onEdit(row)}
+                    />
+                )}
+            </td> 
      </tr>
     )
 }

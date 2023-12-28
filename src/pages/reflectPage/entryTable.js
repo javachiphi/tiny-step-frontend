@@ -56,8 +56,8 @@ export default function TableEntryList({data, setDataChanged}) {
                 </Tooltip>
               </div>
             </th>   
-            <th className="hide-on-mobile" style={{ width: '5%' }}>Action</th>
             <th>Awareness</th>
+            <th className="hide-on-mobile" style={{ width: '5%', fontWeight: 800 }}>Reflect</th>
         </tr>
       </thead>
       <tbody>
