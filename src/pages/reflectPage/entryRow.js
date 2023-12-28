@@ -31,27 +31,23 @@ export default function EntryRow({
 
     useEffect(() => {
         if(selectedEntry && editing){
-            // console.log('selectedEntry', selectedEntry)
             handleInitialTagIds(selectedEntry);
 
+            if(combinedTags){
+                // console.log('preparing options')
+                const filterMind = combinedTags
+                    .filter((item) => item.type === "mind")
+                    .map(item => ({id: item.id, label: item.note}))
+                setMindOptions(filterMind);
+    
+                const filterSitu = combinedTags
+                    .filter((item) => item.type === "situation")
+                    .map(item => ({id: item.id, label: item.note}))
+                setSituOptions(filterSitu);
+            }
+
         }
-    },[selectedEntry])
-
-    useEffect(() => { // prepare for multiselect dropdown 
-        if(combinedTags){
-            console.log('preparing options')
-            const filterMind = combinedTags
-                .filter((item) => item.type === "mind")
-                .map(item => ({id: item.id, label: item.note}))
-            setMindOptions(filterMind);
-
-            const filterSitu = combinedTags
-                .filter((item) => item.type === "situation")
-                .map(item => ({id: item.id, label: item.note}))
-            setSituOptions(filterSitu);
-        }
-    },[combinedTags])
-
+    },[selectedEntry, combinedTags])
 
 
     const handleChange = (e, field) => {
