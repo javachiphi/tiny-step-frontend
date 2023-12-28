@@ -8,7 +8,7 @@ export const joyTheme = extendTheme({
     colors: {
       primary: {
         main: "#f58b44",
-        light: lighten("#f58b44", 0.1),
+        light: lighten("#f58b44", 0.5),
       },
       secondary: {
         main: "#F9B917",
