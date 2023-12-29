@@ -5,7 +5,7 @@ import OptionModal from './optionModal';
 export const WrappedChip = styled(Chip)(({ theme }) => ({
   '& .MuiChip-label': {
     overflow: 'hidden',
-    maxWidth: '10ch', //
+    maxWidth: '15ch', //
     textOverflow: 'ellipsis', // Add ellipsis for very long values
   },
 }));

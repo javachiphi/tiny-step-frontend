@@ -14,7 +14,7 @@ export default function ReflectPage(){
     const [entries, setEntries] = useState([]);
     const [dataChanged, setDataChanged] = useState(false);
     const jwtToken = useAuthToken();
-    const [checked, setChecked] = useState(true);
+    const [checked, setChecked] = useState(false);
     
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(null);

@@ -40,6 +40,7 @@ export default function TableEntryList({
             setDataChanged(true);
         })
     }
+  const placeholderCount = rowsPerPage - entries.length;
   return (
     <form onSubmit={(e) => {console.log('table form'); e.preventDefault()}}>
     <Table 
@@ -77,6 +78,11 @@ export default function TableEntryList({
                 selectedEntry={selectedEntry}
                 setSelectedEntry={setSelectedEntry}
             />
+        ))}
+        {placeholderCount > 0 && Array.from({ length: placeholderCount }).map((_, index) => (
+          <tr key={index}>
+            <td colSpan={5} />
+          </tr>
         ))}
       </tbody>
       <TablePagination 

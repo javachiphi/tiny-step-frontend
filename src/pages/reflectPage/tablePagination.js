@@ -15,26 +15,11 @@ export default function TablePagination({
     page, 
     totalPages,
     onChangePage,
-    // onChangeRowsPerPage
 }){
-
-    const getLabelDisplayedRowsTo = () => {
-        if (rows.length === -1) {
-            return (page + 1) * rowsPerPage;
-        }
-        return rowsPerPage === -1
-            ? rows.length
-            : Math.min(rows.length, (page + 1) * rowsPerPage);
-        };
-
-    console.log('rows', rows)
-    console.log('page', page)
-    console.log('rowsPerPage', rowsPerPage)
-          
     return(
       <tfoot>
       <tr>
-        <td colSpan={6}>
+        <td colSpan={4}>
           <Box
             sx={{
               display: 'flex',
