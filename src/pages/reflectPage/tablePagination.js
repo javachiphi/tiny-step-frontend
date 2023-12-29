@@ -1,26 +1,33 @@
-import React from 'react';
-import { Option, Box, FormControl, FormLabel, IconButton, Select, Typography } from '@mui/joy';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import React from 'react'
+import {
+  Option,
+  Box,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Select,
+  Typography,
+} from '@mui/joy'
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 function labelDisplayedRows({ from, to, count }) {
-    console.log(`${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`)
-    return `${to} of ${count !== -1 ? count : `more than ${to}`}`;
-  }
-  
-const rowsPerPage = 10;
+  console.log(`${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`)
+  return `${to} of ${count !== -1 ? count : `more than ${to}`}`
+}
 
+const rowsPerPage = 10
 
 export default function TablePagination({
-    rows,
-    page, 
-    totalPages,
-    onChangePage,
-}){
-    return(
-      <tfoot>
+  rows,
+  page,
+  totalPages,
+  onChangePage,
+}) {
+  return (
+    <tfoot>
       <tr>
-        <td className="hide-on-mobile" colSpan={1}></td>
+        <td className='hide-on-mobile' colSpan={1}></td>
         <td colSpan={4}>
           <Box
             sx={{
@@ -30,14 +37,14 @@ export default function TablePagination({
               justifyContent: 'flex-end',
             }}
           >
-            <Typography textAlign="center" sx={{ minWidth: 80 }}>
-                {`${page} of ${totalPages}`}
+            <Typography textAlign='center' sx={{ minWidth: 80 }}>
+              {`${page} of ${totalPages}`}
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <IconButton
-                size="sm"
-                color="neutral"
-                variant="outlined"
+                size='sm'
+                color='neutral'
+                variant='outlined'
                 disabled={page === 1}
                 onClick={() => onChangePage(page - 1)}
                 sx={{ bgcolor: 'background.surface' }}
@@ -45,9 +52,9 @@ export default function TablePagination({
                 <KeyboardArrowLeftIcon />
               </IconButton>
               <IconButton
-                size="sm"
-                color="neutral"
-                variant="outlined"
+                size='sm'
+                color='neutral'
+                variant='outlined'
                 disabled={page === totalPages}
                 onClick={() => onChangePage(page + 1)}
                 sx={{ bgcolor: 'background.surface' }}
@@ -59,5 +66,5 @@ export default function TablePagination({
         </td>
       </tr>
     </tfoot>
-    )
-  }
+  )
+}

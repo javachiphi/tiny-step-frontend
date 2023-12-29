@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { fetchData } from './apiService';
-import { useAuthToken } from "../components/useAuthToken";
-
+import React, { useState, useEffect } from 'react'
+import { fetchData } from './apiService'
+import { useAuthToken } from '../components/useAuthToken'
 
 export default function useEntry(entryId) {
-  const [entry, setEntry] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const jwtToken = useAuthToken();
+  const [entry, setEntry] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const jwtToken = useAuthToken()
 
   useEffect(() => {
-    if(jwtToken && entryId !== (null || undefined)){
-    fetchData(`entries/${entryId}`, jwtToken)
-      .then((data) => {
-        setEntry(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
+    if (jwtToken && entryId !== (null || undefined)) {
+      fetchData(`entries/${entryId}`, jwtToken)
+        .then((data) => {
+          setEntry(data)
+          setLoading(false)
+        })
+        .catch((error) => {
+          setError(error)
+          setLoading(false)
+        })
     }
-  }, [jwtToken, entryId]);
+  }, [jwtToken, entryId])
 
-  return { entry, loading, error};
-
-};
-
+  return { entry, loading, error }
+}

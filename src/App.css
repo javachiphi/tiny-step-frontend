@@ -11,7 +11,6 @@ body {
   display: flex;
   justify-content: center;
   height: 100vh;
-
 }
 
 .App-header {
@@ -42,7 +41,6 @@ body {
   }
 }
 
-
 /* entrytable.css */
 
 .table-container {
@@ -57,20 +55,20 @@ body {
 
 @media screen and (max-width: 768px) {
   .hide-on-mobile {
-      display: none;
+    display: none;
   }
 
   .mobile-align-column {
-      display: flex;
-      flex-direction: column;
+    display: flex;
+    flex-direction: column;
   }
   .mobile-width-30 {
-      width: 30%;
+    width: 30%;
   }
 }
 
 @media screen and (min-width: 768px) {
   .mobile-width-30 {
-      width: 45%;
+    width: 45%;
   }
 }

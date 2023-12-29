@@ -1,32 +1,32 @@
-import { extendTheme } from "@mui/joy";
-import {alpha } from '@mui/material/styles';
+import { extendTheme } from '@mui/joy'
+import { alpha } from '@mui/material/styles'
 
-export const lighten = (color, amount) => alpha(color, amount);
+export const lighten = (color, amount) => alpha(color, amount)
 
 export const joyTheme = extendTheme({
   palette: {
     colors: {
       primary: {
-        main: "#f58b44",
-        light: lighten("#f58b44", 0.5),
+        main: '#f58b44',
+        light: lighten('#f58b44', 0.5),
       },
       secondary: {
-        main: "#F9B917",
-        light: lighten("#F9B917", 0.5),
+        main: '#F9B917',
+        light: lighten('#F9B917', 0.5),
       },
       tertiary: {
-        main: "#52b6de",
-        light: lighten("#52b6de", 0.5),
+        main: '#52b6de',
+        light: lighten('#52b6de', 0.5),
       },
-      error: "#f06e1d",
+      error: '#f06e1d',
       background: {
-        main: "#fdf5eb",
-        dark: "#F4E6D4",
+        main: '#fdf5eb',
+        dark: '#F4E6D4',
       },
-      text: "#4b5161",
+      text: '#4b5161',
     },
   },
-  components: { 
+  components: {
     JoyTable: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
@@ -36,7 +36,7 @@ export const joyTheme = extendTheme({
           }),
         }),
       },
-    }, 
+    },
     JoyChip: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
@@ -50,7 +50,7 @@ export const joyTheme = extendTheme({
           }),
         }),
       },
-    }, 
+    },
     JoySheet: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
@@ -102,4 +102,4 @@ export const joyTheme = extendTheme({
       },
     },
   },
-});
+})
