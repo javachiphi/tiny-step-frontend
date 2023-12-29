@@ -19,7 +19,7 @@ export default function TablePagination({
     return(
       <tfoot>
       <tr>
-        <td colSpan={4}>
+        <td colSpan={5}>
           <Box
             sx={{
               display: 'flex',

@@ -46,6 +46,8 @@ export default function TableEntryList({
     <Table 
       variant="soft"
       sx={styledTable}
+      stickyHeader
+      stickyFooter
     >
       <thead>
         <tr>

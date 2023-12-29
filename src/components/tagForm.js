@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {  Box, Textarea, Input, Typography, IconButton } from '@mui/joy';
 import { useAuthToken } from './useAuthToken';
 import { updateData, createData } from '../api/apiService';
@@ -11,9 +11,16 @@ export default function TagForm({
     tagType,
     setDataChanged
 }){
-    const [note, setNote ] = useState(mode === 'Edit' ? selectedTag.note : '');
-    const [description, setDescription] = useState(mode === 'Edit' ? selectedTag.description : '');
+    const [note, setNote ] = useState('');
+    const [description, setDescription] = useState('');
     const jwtToken = useAuthToken();
+
+    useEffect(() => {
+        if(mode === 'edit'){
+            setNote(selectedTag.note);
+            setDescription(selectedTag.description);
+        }
+    },[selectedTag])
 
     const handleChange = (e,type) => {
         const inputValue = e.target.value;

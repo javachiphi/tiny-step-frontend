@@ -55,7 +55,7 @@ export default function ReflectPage(){
         return <div>Loading...</div>;
     }
 
-    const label = checked === true ? 'Reflect to Complete' : 'View All';
+    const label = checked === true ? 'View Incomplete' : 'View All';
     return(
         <Sheet color='primary' sx={{mt: "20px"}}>
             <Typography level="h1" sx={{color: "#4b5161", textAlign: "center" , fontWeight: 700}}>Reflect</Typography>
@@ -81,7 +81,7 @@ export default function ReflectPage(){
                     </Button>
                 </div>
                 <Box variant="outlined">
-                    <div className="table-container">
+                    <Sheet className="table-container"  sx={{ height: 700, overflow: 'auto' }}>
                     <TableEntryList 
                         entries={entries} 
                         setDataChanged={setDataChanged}
@@ -89,7 +89,7 @@ export default function ReflectPage(){
                         totalPages={totalPages}
                         onChangePage={handleChangePage}
                     />
-                    </div>
+                    </Sheet>
                 </Box>
                 </div>
 
@@ -103,7 +103,7 @@ function HowToDescription(){
         <>
             <Typography sx={{fontWeight: 700}}>How To</Typography>
             <ol>
-                <li>Add Solution and Awareness tags <Chip>Situation</Chip> <Chip>Mind</Chip></li>
+                <li>Add Solution and Awareness tags <Chip color="primary">Situation</Chip> <Chip color="neutral">Mind</Chip></li>
                 <li>View results in checklist page.</li>
             </ol>
         </>
