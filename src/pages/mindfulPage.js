@@ -1,10 +1,11 @@
 import React from "react";
 import GroupedEntries from "../components/groupedEntries/groupedEntries";
+import PageTitle from "../components/pageTitle";
 
 export default function MindFulnessPage() {
     return(
         <div>
-            <h1 className="text-center">Mindfulness Checklist</h1>
+            <PageTitle tagType="mind" title="Checklist" />
             <GroupedEntries tagType="mind" /> 
         </div>
     )

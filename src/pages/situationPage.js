@@ -1,11 +1,12 @@
 import React from "react";
 import GroupedEntries from "../components/groupedEntries/groupedEntries";
-import { Sheet } from "@mui/joy";
+import { Box, Sheet, Typography, Chip} from "@mui/joy";
+import PageTitle from "../components/pageTitle";
 
 export default function SituationPage() {
     return(
         <div>
-            <h1 className="text-center">Situation Checklist</h1>
+            <PageTitle tagType="situation" title="Checklist" />
             <Sheet color='primary'>
                 <div className="table-container">
               <GroupedEntries tagType="situation" /> 

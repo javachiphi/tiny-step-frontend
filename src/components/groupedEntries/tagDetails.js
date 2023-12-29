@@ -8,11 +8,15 @@ import { useAuthToken } from "../useAuthToken";
 import { fetchData } from "../../api/apiService";
 import { getDate } from "../../utils/helpers";
 import ChipRow from "./chipRow";
+import { useTheme } from "@mui/joy/styles";
+
 
 export default function TagDetails({tag,tagType, setDataChanged}){
     const [editing, setEditing] = useState(false); 
     const [assocEntryTags, setAssocEntryTags] = useState([]); // 
     const jwtToken = useAuthToken();
+    const theme = useTheme();
+    const textColor = theme.vars.palette.colors.text;
 
     useEffect(() => {
         if(!jwtToken) return;
@@ -53,9 +57,9 @@ export default function TagDetails({tag,tagType, setDataChanged}){
                 <>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <div>
-                        <Typography level="h3" fontWeight="lg">
-                            {tag.note}
-                        </Typography>
+                        <Chip color={tag.type === "situation" ? "primary" : "neutral"} size='lg'>
+                            <Typography level="h3" fontWeight="lg" sx={{color: textColor}}>{tag.note}</Typography>
+                        </Chip> 
                         <Typography color='neutral' level="body-xs">
                             added on {getDate(tag.created_at)}
                         </Typography>

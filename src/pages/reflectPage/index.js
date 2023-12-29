@@ -5,8 +5,8 @@ import TableEntryList from "./entryTable";
 import { Button, Sheet, Typography, Box, Chip } from "@mui/joy";
 import Add from '@mui/icons-material/Add';
 import {Link } from "react-router-dom";
-import { MoreHoriz } from "@mui/icons-material";
 import ToggleButton from "../../components/toggleButton";
+import PageTitle from "../../components/pageTitle";
 
 const rowsPerPage = 10;
 
@@ -57,8 +57,8 @@ export default function ReflectPage(){
 
     const label = checked === true ? 'View Incomplete' : 'View All';
     return(
-        <Sheet color='primary' sx={{mt: "20px"}}>
-            <Typography level="h1" sx={{color: "#4b5161", textAlign: "center" , fontWeight: 700}}>Reflect</Typography>
+        <div>
+            <PageTitle title="Reflect"/>
             {/* <h1 className="text-center">Reflect Page</h1> */}
                 <HowToDescription />
                 <div style={{display: "flex", flexDirection: "column", gap: "20px"}}>
@@ -93,7 +93,7 @@ export default function ReflectPage(){
                 </Box>
                 </div>
 
-            </Sheet>
+            </div>
     )
 }
 
