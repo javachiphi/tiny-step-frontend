@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Typography, Textarea, Button, Card } from '@mui/joy'
 import { useAuthToken } from './useAuthToken'
 import { useNavigate } from 'react-router-dom'
@@ -63,6 +63,7 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
         handleInitialTagIds(entryTags) // display default in multiselect & iniital id set are different
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry, entryTags])
 
   const toggleAdditionalFields = () => {

@@ -10,7 +10,6 @@ import {
 } from '@mui/joy'
 import EntryForm from '../entryForm'
 import EditDeleteDropDown from '../EditDeleteDropdown'
-import { WrappedChip } from '../../pages/reflectPage/multiSelect'
 
 export default function Entry({
   entry,
@@ -97,7 +96,7 @@ export default function Entry({
             display: 'flex',
             '& .MuiDrawer-content': {
               alignItems: 'center',
-              backgroundColor: '#fdf5eb', // Replace 'desired-color' with your color
+              backgroundColor: '#fdf5eb',
             },
           }}
         >

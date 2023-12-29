@@ -38,6 +38,7 @@ export default function SystemTags({
       .catch((error) => {
         console.log('error', error)
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userPersonality])
 
   return (

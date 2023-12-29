@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Chip, styled, Select, Option } from '@mui/joy'
 import OptionModal from './optionModal'
 
@@ -47,7 +47,6 @@ export default function MultiSelect({
     setOpenModal(false)
   }
 
-  const initialIds = defaultValues && defaultValues.map((item) => item.id)
   const placeholder =
     tagType === 'mind' ? 'Select your tendency(mind)' : 'Select your situation'
 

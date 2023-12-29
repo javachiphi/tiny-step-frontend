@@ -5,7 +5,7 @@ function formatDate(date) {
 
   const day = date.getDate()
   const options = { month: 'short' }
-  const year = date.getFullYear()
+  // const year = date.getFullYear()
   const formattedMonth = new Intl.DateTimeFormat('en-US', options).format(date)
 
   return `${formattedMonth} ${day}`

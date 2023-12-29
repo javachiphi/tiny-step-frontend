@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Textarea, Input, Typography, IconButton } from '@mui/joy'
+import { Box, Textarea, Input, Typography } from '@mui/joy'
 import { useAuthToken } from './useAuthToken'
 import { updateData, createData } from '../api/apiService'
 import SaveCancelDropDown from './saveCancelDropdown'
@@ -20,6 +20,7 @@ export default function TagForm({
       setNote(selectedTag.note)
       setDescription(selectedTag.description)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTag])
 
   const handleChange = (e, type) => {

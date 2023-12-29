@@ -1,6 +1,6 @@
 import React from 'react'
 import GroupedEntries from '../components/groupedEntries/groupedEntries'
-import { Box, Sheet, Typography, Chip } from '@mui/joy'
+import { Sheet } from '@mui/joy'
 import PageTitle from '../components/pageTitle'
 
 export default function SituationPage() {

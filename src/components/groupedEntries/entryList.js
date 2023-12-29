@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { AccordionGroup, Typography, Button, Card } from '@mui/joy'
 import { BACKEND_URL } from '../../constants'
 import { useAuthToken } from '../useAuthToken'

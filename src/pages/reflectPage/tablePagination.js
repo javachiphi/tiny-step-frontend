@@ -1,22 +1,7 @@
 import React from 'react'
-import {
-  Option,
-  Box,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Select,
-  Typography,
-} from '@mui/joy'
+import { Box, IconButton, Typography } from '@mui/joy'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-
-function labelDisplayedRows({ from, to, count }) {
-  console.log(`${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`)
-  return `${to} of ${count !== -1 ? count : `more than ${to}`}`
-}
-
-const rowsPerPage = 10
 
 export default function TablePagination({
   rows,

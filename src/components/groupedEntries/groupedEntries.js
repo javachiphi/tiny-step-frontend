@@ -30,6 +30,7 @@ export default function GroupedEntries({ tagType }) {
       refreshGroupTags()
       setDataChanged(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupTags, dataChanged])
 
   const handleTabChange = (event, newValue) => {

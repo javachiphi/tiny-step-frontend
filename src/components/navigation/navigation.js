@@ -77,16 +77,15 @@ const LogoutButton = () => {
   )
 }
 
-const Profile = () => {
-  const { user, isLoading } = useAuth0()
-  // const userProfile = useUserProfile();
+// const Profile = () => {
+//   const { user, isLoading } = useAuth0()
 
-  if (isLoading) {
-    return <div>Loading ...</div>
-  }
-  console.log('user', user)
-  return <div>hello</div>
-}
+//   if (isLoading) {
+//     return <div>Loading ...</div>
+//   }
+//   console.log('user', user)
+//   return <div>hello</div>
+// }
 
 function DesktopMenu({ items, handleCloseNavMenu }) {
   return (

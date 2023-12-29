@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { fetchData } from './apiService'
 import { useAuthToken } from '../components/useAuthToken'
 
@@ -23,7 +23,7 @@ export default function useGroupTags() {
     }
   }, [jwtToken])
 
-  const refreshGroupTags = () => {
+  const refreshGroupTags = useCallback(() => {
     setLoading(true)
     fetchData('entries/groupedEntriesByTag', jwtToken)
       .then((data) => {
@@ -34,7 +34,7 @@ export default function useGroupTags() {
         setError(error)
         setLoading(false)
       })
-  }
+  }, [jwtToken])
 
   return useMemo(
     () => ({ groupTags, refreshGroupTags, loading, error }),

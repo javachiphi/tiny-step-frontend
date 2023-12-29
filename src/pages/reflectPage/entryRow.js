@@ -16,6 +16,7 @@ export default function EntryRow({
   selectedEntry,
   setSelectedEntry,
 }) {
+  // eslint-disable-next-line no-unused-vars
   const { combinedTags, loading: combinedTagsLoading } = useCombinedTags()
   const [observation, setObservation] = useState(row.observation || '')
   const [solution, setSolution] = useState(row.solution || '')
@@ -49,7 +50,8 @@ export default function EntryRow({
         setSituOptions(filterSitu)
       }
     }
-  }, [selectedEntry, combinedTags])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedEntry, editing, combinedTags])
 
   const handleChange = (e, field) => {
     if (field === 'observation') {
