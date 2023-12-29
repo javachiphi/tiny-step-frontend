@@ -59,6 +59,11 @@ body {
   .hide-on-mobile {
       display: none;
   }
+
+  .mobile-align-column {
+      display: flex;
+      flex-direction: column;
+  }
   .mobile-width-30 {
       width: 30%;
   }

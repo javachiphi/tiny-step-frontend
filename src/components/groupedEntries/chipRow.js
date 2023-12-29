@@ -11,7 +11,7 @@ export default function ChipRow({data, tagType}){
     
     return(
         <>
-        <div>
+        <div class="mobile-align-column">
             {order[0].map((tag) => (
                 <Chip 
                     key={tag.id} fontSize="md"  sx={{color: tag.type === tagType ? backgroundColor : null}} color={tag.type === "situation" ? "primary" : "neutral"}>
