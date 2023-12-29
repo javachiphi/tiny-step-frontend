@@ -45,6 +45,7 @@ export default function TableEntryList({
     <form onSubmit={(e) => {console.log('table form'); e.preventDefault()}}>
     <Table 
       variant="soft"
+      color="primary"
       sx={styledTable}
       stickyHeader
       stickyFooter

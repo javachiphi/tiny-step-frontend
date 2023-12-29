@@ -13,4 +13,8 @@ export const styledTable = {
         backgroundColor: "#fdf5eb", 
         color: "#4b5161", 
     },
+    '& tfoot tr td': {
+        backgroundColor: "#fdf5eb",
+        color: "#4b5161",
+    }
 }

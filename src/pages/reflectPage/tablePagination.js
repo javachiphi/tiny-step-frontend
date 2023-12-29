@@ -10,6 +10,7 @@ function labelDisplayedRows({ from, to, count }) {
   
 const rowsPerPage = 10;
 
+
 export default function TablePagination({
     rows,
     page, 
@@ -19,7 +20,8 @@ export default function TablePagination({
     return(
       <tfoot>
       <tr>
-        <td colSpan={5}>
+        <td className="hide-on-mobile" colSpan={1}></td>
+        <td colSpan={4}>
           <Box
             sx={{
               display: 'flex',

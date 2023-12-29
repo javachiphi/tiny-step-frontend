@@ -27,6 +27,16 @@ export const joyTheme = extendTheme({
     },
   },
   components: { 
+    JoyTable: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          ...(ownerState.color === 'primary' && {
+            backgroundColor: theme.vars.palette.colors.background.main,
+            color: theme.vars.palette.colors.text,
+          }),
+        }),
+      },
+    }, 
     JoyChip: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
