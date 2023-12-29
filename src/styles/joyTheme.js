@@ -26,7 +26,21 @@ export const joyTheme = extendTheme({
       text: "#4b5161",
     },
   },
-  components: {  
+  components: { 
+    JoyChip: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          ...(ownerState.color === 'primary' && {
+            backgroundColor: theme.vars.palette.colors.secondary.light,
+            color: theme.vars.palette.colors.text,
+          }),
+          ...(ownerState.color === 'neutral' && {
+            backgroundColor: theme.vars.palette.colors.tertiary.light,
+            color: theme.vars.palette.colors.text,
+          }),
+        }),
+      },
+    }, 
     JoySheet: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
