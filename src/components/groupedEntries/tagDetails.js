@@ -6,21 +6,19 @@ import DeleteIconButton from "../DeleteIconButton";
 import { deleteData } from "../../api/apiService";
 import { useAuthToken } from "../useAuthToken";
 import { fetchData } from "../../api/apiService";
+import { getDate } from "../../utils/helpers";
+import ChipRow from "./chipRow";
 
 export default function TagDetails({tag,tagType, setDataChanged}){
     const [editing, setEditing] = useState(false); 
     const [assocEntryTags, setAssocEntryTags] = useState([]); // 
     const jwtToken = useAuthToken();
 
-
-    //http://localhost:3001/tags/102/assocEntryTagsCount
     useEffect(() => {
         if(!jwtToken) return;
-
         fetchData(`tags/${tag.id}/assocEntryTagsCount`, jwtToken)
         .then((data) => {
             console.log('response', data)
-            // data.shift(); // remove first element (grouping tag) // or filter by id
             const filterMain = data.filter((item) => tag.id !== item.id)
             setAssocEntryTags(filterMain)
         })
@@ -53,10 +51,15 @@ export default function TagDetails({tag,tagType, setDataChanged}){
                     />
                 ) : (
                 <>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Typography level="h3" fontWeight="lg">
-                        {tag.note}
-                    </Typography>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <div>
+                        <Typography level="h3" fontWeight="lg">
+                            {tag.note}
+                        </Typography>
+                        <Typography color='neutral' level="body-xs">
+                            added on {getDate(tag.created_at)}
+                        </Typography>
+                    </div>
                     <div>
                     <IconButton onClick={() => setEditing(true)}>
                         <ModeEditOutlineOutlinedIcon />
@@ -64,7 +67,7 @@ export default function TagDetails({tag,tagType, setDataChanged}){
                     <DeleteIconButton onClick={handleDelete}/>
                     </div>
                 </div>
-                <ChipRow data={assocEntryTags}/>
+                <ChipRow data={assocEntryTags} tagType={tagType}/>
                 {tag.description ?  
                     (<Typography level="h5" fontWeight="lg">
                         {tag.description}
@@ -84,16 +87,3 @@ export default function TagDetails({tag,tagType, setDataChanged}){
 }
 
 
-// show two rows of chips (one situation, the other mind)
-function ChipRow({data}){
-    return(
-        <div>
-            {data.map((tag) => (
-                <Chip key={tag.id} fontSize="md" color={tag.type === "situation" ? "primary" : "neutral"}>
-                    {tag.note} {tag.tagcount}
-                </Chip>
-            ))}
-        </div>
-    )
-
-}
