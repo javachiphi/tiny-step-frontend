@@ -9,6 +9,7 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import SituationPage from './pages/situationPage'
 import ReflectPage from './pages/reflectPage'
 import MindFulnessPage from './pages/mindfulPage'
+import { Navigate } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -23,6 +24,7 @@ root.render(
   >
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<Navigate replace to='/reflect' />} />
         <Route path='/' element={<App />}>
           <Route path='reflect' index element={<ReflectPage />} />
           <Route path='mindfulness' element={<MindFulnessPage />} />
