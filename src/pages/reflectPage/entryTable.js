@@ -92,7 +92,8 @@ export default function TableEntryList({
           {placeholderCount > 0 &&
             Array.from({ length: placeholderCount }).map((_, index) => (
               <tr key={index}>
-                <td colSpan={5} />
+                <td className='hide-on-mobile' colSpan={1}></td>
+                <td colSpan={4} />
               </tr>
             ))}
         </tbody>
