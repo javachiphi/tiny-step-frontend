@@ -12,7 +12,7 @@ export default function ChipRow({ data, tagType }) {
 
   return (
     <>
-      <div class='mobile-align-column'>
+      <div className='mobile-align-column'>
         {order[0].map((tag) => (
           <Chip
             key={tag.id}

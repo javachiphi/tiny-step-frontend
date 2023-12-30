@@ -74,7 +74,7 @@ export default function TagDetails({ tag, tagType, setDataChanged }) {
                 added on {getDate(tag.created_at)}
               </Typography>
             </div>
-            <div class='hide-on-mobile'>
+            <div className='hide-on-mobile'>
               <IconButton onClick={() => setEditing(true)}>
                 <ModeEditOutlineOutlinedIcon />
               </IconButton>
