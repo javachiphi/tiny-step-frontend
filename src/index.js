@@ -9,7 +9,7 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import SituationPage from './pages/situationPage'
 import ReflectPage from './pages/reflectPage'
 import MindFulnessPage from './pages/mindfulPage'
-import { Navigate } from 'react-router-dom'
+// import { Navigate } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
