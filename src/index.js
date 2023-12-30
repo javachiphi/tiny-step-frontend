@@ -24,7 +24,7 @@ root.render(
   >
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Navigate replace to='/reflect' />} />
+        {/* <Route path='/' element={<Navigate replace to='/reflect' />} /> */}
         <Route path='/' element={<App />}>
           <Route path='reflect' index element={<ReflectPage />} />
           <Route path='mindfulness' element={<MindFulnessPage />} />
