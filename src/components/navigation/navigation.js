@@ -5,6 +5,7 @@ import { AppBar, Button, Toolbar, Box, Typography } from '@mui/material'
 import MobileMenuDropDown from './mobileMenuDropDown'
 import { pages } from '../../constants'
 import { navBtn, navTitle } from './navigationStyles'
+import { useLocation } from 'react-router-dom'
 
 export default function Navigation() {
   const { isAuthenticated } = useAuth0()
@@ -54,9 +55,17 @@ export default function Navigation() {
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0()
+  const location = useLocation()
 
   return (
-    <Button sx={navBtn} onClick={() => loginWithRedirect()}>
+    <Button
+      sx={navBtn}
+      onClick={() =>
+        loginWithRedirect({
+          state: { returnTo: location.pathname },
+        })
+      }
+    >
       Log In
     </Button>
   )
