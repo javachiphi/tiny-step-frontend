@@ -5,10 +5,8 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import { CssVarsProvider as JoyThemeProvider } from '@mui/joy/styles'
 import { muiTheme } from './styles/muiTheme'
 import { joyTheme } from './styles/joyTheme'
-import { useVerifyUser } from './api/useVerifyUser'
 
 function App() {
-  useVerifyUser()
   return (
     <div className='App'>
       <header>

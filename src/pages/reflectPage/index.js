@@ -7,10 +7,12 @@ import Add from '@mui/icons-material/Add'
 import { Link } from 'react-router-dom'
 import ToggleButton from '../../components/toggleButton'
 import PageTitle from '../../components/pageTitle'
+import { useUser } from '../../context/userProvider'
 
 const rowsPerPage = 10
 
 export default function ReflectPage() {
+  const { isUserVerified, error, retryCount } = useUser()
   const [entries, setEntries] = useState([])
   const [dataChanged, setDataChanged] = useState(false)
   const jwtToken = useAuthToken()
@@ -20,14 +22,13 @@ export default function ReflectPage() {
   const [totalPages, setTotalPages] = useState(null)
 
   useEffect(() => {
-    if (!jwtToken) return
+    if (!jwtToken || !isUserVerified) return
 
     const endpoint = checked
       ? `entries/filtered?page=${page}&limit=${rowsPerPage}`
       : `entries?page=${page}&limit=${rowsPerPage}`
 
     fetchData(endpoint, jwtToken).then((data) => {
-      console.log('fetched data', data)
       setEntries(data?.rows || [])
       setTotalPages(data?.totalPages || null)
     })
@@ -35,7 +36,7 @@ export default function ReflectPage() {
     if (dataChanged) {
       setDataChanged(false)
     }
-  }, [jwtToken, dataChanged, checked, page])
+  }, [jwtToken, dataChanged, checked, page, isUserVerified])
 
   const handleChecked = (event) => {
     setChecked(event.target.checked)
@@ -47,6 +48,18 @@ export default function ReflectPage() {
 
   if (!jwtToken) {
     return <div>Loading...</div>
+  }
+
+  if (error) {
+    return (
+      <div>
+        Error: {error.message} retrying.. Count: {retryCount}
+      </div>
+    )
+  }
+
+  if (!isUserVerified) {
+    return <div>Verifying user...</div>
   }
 
   const label = checked === true ? 'View Incomplete' : 'View All'
