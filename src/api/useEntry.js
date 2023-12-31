@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchData } from './apiService'
-import { useAuthToken } from '../components/useAuthToken'
+import { useAuthToken } from '../context/tokenProvider'
 
 export default function useEntry(entryId) {
   const [entry, setEntry] = useState([])

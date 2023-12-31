@@ -7,26 +7,29 @@ import MindFulnessPage from './pages/mindfulPage'
 import App from './App'
 import AuthProvider from './context/authProvider'
 import UserProvider from './context/userProvider'
+import TokenProvider from './context/tokenProvider'
 
 const AppWithRouter = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <UserProvider>
-          <Routes>
-            <Route path='/' element={<App />}>
-              <Route path='reflect' index element={<ReflectPage />} />
-              <Route path='mindfulness' element={<MindFulnessPage />} />
-              <Route path='situation' element={<SituationPage />} />
-              {/* <Route path="onboarding" element={<TagVault />} /> */}
-              <Route
-                path='create'
-                element={<EntryForm mode='create' setDataChanged={null} />}
-              />
-              <Route path='*' element={'Nothing here!'} />
-            </Route>
-          </Routes>
-        </UserProvider>
+        <TokenProvider>
+          <UserProvider>
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route path='reflect' index element={<ReflectPage />} />
+                <Route path='mindfulness' element={<MindFulnessPage />} />
+                <Route path='situation' element={<SituationPage />} />
+                {/* <Route path="onboarding" element={<TagVault />} /> */}
+                <Route
+                  path='create'
+                  element={<EntryForm mode='create' setDataChanged={null} />}
+                />
+                <Route path='*' element={'Nothing here!'} />
+              </Route>
+            </Routes>
+          </UserProvider>
+        </TokenProvider>
       </AuthProvider>
     </BrowserRouter>
   )

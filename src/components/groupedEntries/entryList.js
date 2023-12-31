@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AccordionGroup, Typography, Button, Card } from '@mui/joy'
 import { BACKEND_URL } from '../../constants'
-import { useAuthToken } from '../useAuthToken'
+import { useAuthToken } from '../../context/tokenProvider'
 import Entry from './Entry'
 import axios from 'axios'
 

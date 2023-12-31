@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Textarea, Button, Card } from '@mui/joy'
-import { useAuthToken } from './useAuthToken'
+import { useAuthToken } from '../context/tokenProvider'
 import { useNavigate } from 'react-router-dom'
 import useEntry from '../api/useEntry'
 import useTagHandler from '../api/useTagHandler'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useAuthToken } from '../../components/useAuthToken'
+import { useAuthToken } from '../../context/tokenProvider'
 import { Table, Tooltip } from '@mui/joy'
 import axios from 'axios'
 import { BACKEND_URL } from '../../constants'

@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { createData } from '../api/apiService'
 import { useAuth0 } from '@auth0/auth0-react'
-import { useAuthToken } from '../components/useAuthToken'
+import { useAuthToken } from './tokenProvider'
 import { throttle } from 'lodash'
 
 const UserContext = createContext(null)
@@ -26,11 +26,10 @@ const UserProvider = ({ children }) => {
 
   const verifyUser = async () => {
     if (!jwtToken || !isAuthenticated || isUserVerified) return
-
     setError(null)
     try {
       const data = await createData('user', null, jwtToken)
-      setIsNewUser(data.isNewUser)
+      setIsNewUser(data && data.isNewUser)
       setIsUserVerified(true)
     } catch (error) {
       setError(error)

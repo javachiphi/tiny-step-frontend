@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { fetchData } from '../../api/apiService'
-import { useAuthToken } from '../../components/useAuthToken'
+import { useAuthToken } from '../../context/tokenProvider'
 import TableEntryList from './entryTable'
 import { Button, Sheet, Typography, Box, Chip } from '@mui/joy'
 import Add from '@mui/icons-material/Add'
@@ -47,7 +47,7 @@ export default function ReflectPage() {
   }
 
   if (!jwtToken) {
-    return <div>Loading...</div>
+    return <div>step 1. getting login token....</div>
   }
 
   if (error) {
@@ -59,7 +59,7 @@ export default function ReflectPage() {
   }
 
   if (!isUserVerified) {
-    return <div>Verifying user...</div>
+    return <div>step 2. verifying....</div>
   }
 
   const label = checked === true ? 'View Incomplete' : 'View All'

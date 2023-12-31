@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { fetchData } from './apiService'
-import { useAuthToken } from '../components/useAuthToken'
+import { useAuthToken } from '../context/tokenProvider'
 
 export default function useUserTags() {
   const [userTags, setUserTags] = useState([])
