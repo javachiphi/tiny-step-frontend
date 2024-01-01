@@ -15,7 +15,7 @@ export const joyTheme = extendTheme({
         light: lighten('#F9B917', 0.5),
       },
       tertiary: {
-        main: '#52b6de',
+        main: '#52b6de', // blue  #86D1AC // green
         light: lighten('#52b6de', 0.5),
       },
       error: '#f06e1d',

@@ -5,6 +5,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import { CssVarsProvider as JoyThemeProvider } from '@mui/joy/styles'
 import { muiTheme } from './styles/muiTheme'
 import { joyTheme } from './styles/joyTheme'
+import LandingPage from './pages/landingPage'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       </header>
       <JoyThemeProvider theme={joyTheme}>
         <div className='App-center'>
+          <LandingPage />
           <Outlet />
         </div>
       </JoyThemeProvider>

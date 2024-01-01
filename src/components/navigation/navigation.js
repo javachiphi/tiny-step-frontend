@@ -23,7 +23,7 @@ export default function Navigation() {
     <AppBar position='static' color='primary'>
       <Toolbar>
         <Typography variant='h6' component='div' sx={navTitle}>
-          ✅ CHECKLIST
+          TINY STEPS
         </Typography>
         {isAuthenticated ? (
           <>
