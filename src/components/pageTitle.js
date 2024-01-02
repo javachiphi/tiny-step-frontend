@@ -14,7 +14,7 @@ export default function PageTitle({ tagType, title, onChecked, checked }) {
       <Typography
         className='text-center'
         level='h1'
-        sx={{ color: textColor, padding: '20px', marginTop: '20px' }}
+        sx={{ color: textColor, padding: '15px', marginTop: '20px' }}
       >
         {title}
       </Typography>
@@ -33,7 +33,7 @@ export default function PageTitle({ tagType, title, onChecked, checked }) {
             </Typography>
           </Chip>
         )}
-        {checked && (
+        {onChecked && (
           <SwitchButton checked={checked} handleChecked={onChecked} />
         )}
       </Box>
