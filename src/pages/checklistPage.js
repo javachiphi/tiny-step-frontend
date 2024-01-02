@@ -3,7 +3,7 @@ import GroupedEntries from '../components/groupedEntries/groupedEntries'
 import { Sheet } from '@mui/joy'
 import PageTitle from '../components/pageTitle'
 
-export default function SituationPage() {
+export default function ChecklistPage() {
   return (
     <div>
       <PageTitle tagType='situation' title='Checklist' />

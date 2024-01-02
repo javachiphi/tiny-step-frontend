@@ -1,13 +1,12 @@
-export const BACKEND_URL = 'https://diary-backend.fly.dev'
+export const BACKEND_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://diary-backend.fly.dev'
+    : 'http://localhost:3001'
 
 export const pages = [
   {
-    title: 'Situation',
-    href: '/situation',
-  },
-  {
-    title: 'Mindfulness',
-    href: '/mindfulness',
+    title: 'Checklist',
+    href: '/checklist',
   },
   {
     title: 'Reflect',

@@ -5,7 +5,7 @@ import TableEntryList from './entryTable'
 import { Button, Sheet, Typography, Box, Chip } from '@mui/joy'
 import Add from '@mui/icons-material/Add'
 import { Link } from 'react-router-dom'
-import ToggleButton from '../../components/toggleButton'
+import SwitchButton from '../../components/switchButton'
 import PageTitle from '../../components/pageTitle'
 import { useUser } from '../../context/userProvider'
 
@@ -66,7 +66,6 @@ export default function ReflectPage() {
   return (
     <div>
       <PageTitle title='Reflect' />
-      {/* <h1 className="text-center">Reflect Page</h1> */}
       <HowToDescription />
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div
@@ -74,7 +73,7 @@ export default function ReflectPage() {
         >
           <div style={{ display: 'flex', alignSelf: 'flex-end', gap: '10px' }}>
             <Typography sx={{ alignSelf: 'center' }}> {label}</Typography>
-            <ToggleButton checked={checked} handleChecked={handleChecked} />
+            <SwitchButton checked={checked} handleChecked={handleChecked} />
           </div>
           <Button
             color='primary'

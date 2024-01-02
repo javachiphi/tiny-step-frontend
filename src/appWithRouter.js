@@ -1,9 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import EntryForm from './components/entryForm'
-import SituationPage from './pages/situationPage'
+import ChecklistPage from './pages/checklistPage'
 import ReflectPage from './pages/reflectPage'
-import MindFulnessPage from './pages/mindfulPage'
 import App from './App'
 import AuthProvider from './context/authProvider'
 import UserProvider from './context/userProvider'
@@ -28,8 +27,7 @@ const AppWithRouter = () => {
               <Route path='/' element={<App />}>
                 <Route element={<ProtectedRoute />}>
                   <Route path='reflect' index element={<ReflectPage />} />
-                  <Route path='mindfulness' element={<MindFulnessPage />} />
-                  <Route path='situation' element={<SituationPage />} />
+                  <Route path='checklist' element={<ChecklistPage />} />
                   {/* <Route path="onboarding" element={<TagVault />} /> */}
                   <Route
                     path='create'
