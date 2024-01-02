@@ -85,6 +85,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
                       key={tag.id}
                       value={selectedTabIndex}
                       index={tag.id}
+                      className='tab-panel-width'
                     >
                       <>
                         <TagDetails
