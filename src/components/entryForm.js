@@ -119,6 +119,9 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
   }
 
   // mandatory to provide situation. if not,cannot create.
+  const noSituationSelected =
+    tagsData.situation.tagIdsToAdd.length === 0 &&
+    tagsData.situation.tagsToCreate.length === 0
   return (
     <Box>
       <Card
@@ -145,7 +148,7 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
               type='submit'
               variant='outlined'
               color='neutral'
-              disabled={observation === ''}
+              disabled={observation === '' || noSituationSelected}
               sx={{ padding: '10px' }}
             >
               Save
@@ -158,16 +161,16 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
             placeholder={'Observation'}
             sx={{ backgroundColor: '#fdf5eb', marginTop: '20px' }}
           />
+          <MultiSelect
+            options={situOptions}
+            tagType='situation'
+            defaultValues={editExistingTags}
+            onSelectionChange={handleMultiSelectChange}
+            setOptions={setSituOptions}
+            mode='formVersion'
+          />
           {showAdditionalFields && (
             <Box sx={{ marginTop: '20px' }}>
-              <MultiSelect
-                options={situOptions}
-                tagType='situation'
-                defaultValues={editExistingTags}
-                onSelectionChange={handleMultiSelectChange}
-                setOptions={setSituOptions}
-                mode='formVersion'
-              />
               <MultiSelect
                 options={mindOptions}
                 tagType='mind'
