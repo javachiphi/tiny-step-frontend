@@ -13,7 +13,7 @@ export default function useGroupTags() {
       fetchData('entries/groupedEntriesByTag', jwtToken)
         .then((data) => {
           setGroupTags(data)
-          console.log('grouping tag', data)
+
           setLoading(false)
         })
         .catch((error) => {

@@ -4,19 +4,32 @@ import { BACKEND_URL } from '../../constants'
 import { useAuthToken } from '../../context/tokenProvider'
 import Entry from './Entry'
 import axios from 'axios'
+import useFilteredEntries from '../../api/useFilteredEntries'
 
 export default function EntryList({
-  entries,
   tagType,
   setDataChanged,
   newEntryId,
+  tagId,
 }) {
-  const initialStates = entries.reduce((states, entry) => {
-    states[entry.id] = false
-    return states
-  }, {})
+  const { filteredEntries: entries, loading } = useFilteredEntries({
+    tagId,
+  })
 
-  const [openStates, setOpenStates] = useState(initialStates)
+  useEffect(() => {
+    if (!tagId) return
+    if (loading === false && entries.length > 0) {
+      const initialStates = entries.reduce((states, entry) => {
+        states[entry.id] = false
+        return states
+      }, {})
+      setOpenStates(initialStates)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tagId])
+
+  const [openStates, setOpenStates] = useState(null)
   const [openDrawerId, setOpenDrawerId] = useState(null)
 
   const [selectedEntry, setSelectedEntry] = useState(null)
@@ -60,6 +73,8 @@ export default function EntryList({
       setDataChanged(true)
     })
   }
+
+  if (loading) return <div>Loading...</div>
   return (
     <Card variant='outlined' sx={{ backgroundColor: '#fdf5eb' }}>
       {entries && (
@@ -97,7 +112,7 @@ export default function EntryList({
                     openDrawerId={openDrawerId}
                     selectedEntry={selectedEntry}
                     setDataChanged={setDataChanged}
-                    open={openStates[entry.id]}
+                    open={openStates && openStates[entry && entry.id]}
                     tagType={tagType}
                     setOpen={(value) => setOpenStateForEntry(entry.id, value)}
                   />

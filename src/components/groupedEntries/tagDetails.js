@@ -20,7 +20,6 @@ export default function TagDetails({ tag, tagType, setDataChanged }) {
   useEffect(() => {
     if (!jwtToken) return
     fetchData(`tags/${tag.id}/assocEntryTagsCount`, jwtToken).then((data) => {
-      console.log('response', data)
       const filterMain = data.filter((item) => tag.id !== item.id)
       setAssocEntryTags(filterMain)
     })
@@ -71,7 +70,7 @@ export default function TagDetails({ tag, tagType, setDataChanged }) {
                 </Typography>
               </Chip>
               <Typography color='neutral' level='body-xs'>
-                added on {getDate(tag.created_at)}
+                added on {getDate(tag.createdAt)}
               </Typography>
             </div>
             <div className='hide-on-mobile'>

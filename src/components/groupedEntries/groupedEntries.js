@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import EntryList from './entryList'
-import { Tabs, TabPanel, TabList, Tab } from '@mui/joy'
-import useGroupTags from '../../api/useGroupTags'
+import { Tabs, TabPanel, TabList, Tab, Skeleton, Typography } from '@mui/joy'
 import TagDetails from './tagDetails'
+import useUserTags from '../../api/useUserTags'
 
 const styledTab = {
   '&.Mui-selected, &&:hover': {
@@ -12,28 +12,24 @@ const styledTab = {
 
 export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   const [data, setData] = useState(null)
-  const {
-    groupTags,
-    refreshGroupTags,
-    loading: groupTagsloading,
-  } = useGroupTags()
+  const { userTags, loading: userTagsloading } = useUserTags({ tagType })
   const [dataChanged, setDataChanged] = useState(false)
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0)
+  const [selectedTabIndex, setSelectedTabIndex] = useState(null)
 
   useEffect(() => {
-    if (groupTagsloading === false && groupTags.length > 0) {
-      const filtered = groupTags.filter((item) => item.type === tagType)
-      setData(filtered)
-      setSelectedTabIndex(filtered[0].id)
+    if (userTagsloading === false && userTags.length > 0) {
+      setData(userTags)
+      setSelectedTabIndex(userTags[0].id)
     }
 
     if (dataChanged === true) {
-      refreshGroupTags()
+      // refreshuserTags() // need to check if this needs to be fixed
       setDataChanged(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupTags, dataChanged, tagType])
+  }, [userTags, dataChanged, tagType])
 
+  // initialize selected tab (first tag) if came from entry form
   useEffect(() => {
     if (newEntryId && newEntryTags && data) {
       if (newEntryTags.length > 0) {
@@ -47,11 +43,10 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   }, [newEntryId, newEntryTags, data])
 
   const handleTabChange = (event, newValue) => {
-    console.log('handleTabChange', newValue)
     setSelectedTabIndex(newValue)
   }
 
-  if (groupTagsloading) {
+  if (userTagsloading) {
     return <div>Loading...</div>
   }
   return (
@@ -68,12 +63,13 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
             data.map((item, index) => {
               return (
                 <Tab sx={styledTab} key={item.id} value={item.id}>
-                  {item.note} {item.count}
+                  <Typography variant='body'>
+                    {item.note} {item.count}
+                  </Typography>
                 </Tab>
               )
             })}
         </TabList>
-        {/* switch tab key and tab panel key and value to */}
         {data &&
           data.map((tag, index) => {
             const tagDataType = tag.type
@@ -91,11 +87,12 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
                         <TagDetails
                           tag={tag}
                           tagType={tagType}
+                          tagId={selectedTabIndex}
                           setDataChanged={setDataChanged}
                         />
                         <EntryList
-                          entries={tag.entries}
                           tagType={tagType}
+                          tagId={selectedTabIndex}
                           setDataChanged={setDataChanged}
                           newEntryId={newEntryId}
                         />

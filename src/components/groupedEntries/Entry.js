@@ -42,7 +42,7 @@ export default function Entry({
         >
           <div className='hide-on-mobile'>
             <Typography color='neutral' level='body-sm'>
-              {getDate(entry.created_at)}
+              {getDate(entry.createdAt)}
             </Typography>
           </div>
           <Typography fontSize='md' sx={{ ml: '10px' }}>
