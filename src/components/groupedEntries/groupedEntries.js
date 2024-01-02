@@ -24,6 +24,7 @@ export default function GroupedEntries({ tagType }) {
     if (groupTagsloading === false && groupTags.length > 0) {
       const filtered = groupTags.filter((item) => item.type === tagType)
       setData(filtered)
+      setSelectedTabIndex(filtered[0].id)
     }
 
     if (dataChanged === true) {
@@ -34,6 +35,7 @@ export default function GroupedEntries({ tagType }) {
   }, [groupTags, dataChanged, tagType])
 
   const handleTabChange = (event, newValue) => {
+    console.log('handleTabChange', newValue)
     setSelectedTabIndex(newValue)
   }
 
@@ -53,28 +55,33 @@ export default function GroupedEntries({ tagType }) {
           {data &&
             data.map((item, index) => {
               return (
-                <Tab sx={styledTab} key={index}>
+                <Tab sx={styledTab} key={item.id} value={item.id}>
                   {item.note} {item.count}
                 </Tab>
               )
             })}
         </TabList>
+        {/* switch tab key and tab panel key and value to */}
         {data &&
           data.map((tag, index) => {
             const tagDataType = tag.type
             if (tagDataType === tagType) {
               return (
-                <TabPanel key={index} value={index}>
-                  <TagDetails
-                    tag={tag}
-                    tagType={tagType}
-                    setDataChanged={setDataChanged}
-                  />
-                  <EntryList
-                    entries={tag.entries}
-                    tagType={tagType}
-                    setDataChanged={setDataChanged}
-                  />
+                <TabPanel key={tag.id} value={selectedTabIndex} index={tag.id}>
+                  {selectedTabIndex === tag.id && (
+                    <>
+                      <TagDetails
+                        tag={tag}
+                        tagType={tagType}
+                        setDataChanged={setDataChanged}
+                      />
+                      <EntryList
+                        entries={tag.entries}
+                        tagType={tagType}
+                        setDataChanged={setDataChanged}
+                      />
+                    </>
+                  )}
                 </TabPanel>
               )
             }
