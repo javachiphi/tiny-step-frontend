@@ -10,7 +10,7 @@ const styledTab = {
   },
 }
 
-export default function GroupedEntries({ tagType }) {
+export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   const [data, setData] = useState(null)
   const {
     groupTags,
@@ -33,6 +33,18 @@ export default function GroupedEntries({ tagType }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupTags, dataChanged, tagType])
+
+  useEffect(() => {
+    if (newEntryId && newEntryTags && data) {
+      if (newEntryTags.length > 0) {
+        const firstTag = newEntryTags.filter(
+          (item) => item.type === 'situation',
+        )[0]
+        console.log('first tag set up', firstTag)
+        setSelectedTabIndex(firstTag.id)
+      }
+    }
+  }, [newEntryId, newEntryTags, data])
 
   const handleTabChange = (event, newValue) => {
     console.log('handleTabChange', newValue)
@@ -67,22 +79,29 @@ export default function GroupedEntries({ tagType }) {
             const tagDataType = tag.type
             if (tagDataType === tagType) {
               return (
-                <TabPanel key={tag.id} value={selectedTabIndex} index={tag.id}>
+                <>
                   {selectedTabIndex === tag.id && (
-                    <>
-                      <TagDetails
-                        tag={tag}
-                        tagType={tagType}
-                        setDataChanged={setDataChanged}
-                      />
-                      <EntryList
-                        entries={tag.entries}
-                        tagType={tagType}
-                        setDataChanged={setDataChanged}
-                      />
-                    </>
+                    <TabPanel
+                      key={tag.id}
+                      value={selectedTabIndex}
+                      index={tag.id}
+                    >
+                      <>
+                        <TagDetails
+                          tag={tag}
+                          tagType={tagType}
+                          setDataChanged={setDataChanged}
+                        />
+                        <EntryList
+                          entries={tag.entries}
+                          tagType={tagType}
+                          setDataChanged={setDataChanged}
+                          newEntryId={newEntryId}
+                        />
+                      </>
+                    </TabPanel>
                   )}
-                </TabPanel>
+                </>
               )
             }
             return null

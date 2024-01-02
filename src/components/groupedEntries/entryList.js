@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AccordionGroup, Typography, Button, Card } from '@mui/joy'
 import { BACKEND_URL } from '../../constants'
 import { useAuthToken } from '../../context/tokenProvider'
 import Entry from './Entry'
 import axios from 'axios'
 
-export default function EntryList({ entries, tagType, setDataChanged }) {
+export default function EntryList({
+  entries,
+  tagType,
+  setDataChanged,
+  newEntryId,
+}) {
   const initialStates = entries.reduce((states, entry) => {
     states[entry.id] = false
     return states
@@ -16,6 +21,12 @@ export default function EntryList({ entries, tagType, setDataChanged }) {
 
   const [selectedEntry, setSelectedEntry] = useState(null)
   const jwtToken = useAuthToken()
+
+  useEffect(() => {
+    if (newEntryId) {
+      setOpenStates((prev) => ({ ...prev, [newEntryId]: true }))
+    }
+  }, [newEntryId])
 
   const toggleAll = (value) => {
     const newOpenStates = entries.reduce((states, entry) => {

@@ -100,9 +100,11 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
       })
     } else {
       handleSave('create', null, observation, solution, tagsData).then(
-        (response) => {
-          if (response) {
-            navigate('/reflect')
+        (data) => {
+          if (data) {
+            navigate(`/checklist`, {
+              state: { newEntryId: data.id, newEntryTags: data.tags },
+            })
           }
         },
       )
@@ -115,6 +117,8 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
   if (combinedTagsLoading || (entryTagsLoading && mode === 'edit')) {
     return <div>loading</div>
   }
+
+  // mandatory to provide situation. if not,cannot create.
   return (
     <Box>
       <Card
