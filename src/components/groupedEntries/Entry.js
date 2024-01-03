@@ -49,7 +49,12 @@ export default function Entry({
             fontSize='md'
             sx={{ color: !entry.solution && '#828DAB', ml: '10px' }}
           >
-            {entry.solution ? entry.solution : 'reflect on this observation'}
+            {entry.solution
+              ? entry.solution
+              : `reflect on ...${entry.observation
+                  .split(/\s+/)
+                  .slice(0, 5)
+                  .join(' ')}`}
           </Typography>
         </div>
       </AccordionSummary>
