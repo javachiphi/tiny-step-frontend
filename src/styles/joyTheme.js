@@ -18,10 +18,14 @@ export const joyTheme = extendTheme({
         main: '#52b6de', // blue  #86D1AC // green
         light: lighten('#52b6de', 0.5),
       },
+      fourth: {
+        main: '#86D1AC',
+        light: lighten('#f06e1d', 0.5),
+      },
       error: '#f06e1d',
       background: {
         main: '#fdf5eb',
-        dark: '#F4E6D4',
+        dark: '#f4e6d4',
       },
       text: '#4b5161',
     },
@@ -47,6 +51,12 @@ export const joyTheme = extendTheme({
           ...(ownerState.color === 'neutral' && {
             backgroundColor: theme.vars.palette.colors.tertiary.light,
             color: theme.vars.palette.colors.text,
+          }),
+        }),
+        action: ({ ownerState, theme }) => ({
+          ...(ownerState.selected === true && {
+            backgroundColor: theme.vars.palette.colors.primary.main,
+            color: theme.vars.palette.colors.background.main,
           }),
         }),
       },

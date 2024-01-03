@@ -3,6 +3,7 @@ import EntryList from './entryList'
 import { Tabs, TabPanel, TabList, Tab, Skeleton, Typography } from '@mui/joy'
 import TagDetails from './tagDetails'
 import useUserTags from '../../api/useUserTags'
+import TagSection from '../tagSection'
 
 const styledTab = {
   '&.Mui-selected, &&:hover': {
@@ -13,6 +14,7 @@ const styledTab = {
 export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   const [data, setData] = useState(null)
   const { userTags, loading: userTagsloading } = useUserTags({ tagType })
+
   const [dataChanged, setDataChanged] = useState(false)
   const [selectedTabIndex, setSelectedTabIndex] = useState(null)
 
@@ -29,7 +31,6 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userTags, dataChanged, tagType])
 
-  // initialize selected tab (first tag) if came from entry form
   useEffect(() => {
     if (newEntryId && newEntryTags && data) {
       if (newEntryTags.length > 0) {
@@ -63,46 +64,33 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
             data.map((item, index) => {
               return (
                 <Tab sx={styledTab} key={item.id} value={item.id}>
-                  <Typography variant='body'>
-                    {item.note} {item.count}
-                  </Typography>
+                  <Typography variant='body'>{item.note}</Typography>
                 </Tab>
               )
             })}
         </TabList>
         {data &&
           data.map((tag, index) => {
-            const tagDataType = tag.type
-            if (tagDataType === tagType) {
-              return (
-                <>
-                  {selectedTabIndex === tag.id && (
-                    <TabPanel
-                      key={tag.id}
-                      value={selectedTabIndex}
-                      index={tag.id}
-                      className='tab-panel-width'
-                    >
-                      <>
-                        <TagDetails
-                          tag={tag}
-                          tagType={tagType}
-                          tagId={selectedTabIndex}
-                          setDataChanged={setDataChanged}
-                        />
-                        <EntryList
-                          tagType={tagType}
-                          tagId={selectedTabIndex}
-                          setDataChanged={setDataChanged}
-                          newEntryId={newEntryId}
-                        />
-                      </>
-                    </TabPanel>
-                  )}
-                </>
-              )
-            }
-            return null
+            return (
+              <>
+                {selectedTabIndex === tag.id && (
+                  <TabPanel
+                    key={tag.id}
+                    value={selectedTabIndex}
+                    index={tag.id}
+                    className='tab-panel-width'
+                  >
+                    <TagSection
+                      tag={tag}
+                      tagType={tagType}
+                      selectedTabIndex={selectedTabIndex}
+                      setDataChanged={setDataChanged}
+                      newEntryId={newEntryId}
+                    />
+                  </TabPanel>
+                )}
+              </>
+            )
           })}
       </Tabs>
     </div>

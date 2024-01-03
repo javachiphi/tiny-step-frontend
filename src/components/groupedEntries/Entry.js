@@ -23,8 +23,8 @@ export default function Entry({
   setDataChanged,
   tagType,
 }) {
-  const showOppositeTags = tagType === 'mind' ? 'situation' : 'mind'
-  const oppositeTags = entry.tags.filter((tag) => tag.type === showOppositeTags)
+  // const showOppositeTags = tagType === 'mind' ? 'situation' : 'mind'
+  // const oppositeTags = entry.tags.filter((tag) => tag.type === showOppositeTags)
   return (
     <Accordion
       expanded={open}
@@ -45,15 +45,18 @@ export default function Entry({
               {getDate(entry.createdAt)}
             </Typography>
           </div>
-          <Typography fontSize='md' sx={{ ml: '10px' }}>
-            {entry.solution}
+          <Typography
+            fontSize='md'
+            sx={{ color: !entry.solution && '#828DAB', ml: '10px' }}
+          >
+            {entry.solution ? entry.solution : 'reflect on this observation'}
           </Typography>
         </div>
       </AccordionSummary>
       <AccordionDetails>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography color='neutral' fontSize='sm' fontWeight='lg'>
+            {/* <Typography color='neutral' fontSize='sm' fontWeight='lg'>
               {showOppositeTags}
             </Typography>
             {oppositeTags &&
@@ -67,7 +70,7 @@ export default function Entry({
                     {tag.note}
                   </Chip>
                 )
-              })}
+              })} */}
             <Typography
               sx={{ mt: 1 }}
               color='neutral'

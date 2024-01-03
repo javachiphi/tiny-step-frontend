@@ -9,14 +9,19 @@ export default function useFilteredEntries({ tagId }) {
   const jwtToken = useAuthToken()
 
   useEffect(() => {
-    if (!jwtToken || !tagId) return
+    if (!jwtToken || !tagId) {
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
 
     if (jwtToken && tagId) {
-      fetchData(`entries/tagFilter?tagId=${tagId}`, jwtToken)
+      fetchData(`entries/tagFilter?tagIds=${tagId}`, jwtToken)
         .then((data) => {
           setFilteredEntries(data)
+
           setLoading(false)
-          console.log('filteredEntries: send data', data)
         })
         .catch((error) => {
           setError(error)

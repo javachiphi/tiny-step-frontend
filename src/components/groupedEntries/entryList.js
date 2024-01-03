@@ -1,37 +1,35 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { AccordionGroup, Typography, Button, Card } from '@mui/joy'
 import { BACKEND_URL } from '../../constants'
 import { useAuthToken } from '../../context/tokenProvider'
 import Entry from './Entry'
 import axios from 'axios'
-import useFilteredEntries from '../../api/useFilteredEntries'
 
 export default function EntryList({
+  entries,
+  loading,
   tagType,
   setDataChanged,
   newEntryId,
-  tagId,
 }) {
-  const { filteredEntries: entries, loading } = useFilteredEntries({
-    tagId,
-  })
+  const initialOpenStates = entries.reduce((states, entry) => {
+    states[entry.id] = false
+    return states
+  }, {})
+
+  const [openStates, setOpenStates] = useState(initialOpenStates)
 
   useEffect(() => {
-    if (!tagId) return
-    if (loading === false && entries.length > 0) {
-      const initialStates = entries.reduce((states, entry) => {
-        states[entry.id] = false
+    if (loading) return
+    setOpenStates(
+      entries.reduce((states, entry) => {
+        states[entry.id] = states[entry.id] || false
         return states
-      }, {})
-      setOpenStates(initialStates)
-    }
+      }, {}),
+    )
+  }, [entries, loading])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tagId])
-
-  const [openStates, setOpenStates] = useState(null)
   const [openDrawerId, setOpenDrawerId] = useState(null)
-
   const [selectedEntry, setSelectedEntry] = useState(null)
   const jwtToken = useAuthToken()
 
@@ -112,7 +110,9 @@ export default function EntryList({
                     openDrawerId={openDrawerId}
                     selectedEntry={selectedEntry}
                     setDataChanged={setDataChanged}
-                    open={openStates && openStates[entry && entry.id]}
+                    open={
+                      (openStates && openStates[entry && entry.id]) || false
+                    }
                     tagType={tagType}
                     setOpen={(value) => setOpenStateForEntry(entry.id, value)}
                   />

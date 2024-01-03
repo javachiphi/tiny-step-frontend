@@ -10,7 +10,13 @@ import { getDate } from '../../utils/helpers'
 import ChipRow from './chipRow'
 import { useTheme } from '@mui/joy/styles'
 
-export default function TagDetails({ tag, tagType, setDataChanged }) {
+export default function TagDetails({
+  tag, //main Tag
+  tagType,
+  setDataChanged,
+  filterByTagId,
+  filterTagId,
+}) {
   const [editing, setEditing] = useState(false)
   const [assocEntryTags, setAssocEntryTags] = useState([]) //
   const jwtToken = useAuthToken()
@@ -23,6 +29,8 @@ export default function TagDetails({ tag, tagType, setDataChanged }) {
       const filterMain = data.filter((item) => tag.id !== item.id)
       setAssocEntryTags(filterMain)
     })
+    // improve backend call
+    // find all entries given tag Id. then find all tags associated with those entries
   }, [tag.id, jwtToken])
 
   const handleDelete = async () => {
@@ -80,7 +88,12 @@ export default function TagDetails({ tag, tagType, setDataChanged }) {
               <DeleteIconButton onClick={handleDelete} />
             </div>
           </div>
-          <ChipRow data={assocEntryTags} tagType={tagType} />
+          <ChipRow
+            data={assocEntryTags}
+            tagType={tagType}
+            filterByTagId={filterByTagId}
+            filterTagId={filterTagId}
+          />
           {tag.description ? (
             <Typography level='h5' fontWeight='lg'>
               {tag.description}
