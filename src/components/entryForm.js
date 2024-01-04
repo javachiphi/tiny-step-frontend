@@ -114,10 +114,6 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
   const formId = mode === 'edit' ? entry && entry.id : 'create'
   const editExistingTags = mode === 'edit' ? entryTags?.tags : []
 
-  if (combinedTagsLoading || (entryTagsLoading && mode === 'edit')) {
-    return <div>loading</div>
-  }
-
   // mandatory to provide situation. if not,cannot create.
   const noSituationSelected =
     tagsData.situation.tagIdsToAdd.length === 0 &&
@@ -161,24 +157,32 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
             placeholder={'Observation'}
             sx={{ backgroundColor: '#fdf5eb', marginTop: '20px' }}
           />
-          <MultiSelect
-            options={situOptions}
-            tagType='situation'
-            defaultValues={editExistingTags}
-            onSelectionChange={handleMultiSelectChange}
-            setOptions={setSituOptions}
-            mode='formVersion'
-          />
+          {combinedTagsLoading || (entryTagsLoading && mode === 'edit') ? (
+            <Typography variant='body-sm'>Loading...</Typography>
+          ) : (
+            <MultiSelect
+              options={situOptions}
+              tagType='situation'
+              defaultValues={editExistingTags}
+              onSelectionChange={handleMultiSelectChange}
+              setOptions={setSituOptions}
+              mode='formVersion'
+            />
+          )}
           {showAdditionalFields && (
             <Box sx={{ marginTop: '20px' }}>
-              <MultiSelect
-                options={mindOptions}
-                tagType='mind'
-                defaultValues={editExistingTags}
-                onSelectionChange={handleMultiSelectChange}
-                setOptions={setMindOptions}
-                mode='formVersion'
-              />
+              {combinedTagsLoading || (entryTagsLoading && mode === 'edit') ? (
+                <Typography variant='body-sm'>Loading...</Typography>
+              ) : (
+                <MultiSelect
+                  options={mindOptions}
+                  tagType='mind'
+                  defaultValues={editExistingTags}
+                  onSelectionChange={handleMultiSelectChange}
+                  setOptions={setMindOptions}
+                  mode='formVersion'
+                />
+              )}
               <Textarea
                 minRows={1}
                 value={solution}

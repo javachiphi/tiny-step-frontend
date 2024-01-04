@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { AccordionGroup, Typography, Button, Card } from '@mui/joy'
+import {
+  AccordionGroup,
+  Card,
+  Skeleton,
+  Accordion,
+  AccordionSummary,
+} from '@mui/joy'
 import { BACKEND_URL } from '../../constants'
 import { useAuthToken } from '../../context/tokenProvider'
+import AccordionButtons from './accordionButtons'
 import Entry from './Entry'
 import axios from 'axios'
 
@@ -70,54 +77,48 @@ export default function EntryList({
     })
   }
 
-  if (loading) return <div>Loading...</div>
   return (
     <Card variant='outlined' sx={{ backgroundColor: '#fdf5eb' }}>
-      {entries && (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography sx={{ fontWeight: 700 }}>Solutions</Typography>
-            <div className='hide-on-mobile'>
-              <Button
-                color='neutral'
-                variant='outlined'
-                onClick={() => toggleAll(true)}
-              >
-                {' '}
-                Open All
-              </Button>
-              <Button
-                color='neutral'
-                variant='outlined'
-                onClick={() => toggleAll(false)}
-              >
-                Close All
-              </Button>
+      <AccordionButtons toggleAll={toggleAll} loading={loading} />
+      {loading ? (
+        Array.from(new Array(5)).map((_, index) => (
+          <Accordion key={index} disabled>
+            <AccordionSummary>
+              <Skeleton width='100%' />
+            </AccordionSummary>
+          </Accordion>
+        ))
+      ) : (
+        <>
+          {entries && (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <AccordionGroup sx={{ maxWidth: 700 }}>
+                {entries &&
+                  entries.map((entry, index) => {
+                    return (
+                      <Entry
+                        key={entry.id}
+                        entry={entry}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        onClose={handleCloseDrawer}
+                        openDrawerId={openDrawerId}
+                        selectedEntry={selectedEntry}
+                        setDataChanged={setDataChanged}
+                        open={
+                          (openStates && openStates[entry && entry.id]) || false
+                        }
+                        tagType={tagType}
+                        setOpen={(value) =>
+                          setOpenStateForEntry(entry.id, value)
+                        }
+                      />
+                    )
+                  })}
+              </AccordionGroup>
             </div>
-          </div>
-          <AccordionGroup sx={{ maxWidth: 700 }}>
-            {entries &&
-              entries.map((entry, index) => {
-                return (
-                  <Entry
-                    key={entry.id}
-                    entry={entry}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    onClose={handleCloseDrawer}
-                    openDrawerId={openDrawerId}
-                    selectedEntry={selectedEntry}
-                    setDataChanged={setDataChanged}
-                    open={
-                      (openStates && openStates[entry && entry.id]) || false
-                    }
-                    tagType={tagType}
-                    setOpen={(value) => setOpenStateForEntry(entry.id, value)}
-                  />
-                )
-              })}
-          </AccordionGroup>
-        </div>
+          )}
+        </>
       )}
     </Card>
   )
