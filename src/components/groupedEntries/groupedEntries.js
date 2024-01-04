@@ -22,7 +22,6 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
       combinedTags &&
       combinedTags.length > 0
     ) {
-      // filter combined tags by
       const filtered = combinedTags.filter((item) => item.type === tagType)
       setData(filtered)
       setSelectedTabIndex(filtered[0].id)
@@ -30,6 +29,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
 
     if (dataChanged === true) {
       // refreshuserTags() // need to check if this needs to be fixed
+
       setDataChanged(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,14 +38,15 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   useEffect(() => {
     if (newEntryId && newEntryTags && data) {
       if (newEntryTags.length > 0) {
-        const firstTag = newEntryTags.filter(
-          (item) => item.type === 'situation',
-        )[0]
-        console.log('first tag set up', firstTag)
-        setSelectedTabIndex(firstTag.id)
+        const firstTag = newEntryTags.filter((item) => item.type === tagType)[0]
+        if (firstTag) {
+          setSelectedTabIndex(firstTag.id)
+        } else {
+          setSelectedTabIndex(data[0].id)
+        }
       }
     }
-  }, [newEntryId, newEntryTags, data])
+  }, [newEntryId, newEntryTags, tagType, data])
 
   const handleTabChange = (event, newValue) => {
     setSelectedTabIndex(newValue)
