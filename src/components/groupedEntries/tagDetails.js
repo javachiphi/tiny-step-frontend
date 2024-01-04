@@ -17,6 +17,7 @@ export default function TagDetails({
   const jwtToken = useAuthToken()
   const theme = useTheme()
   const textColor = theme.vars.palette.colors.text
+  const chipColor = tagType === 'situation' ? '#F9B917' : '#52b6de'
 
   const handleDelete = async () => {
     //block delete if tag has entries.
@@ -46,10 +47,7 @@ export default function TagDetails({
             }}
           >
             <div>
-              <Chip
-                color={tag.type === 'situation' ? 'primary' : 'neutral'}
-                size='lg'
-              >
+              <Chip sx={{ backgroundColor: chipColor }} size='lg'>
                 <Typography
                   level='h3'
                   fontWeight='lg'

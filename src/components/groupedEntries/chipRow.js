@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Chip } from '@mui/joy'
+import { Chip, Typography } from '@mui/joy'
 import { fetchData } from '../../api/apiService'
 import { useAuthToken } from '../../context/tokenProvider'
 
@@ -24,12 +24,18 @@ export default function ChipRow({
   }, [mainTagId, tagType, jwtToken])
 
   const selected = filter.length === 1 ? filter[0] : filter[1]
+  const oppositeType = tagType === 'situation' ? 'mindset' : 'situation'
 
   return (
     <>
+      <Typography color='neutral' level='body-sm' fontWeight='xl'>
+        {oppositeType}
+      </Typography>
       <div className='mobile-align-column' style={{ marginBottom: '20px' }}>
         <Chip
           selected={mainTagId === selected}
+          className='custom-chip'
+          color={oppositeType === 'situation' ? 'secondary' : 'tertiary'}
           onClick={() => {
             filterByTagId(mainTagId)
           }}
@@ -42,8 +48,9 @@ export default function ChipRow({
             onClick={() => {
               filterByTagId(tag.id)
             }}
+            className='custom-chip'
             fontSize='md'
-            color={tag.type === 'situation' ? 'primary' : 'neutral'}
+            color={tag.type === 'situation' ? 'secondary' : 'tertiary'}
             selected={tag.id === selected}
           >
             {tag.note} {tag.tagcount}

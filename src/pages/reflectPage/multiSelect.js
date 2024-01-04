@@ -59,7 +59,7 @@ export default function MultiSelect({
             <WrappedChip
               key={index}
               variant='soft'
-              color={tagType === 'situation' ? 'primary' : 'neutral'}
+              color={tagType === 'situation' ? 'secondary' : 'tertiary'}
             >
               {selectedOption.label}
             </WrappedChip>
@@ -77,11 +77,13 @@ export default function MultiSelect({
         <Box sx={{ display: 'flex', gap: '0.25rem' }}>
           <WrappedChip
             variant='soft'
-            color={tagType === 'situation' ? 'primary' : 'neutral'}
+            color={tagType === 'situation' ? 'secondary' : 'tertiary'}
           >
             {selectedItems[0].label}
           </WrappedChip>
-          <WrappedChip color={tagType === 'situation' ? 'primary' : 'neutral'}>
+          <WrappedChip
+            color={tagType === 'situation' ? 'secondary' : 'tertiary'}
+          >
             + {selectedItems.length - 1}
           </WrappedChip>
         </Box>
@@ -93,7 +95,7 @@ export default function MultiSelect({
             <WrappedChip
               key={index}
               variant='soft'
-              color={tagType === 'situation' ? 'primary' : 'neutral'}
+              color={tagType === 'situation' ? 'secondary' : 'tertiary'}
             >
               {selectedOption.label}
             </WrappedChip>

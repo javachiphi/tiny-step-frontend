@@ -11,12 +11,12 @@ export const joyTheme = extendTheme({
         light: lighten('#f58b44', 0.5),
       },
       secondary: {
-        main: '#F9B917',
-        light: lighten('#F9B917', 0.5),
+        main: '#F9B917', // yellow
+        light: lighten('#F9B917', 0.2),
       },
       tertiary: {
         main: '#52b6de', // blue  #86D1AC // green
-        light: lighten('#52b6de', 0.5),
+        light: lighten('#52b6de', 0.2),
       },
       fourth: {
         main: '#86D1AC',
@@ -44,19 +44,38 @@ export const joyTheme = extendTheme({
     JoyChip: {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
-          ...(ownerState.color === 'primary' && {
+          '&.custom-chip': {
+            color: ownerState.selected
+              ? theme.vars.palette.colors.background.main
+              : theme.vars.palette.colors.text,
+            // other styles
+          },
+          ...(ownerState.color === 'secondary' && {
             backgroundColor: theme.vars.palette.colors.secondary.light,
             color: theme.vars.palette.colors.text,
           }),
-          ...(ownerState.color === 'neutral' && {
+          ...(ownerState.color === 'tertiary' && {
             backgroundColor: theme.vars.palette.colors.tertiary.light,
             color: theme.vars.palette.colors.text,
           }),
         }),
         action: ({ ownerState, theme }) => ({
+          backgroundColor:
+            ownerState.color === 'secondary'
+              ? theme.vars.palette.colors.secondary.light
+              : theme.vars.palette.colors.tertiary.light,
+          '&:hover': {
+            backgroundColor:
+              ownerState.color === 'secondary'
+                ? theme.vars.palette.colors.secondary.main
+                : theme.vars.palette.colors.tertiary.main,
+          },
           ...(ownerState.selected === true && {
-            backgroundColor: theme.vars.palette.colors.primary.main,
             color: theme.vars.palette.colors.background.main,
+            backgroundColor:
+              ownerState.color === 'secondary'
+                ? theme.vars.palette.colors.secondary.main
+                : theme.vars.palette.colors.tertiary.main,
           }),
         }),
       },

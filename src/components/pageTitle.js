@@ -5,9 +5,9 @@ import SwitchButton from './switchButton'
 
 export default function PageTitle({ tagType, title, onChecked, checked }) {
   const theme = useTheme()
-  const backgroundColor = theme.vars.palette.colors.background.main
+  const vanillaColor = theme.vars.palette.colors.background.main
   const textColor = theme.vars.palette.colors.text
-  const chipColor = tagType === 'situation' ? 'primary' : 'neutral'
+  const chipColor = tagType === 'situation' ? '#F9B917' : '#52b6de'
 
   return (
     <div>
@@ -27,8 +27,8 @@ export default function PageTitle({ tagType, title, onChecked, checked }) {
         }}
       >
         {tagType && (
-          <Chip color={chipColor} size='md'>
-            <Typography level='h3' sx={{ color: backgroundColor }}>
+          <Chip size='md' sx={{ backgroundColor: chipColor }}>
+            <Typography level='h2' sx={{ color: vanillaColor }}>
               {tagType}
             </Typography>
           </Chip>
