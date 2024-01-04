@@ -183,7 +183,7 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
                 minRows={1}
                 value={solution}
                 onChange={(e) => handleChange(e, 'solution')}
-                placeholder={'Solution: what will you do about it?'}
+                placeholder={'Reflect: what will you do about it?'}
                 sx={{ backgroundColor: '#fdf5eb' }}
               />
             </Box>
