@@ -17,7 +17,10 @@ export default function useFilteredEntries({ tagId }) {
     setLoading(true)
 
     if (jwtToken && tagId) {
-      fetchData(`entries/tagFilter?tagIds=${tagId}`, jwtToken)
+      const formatted = tagId.join(',')
+      console.log('foramtting', formatted)
+
+      fetchData(`entries/tagFilter?tagIds=${formatted}`, jwtToken)
         .then((data) => {
           setFilteredEntries(data)
 
