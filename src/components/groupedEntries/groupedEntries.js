@@ -38,7 +38,9 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   useEffect(() => {
     if (newEntryId && newEntryTags && data) {
       if (newEntryTags.length > 0) {
-        const firstTag = newEntryTags.filter((item) => item.type === tagType)[0]
+        const firstTag = newEntryTags.filter(
+          (item) => item.type === 'situation',
+        )[0] // once new entry is created, we default shows 'situation' tab
         if (firstTag) {
           setSelectedTabIndex(firstTag.id)
         } else {
