@@ -8,10 +8,10 @@ export const pages = [
     title: 'Checklist',
     href: '/checklist',
   },
-  {
-    title: 'Reflect',
-    href: '/reflect',
-  },
+  // {
+  //   title: 'Reflect',
+  //   href: '/reflect',
+  // },
   {
     title: '+ Add',
     href: '/create',

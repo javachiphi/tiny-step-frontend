@@ -60,7 +60,10 @@ body {
 
   .mobile-align-column {
     display: flex;
-    flex-direction: column;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* for smooth scrolling on iOS devices */
+    max-width: 270px;
+    
   }
   .mobile-width-30 {
     width: 30%;

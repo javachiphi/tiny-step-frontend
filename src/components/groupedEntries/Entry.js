@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { getDate } from '../../utils/helpers'
 import {
   Accordion,
@@ -10,6 +10,7 @@ import {
 } from '@mui/joy'
 import EntryForm from '../entryForm'
 import EditDeleteDropDown from '../EditDeleteDropdown'
+import useEntry from '../../api/useEntry'
 
 export default function Entry({
   entry,
@@ -23,8 +24,19 @@ export default function Entry({
   setDataChanged,
   tagType,
 }) {
+  // useEffect(() => {
+  //   if (!openDrawerId || !entry) return
+  //   if (openDrawerId === entry && entry.id) {
+  //   }
+  // }, [openDrawerId, entry])
+
+  // const { entry: entryTags, loading: entryTagsLoading } = useEntry(openDrawerId)
+
   // const showOppositeTags = tagType === 'mind' ? 'situation' : 'mind'
-  // const oppositeTags = entry.tags.filter((tag) => tag.type === showOppositeTags)
+  // const oppositeTags = entryTags?.tags.filter(
+  //   (tag) => tag.type === showOppositeTags,
+  // )
+  // console.log('entrytags', entryTags)
   return (
     <Accordion
       expanded={open}
@@ -51,10 +63,10 @@ export default function Entry({
           >
             {entry.solution
               ? entry.solution
-              : `reflect on ...${entry.observation
+              : `Reflect on "${entry.observation
                   .split(/\s+/)
                   .slice(0, 5)
-                  .join(' ')}`}
+                  .join(' ')}..."`}
           </Typography>
         </div>
       </AccordionSummary>
@@ -63,19 +75,26 @@ export default function Entry({
           <div>
             {/* <Typography color='neutral' fontSize='sm' fontWeight='lg'>
               {showOppositeTags}
-            </Typography>
-            {oppositeTags &&
-              oppositeTags.map((tag) => {
-                return (
-                  <Chip
-                    key={tag.id}
-                    fontSize='md'
-                    color={tag.type === 'situation' ? 'primary' : 'neutral'}
-                  >
-                    {tag.note}
-                  </Chip>
-                )
-              })} */}
+            </Typography> */}
+            {/* {entryTagsLoading ? (
+              <div>loading...</div>
+            ) : (
+              <div>
+                {oppositeTags &&
+                  oppositeTags.map((tag) => {
+                    return (
+                      <Chip
+                        key={tag.id}
+                        fontSize='md'
+                        color={tag.type === 'situation' ? 'primary' : 'neutral'}
+                      >
+                        {tag.note}
+                      </Chip>
+                    )
+                  })}
+              </div>
+            )} */}
+
             <Typography
               sx={{ mt: 1 }}
               color='neutral'

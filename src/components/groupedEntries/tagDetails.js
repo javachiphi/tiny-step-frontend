@@ -59,7 +59,7 @@ export default function TagDetails({
                 </Typography>
               </Chip>
               <Typography color='neutral' level='body-xs'>
-                added on {getDate(tag.createdAt)}
+                added on {getDate(tag.created_at)}
               </Typography>
             </div>
             <div className='hide-on-mobile'>

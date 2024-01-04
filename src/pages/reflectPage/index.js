@@ -16,7 +16,7 @@ export default function ReflectPage() {
   const [entries, setEntries] = useState([])
   const [dataChanged, setDataChanged] = useState(false)
   const jwtToken = useAuthToken()
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState(true)
 
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(null)
@@ -24,9 +24,7 @@ export default function ReflectPage() {
   useEffect(() => {
     if (!jwtToken || !isUserVerified) return
 
-    const endpoint = checked
-      ? `entries/filtered?page=${page}&limit=${rowsPerPage}`
-      : `entries?page=${page}&limit=${rowsPerPage}`
+    const endpoint = `entries?page=${page}&limit=${rowsPerPage}`
 
     fetchData(endpoint, jwtToken).then((data) => {
       setEntries(data?.rows || [])
@@ -62,7 +60,7 @@ export default function ReflectPage() {
     return <div>step 2. verifying....</div>
   }
 
-  const label = checked === true ? 'View Incomplete' : 'View All'
+  // const label = checked === true ? 'View Incomplete' : 'View All'
   return (
     <div>
       <PageTitle title='Reflect' />
@@ -71,10 +69,10 @@ export default function ReflectPage() {
         <div
           style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}
         >
-          <div style={{ display: 'flex', alignSelf: 'flex-end', gap: '10px' }}>
+          {/* <div style={{ display: 'flex', alignSelf: 'flex-end', gap: '10px' }}>
             <Typography sx={{ alignSelf: 'center' }}> {label}</Typography>
             <SwitchButton checked={checked} handleChecked={handleChecked} />
-          </div>
+          </div> */}
           <Button
             color='primary'
             sx={{ alignSelf: 'flex-end' }}
