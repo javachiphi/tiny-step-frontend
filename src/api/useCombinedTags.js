@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { fetchData } from './apiService'
 import { useAuthToken } from '../context/tokenProvider'
 
@@ -22,8 +22,21 @@ export default function useCombinedTags() {
     }
   }, [jwtToken])
 
+  const refreshCombinedTags = useCallback(() => {
+    setLoading(true)
+    fetchData('tags/combined', jwtToken)
+      .then((data) => {
+        setCombinedTags(data)
+        setLoading(false)
+      })
+      .catch((error) => {
+        setError(error)
+        setLoading(false)
+      })
+  }, [jwtToken])
+
   return useMemo(
-    () => ({ combinedTags, loading, error }),
-    [combinedTags, loading, error],
+    () => ({ combinedTags, refreshCombinedTags, loading, error }),
+    [combinedTags, refreshCombinedTags, loading, error],
   )
 }

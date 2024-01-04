@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import EntryList from './entryList'
 import { Tabs, TabPanel, TabList, Tab, Skeleton, Typography } from '@mui/joy'
-import TagDetails from './tagDetails'
-import useUserTags from '../../api/useUserTags'
+import useCombinedTags from '../../api/useCombinedTags'
 import TagSection from '../tagSection'
 
 const styledTab = {
@@ -13,15 +11,21 @@ const styledTab = {
 
 export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
   const [data, setData] = useState(null)
-  const { userTags, loading: userTagsloading } = useUserTags({ tagType })
+  const { combinedTags, loading: combinedTagsLoading } = useCombinedTags()
 
   const [dataChanged, setDataChanged] = useState(false)
   const [selectedTabIndex, setSelectedTabIndex] = useState(null)
 
   useEffect(() => {
-    if (userTagsloading === false && userTags.length > 0) {
-      setData(userTags)
-      setSelectedTabIndex(userTags[0].id)
+    if (
+      combinedTagsLoading === false &&
+      combinedTags &&
+      combinedTags.length > 0
+    ) {
+      // filter combined tags by
+      const filtered = combinedTags.filter((item) => item.type === tagType)
+      setData(filtered)
+      setSelectedTabIndex(filtered[0].id)
     }
 
     if (dataChanged === true) {
@@ -29,7 +33,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
       setDataChanged(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userTags, dataChanged, tagType])
+  }, [combinedTags, dataChanged, tagType])
 
   useEffect(() => {
     if (newEntryId && newEntryTags && data) {
@@ -47,7 +51,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
     setSelectedTabIndex(newValue)
   }
 
-  if (userTagsloading) {
+  if (combinedTagsLoading) {
     return <div>Loading...</div>
   }
   return (
@@ -64,7 +68,9 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
             data.map((item, index) => {
               return (
                 <Tab sx={styledTab} key={item.id} value={item.id}>
-                  <Typography variant='body'>{item.note}</Typography>
+                  <Typography variant='body'>
+                    {item.note} {item.entryCount}
+                  </Typography>
                 </Tab>
               )
             })}
