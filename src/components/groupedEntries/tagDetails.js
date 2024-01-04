@@ -1,46 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { IconButton, Typography, Card, Chip } from '@mui/joy'
 import TagForm from '../tagForm'
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
 import DeleteIconButton from '../DeleteIconButton'
 import { deleteData } from '../../api/apiService'
 import { useAuthToken } from '../../context/tokenProvider'
-import { fetchData } from '../../api/apiService'
 import { getDate } from '../../utils/helpers'
-import ChipRow from './chipRow'
 import { useTheme } from '@mui/joy/styles'
 
 export default function TagDetails({
   tag, //main Tag
   tagType,
   setDataChanged,
-  filterByTagId,
-  filterTagId,
 }) {
   const [editing, setEditing] = useState(false)
-  const [assocEntryTags, setAssocEntryTags] = useState([]) //
   const jwtToken = useAuthToken()
   const theme = useTheme()
   const textColor = theme.vars.palette.colors.text
 
-  useEffect(() => {
-    if (!jwtToken) return
-    fetchData(`tags/${tag.id}/assocEntryTagsCount`, jwtToken).then((data) => {
-      const filterMain = data.filter((item) => tag.id !== item.id)
-      setAssocEntryTags(filterMain)
-    })
-    // improve backend call
-    // find all entries given tag Id. then find all tags associated with those entries
-  }, [tag.id, jwtToken])
-
   const handleDelete = async () => {
-    const idsToDelete = [tag.id]
-
-    deleteData(`tags/users/my`, idsToDelete, jwtToken).then((response) => {
-      console.log('remove association with user', response)
-      deleteData(`tags/${tag.id}`, null, jwtToken).then((response) => {
-        setDataChanged(true)
-      })
+    //block delete if tag has entries.
+    deleteData(`tags/${tag.id}`, null, jwtToken).then((response) => {
+      setDataChanged(true)
     })
   }
 
@@ -85,22 +66,12 @@ export default function TagDetails({
               <IconButton onClick={() => setEditing(true)}>
                 <ModeEditOutlineOutlinedIcon />
               </IconButton>
-              <DeleteIconButton onClick={handleDelete} />
+              {/* <DeleteIconButton onClick={handleDelete} /> */}
             </div>
           </div>
-          <ChipRow
-            data={assocEntryTags}
-            tagType={tagType}
-            filterByTagId={filterByTagId}
-            filterTagId={filterTagId}
-          />
-          {tag.description ? (
+          {tag.description && (
             <Typography level='h5' fontWeight='lg'>
               {tag.description}
-            </Typography>
-          ) : (
-            <Typography level='body' color='neutral' fontWeight='lg'>
-              write a description...
             </Typography>
           )}
         </>

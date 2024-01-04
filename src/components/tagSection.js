@@ -2,23 +2,28 @@ import React, { useState, useEffect } from 'react'
 import TagDetails from './groupedEntries/tagDetails'
 import EntryList from './groupedEntries/entryList'
 import useFilteredEntries from '../api/useFilteredEntries'
+import ChipRow from './groupedEntries/chipRow'
 
 export default function TagSection({
   tag,
   tagType,
-  selectedTabIndex,
+  selectedTabIndex: mainTagId,
   setDataChanged,
   newEntryId,
 }) {
-  const [tagId, setTagId] = useState(null)
+  const [tagId, setTagId] = useState([mainTagId])
 
   const { filteredEntries, loading } = useFilteredEntries({
-    tagId: tagId ? `${selectedTabIndex},${tagId}` : `${selectedTabIndex}`,
+    tagId,
   })
 
   const [entries, setEntries] = useState(filteredEntries)
   const filterByTagId = (newTagId) => {
-    setTagId(newTagId)
+    if (newTagId === mainTagId) {
+      setTagId([mainTagId])
+    } else {
+      setTagId([mainTagId, newTagId])
+    }
   }
 
   useEffect(() => {
@@ -27,12 +32,12 @@ export default function TagSection({
 
   return (
     <>
-      <TagDetails
-        tag={tag}
+      <TagDetails tag={tag} tagType={tagType} setDataChanged={setDataChanged} />
+      <ChipRow
+        mainTagId={tag.id}
         tagType={tagType}
-        filterTagId={tagId} //
-        setDataChanged={setDataChanged}
         filterByTagId={filterByTagId}
+        filterTagId={tagId}
       />
       <EntryList
         entries={entries}
