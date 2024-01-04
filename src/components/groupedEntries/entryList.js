@@ -27,17 +27,15 @@ export default function EntryList({
         return states
       }, {}),
     )
-  }, [entries, loading])
+    if (newEntryId) {
+      console.log('new Entry Id', newEntryId)
+      setOpenStates((prev) => ({ ...prev, [newEntryId]: true }))
+    }
+  }, [entries, loading, newEntryId])
 
   const [openDrawerId, setOpenDrawerId] = useState(null)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const jwtToken = useAuthToken()
-
-  useEffect(() => {
-    if (newEntryId) {
-      setOpenStates((prev) => ({ ...prev, [newEntryId]: true }))
-    }
-  }, [newEntryId])
 
   const toggleAll = (value) => {
     const newOpenStates = entries.reduce((states, entry) => {
