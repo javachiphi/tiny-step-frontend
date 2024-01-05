@@ -8,7 +8,7 @@ import React, {
 import { createData } from '../api/apiService'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useAuthToken } from './tokenProvider'
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 
 const UserContext = createContext(null)
 

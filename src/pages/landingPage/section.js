@@ -1,3 +1,4 @@
+import React from 'react'
 import { Typography, Grid } from '@mui/joy'
 
 const Section = ({ data }) => {
@@ -44,7 +45,7 @@ const Section = ({ data }) => {
           order={data.imagePosition === 'column' ? 0 : imageOrder}
         >
           <img
-            src={process.env.PUBLIC_URL + data.imageUrl}
+            src={data.imageUrl}
             alt={data.heading}
             style={{ maxWidth: '100%', height: 'auto' }}
           />

@@ -1,10 +1,13 @@
+import section1Image from '../../../public/images/section1.png'
+import section3Image from '../../../public/images/section3.png'
+
 const sectionData = [
   {
     heading: 'Track, Reflect, Improve – Navigate Your Unique Tendencies',
     content:
       'From perfectionism to expedient decision-making, everyone has unique habits to uncover and refine. Tiny Steps guides you in identifying and understanding these habits that subtly shape your daily life, helping you to act more mindfully.',
     backgroundColor: '#52b6de', // #86D1AC green
-    imageUrl: 'section1.png',
+    imageUrl: section1Image,
     imagePosition: 'right',
   },
   {
@@ -12,7 +15,7 @@ const sectionData = [
     content:
       'Meet Tiny Steps: a straightforward app for self-awareness. Start by observing and recording your everyday actions. Tiny Steps helps you spot your unseen patterns, like overthinking or snap decision-making. With greater awareness, you can consciously adjust your usual ways, steering clear of autopilot.',
     backgroundColor: '#F9B917',
-    imageUrl: 'section1.png',
+    imageUrl: section1Image,
     imagePosition: 'column',
   },
   {
@@ -24,7 +27,7 @@ const sectionData = [
     ],
     backgroundColor: '#86D1AC',
     isNumberedList: true,
-    imageUrl: 'section3.png',
+    imageUrl: section3Image,
     imagePosition: 'left',
   },
 ]

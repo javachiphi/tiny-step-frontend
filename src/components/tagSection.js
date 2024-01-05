@@ -25,6 +25,7 @@ export default function TagSection({
       setTagId([mainTagId, newTagId])
     }
   }
+  // implement pagination entries?page={1}&limit={10}&tagId={1} (make it not possible if two tagIds)
 
   useEffect(() => {
     setEntries(filteredEntries) // Update entries state

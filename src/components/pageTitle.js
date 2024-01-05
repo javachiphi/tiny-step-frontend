@@ -13,8 +13,13 @@ export default function PageTitle({ tagType, title, onChecked, checked }) {
     <div>
       <Typography
         className='text-center'
-        level='h1'
-        sx={{ color: textColor, padding: '15px', marginTop: '20px' }}
+        level='h2'
+        sx={{
+          color: textColor,
+          padding: '15px',
+          marginTop: '20px',
+          fontWeight: '900',
+        }}
       >
         {title}
       </Typography>
