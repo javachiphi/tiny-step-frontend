@@ -55,7 +55,9 @@ module.exports = (env) => {
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(envVars),
       }),
-      new BundleAnalyzerPlugin(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'disabled',
+      }),
     ],
   }
 }
