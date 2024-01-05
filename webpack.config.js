@@ -1,10 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env) => {
-  // const isProduction = env.NODE_ENV === 'production'
-  // const envFile = isProduction ? '.env.production' : '.env.development'
   const envPath = path.resolve(__dirname, '.env')
   const envVars = require('dotenv').config({ path: envPath }).parsed || {}
 
@@ -14,6 +13,7 @@ module.exports = (env) => {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/',
+      clean: true,
     },
     module: {
       rules: [
@@ -36,7 +36,6 @@ module.exports = (env) => {
               options: {
                 name: '[path][name].[ext]',
                 outputPath: 'images',
-                publicPath: 'images',
               },
             },
           ],
@@ -44,17 +43,19 @@ module.exports = (env) => {
       ],
     },
     devServer: {
-      static: path.resolve(__dirname, './dist'),
+      hot: true, 
       port: 3000,
       historyApiFallback: true,
     },
     plugins: [
       new HtmlWebPackPlugin({
-        template: path.join(__dirname, 'public', 'index.html'),
+        template: path.resolve(__dirname, './public/index.html'),
+        filename: 'index.html',
       }),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(envVars),
       }),
+      new BundleAnalyzerPlugin(),
     ],
   }
 }
