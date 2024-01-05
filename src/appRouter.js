@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import App from './App'
 import ProtectedRoute from './components/protectedRoute'
-import EntryForm from './components/entryForm'
-import ChecklistPage from './pages/checklistPage'
+const EntryForm = React.lazy(() => import('./components/entryForm'))
+const ChecklistPage = React.lazy(() => import('./pages/checklistPage'))
 
 const AppRouter = () => {
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <Routes>
       <Route path='/' element={<App />}>
         <Route index element={<ProtectedRoute />} />
@@ -14,7 +15,9 @@ const AppRouter = () => {
           path='checklist'
           element={
             <ProtectedRoute>
+              <React.Suspense fallback={<div>Loading...</div>} >
               <ChecklistPage />
+              </React.Suspense>
             </ProtectedRoute>
           }
         />
@@ -22,12 +25,15 @@ const AppRouter = () => {
           path='create'
           element={
             <ProtectedRoute>
+              <React.Suspense fallback={<div>Loading...</div>} >
               <EntryForm mode='create' setDataChanged={null} />
+              </React.Suspense>
             </ProtectedRoute>
           }
         />
       </Route>
     </Routes>
+    </Suspense>
   )
 }
 

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import TagDetails from './groupedEntries/tagDetails'
-import EntryList from './groupedEntries/entryList'
+import React, { useState, useEffect, Suspense } from 'react'
+const TagDetails = React.lazy(() => import('./groupedEntries/tagDetails'))
+const EntryList = React.lazy(() => import('./groupedEntries/entryList'))
+const ChipRow = React.lazy(() => import('./groupedEntries/chipRow'))
 import useFilteredEntries from '../api/useFilteredEntries'
-import ChipRow from './groupedEntries/chipRow'
 
 export default function TagSection({
   tag,
@@ -33,13 +33,18 @@ export default function TagSection({
 
   return (
     <>
+      <Suspense fallback={<div>loading...</div>}>
       <TagDetails tag={tag} tagType={tagType} setDataChanged={setDataChanged} />
+      </Suspense>
+      <Suspense fallback={<div>loading...</div>}>
       <ChipRow
         mainTagId={tag.id}
         tagType={tagType}
         filterByTagId={filterByTagId}
         filterTagId={tagId}
       />
+      </Suspense>
+      <Suspense fallback={<div>loading...</div>}>
       <EntryList
         entries={entries}
         loading={loading}
@@ -47,6 +52,7 @@ export default function TagSection({
         setDataChanged={setDataChanged}
         newEntryId={newEntryId}
       />
+      </Suspense>
     </>
   )
 }
