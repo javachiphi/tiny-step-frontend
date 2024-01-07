@@ -10,6 +10,7 @@ export default function TagSection({
   selectedTabIndex: mainTagId,
   setDataChanged,
   newEntryId,
+  onResetNewEntryId
 }) {
   const [tagId, setTagId] = useState([mainTagId])
 
@@ -51,6 +52,7 @@ export default function TagSection({
         tagType={tagType}
         setDataChanged={setDataChanged}
         newEntryId={newEntryId}
+        onResetNewEntryId={onResetNewEntryId}
       />
       </Suspense>
     </>

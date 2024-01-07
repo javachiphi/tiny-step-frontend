@@ -18,6 +18,7 @@ export default function EntryList({
   tagType,
   setDataChanged,
   newEntryId,
+  onResetNewEntryId,
 }) {
   const initialOpenStates = entries.reduce((states, entry) => {
     states[entry.id] = false
@@ -63,6 +64,9 @@ export default function EntryList({
 
   const setOpenStateForEntry = (entryId, isOpen) => {
     setOpenStates((prev) => ({ ...prev, [entryId]: isOpen }))
+    if(!isOpen && entryId === newEntryId){
+      onResetNewEntryId();
+    }
   }
 
   const handleDelete = (entryId) => {

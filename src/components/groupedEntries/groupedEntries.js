@@ -10,9 +10,9 @@ const styledTab = {
   },
 }
 
-export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
+export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onResetNewEntryId }) {
   const [data, setData] = useState(null)
-  const { combinedTags, loading: combinedTagsLoading } = useCombinedTags()
+  const { combinedTags, loading: combinedTagsLoading, refreshCombinedTags } = useCombinedTags()
 
   const [dataChanged, setDataChanged] = useState(false)
   const [selectedTabIndex, setSelectedTabIndex] = useState(null)
@@ -30,7 +30,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
 
     if (dataChanged === true) {
       // refreshuserTags() // need to check if this needs to be fixed
-
+      refreshCombinedTags()
       setDataChanged(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,6 +96,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags }) {
                         selectedTabIndex={selectedTabIndex}
                         setDataChanged={setDataChanged}
                         newEntryId={newEntryId}
+                        onResetNewEntryId={onResetNewEntryId}
                       />
                     </TabPanel>
                   )}

@@ -8,11 +8,17 @@ export default function ChecklistPage() {
   const [tagType, setTagType] = useState('situation')
   const [checked, setChecked] = useState(false)
   const location = useLocation()
-  const { newEntryId, newEntryTags } = location.state || {}
+  const { newEntryId: newlyCreatedId, newEntryTags } = location.state || {}
+  const [ newEntryId, setNewEntryId ] = useState(newlyCreatedId)
 
   const handleChecked = (event) => {
     setChecked(event.target.checked)
     setTagType(event.target.checked === false ? 'situation' : 'mind')
+  }
+
+  const handleResetNewEntryId = () => {
+    setNewEntryId(null)
+    console.log('newEntry reset')
   }
 
   return (
@@ -31,6 +37,7 @@ export default function ChecklistPage() {
           <GroupedEntries
             tagType={tagType}
             newEntryId={newEntryId}
+            onResetNewEntryId={handleResetNewEntryId}
             newEntryTags={newEntryTags}
           />
           </Suspense>
