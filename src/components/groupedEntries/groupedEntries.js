@@ -10,9 +10,19 @@ const styledTab = {
   },
 }
 
-export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onResetNewEntryId, mode }) {
+export default function GroupedEntries({
+  tagType,
+  newEntryId,
+  newEntryTags,
+  onResetNewEntryId,
+  mode,
+}) {
   const [data, setData] = useState(null)
-  const { combinedTags, loading: combinedTagsLoading, refreshCombinedTags } = useCombinedTags()
+  const {
+    combinedTags,
+    loading: combinedTagsLoading,
+    refreshCombinedTags,
+  } = useCombinedTags()
 
   const [dataChanged, setDataChanged] = useState(false)
   const [selectedTabIndex, setSelectedTabIndex] = useState(null)
@@ -39,9 +49,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onRe
   useEffect(() => {
     if (newEntryId && newEntryTags && data) {
       if (newEntryTags.length > 0) {
-        const firstTag = newEntryTags.filter(
-          (item) => item.type === tagType,
-        )[0] // once new entry is created, we default shows 'situation' tab
+        const firstTag = newEntryTags.filter((item) => item.type === tagType)[0] // once new entry is created, we default shows 'situation' tab
         if (firstTag) {
           setSelectedTabIndex(firstTag.id)
         } else {
@@ -73,7 +81,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onRe
                 return (
                   <Tab sx={styledTab} key={item.id} value={item.id}>
                     <Typography variant='body'>
-                      {item.note} 
+                      {item.note.charAt(0).toUpperCase() + item.note.slice(1)}
                       {/* {mode !== 'reflect' && item.entryCount} */}
                     </Typography>
                   </Tab>

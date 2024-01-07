@@ -53,7 +53,7 @@ export default function TagDetails({
                   fontWeight='lg'
                   sx={{ color: textColor }}
                 >
-                  {tag.note}
+                  {tag.note.charAt(0).toUpperCase() + tag.note.slice(1)}
                 </Typography>
               </Chip>
               <Typography color='neutral' level='body-xs'>

@@ -37,6 +37,7 @@ export default function Entry({
   //   (tag) => tag.type === showOppositeTags,
   // )
   // console.log('entrytags', entryTags)
+
   return (
     <Accordion
       expanded={open}
@@ -62,7 +63,7 @@ export default function Entry({
             sx={{ color: !entry.solution && '#828DAB', ml: '10px' }}
           >
             {entry.solution
-              ? entry.solution
+              ?  entry.solution.charAt(0).toUpperCase() + entry.solution.slice(1)
               : `Reflect on "${entry.observation
                   .split(/\s+/)
                   .slice(0, 5)
@@ -73,38 +74,8 @@ export default function Entry({
       <AccordionDetails>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            {/* <Typography color='neutral' fontSize='sm' fontWeight='lg'>
-              {showOppositeTags}
-            </Typography> */}
-            {/* {entryTagsLoading ? (
-              <div>loading...</div>
-            ) : (
-              <div>
-                {oppositeTags &&
-                  oppositeTags.map((tag) => {
-                    return (
-                      <Chip
-                        key={tag.id}
-                        fontSize='md'
-                        color={tag.type === 'situation' ? 'primary' : 'neutral'}
-                      >
-                        {tag.note}
-                      </Chip>
-                    )
-                  })}
-              </div>
-            )} */}
-
-            <Typography
-              sx={{ mt: 1 }}
-              color='neutral'
-              fontSize='sm'
-              fontWeight='lg'
-            >
-              Observation
-            </Typography>
             <Typography sx={{ mb: 1 }} fontSize='md'>
-              {entry.observation}
+             {entry.observation}
             </Typography>
           </div>
           <EditDeleteDropDown
