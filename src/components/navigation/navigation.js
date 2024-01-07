@@ -6,10 +6,13 @@ import MobileMenuDropDown from './mobileMenuDropDown'
 import { pages } from '../../constants'
 import { navBtn, navTitle } from './navigationStyles'
 import { useLocation } from 'react-router-dom'
+import { useUser } from '../../context/userProvider'
+
 
 export default function Navigation() {
   const { isAuthenticated } = useAuth0()
   const [anchorElNav, setAnchorElNav] = useState(null)
+  const { loading: userLoading } = useUser()
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -45,7 +48,7 @@ export default function Navigation() {
           </>
         ) : (
           <Box sx={{ flexGrow: 0 }}>
-            <LoginButton />
+           { !userLoading && <LoginButton />}
           </Box>
         )}
       </Toolbar>
@@ -56,8 +59,8 @@ export default function Navigation() {
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0()
   const location = useLocation()
-
   return (
+
     <Button
       sx={navBtn}
       onClick={() =>
