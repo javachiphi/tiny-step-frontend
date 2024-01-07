@@ -5,8 +5,8 @@ export const BACKEND_URL =
 
 export const pages = [
   {
-    title: 'Checklist',
-    href: '/checklist',
+    title: 'Remind',
+    href: '/remind',
   },
   {
     title: 'Reflect',

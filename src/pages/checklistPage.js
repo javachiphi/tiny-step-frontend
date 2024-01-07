@@ -18,7 +18,6 @@ export default function ChecklistPage() {
 
   const handleResetNewEntryId = () => {
     setNewEntryId(null)
-    console.log('newEntry reset')
   }
 
   return (
@@ -26,7 +25,7 @@ export default function ChecklistPage() {
       <Suspense fallback={<div>loading...</div>}>
         <PageTitle
           tagType={tagType}
-          title='Checklist'
+          title='Remind'
           checked={checked}
           onChecked={handleChecked}
         />

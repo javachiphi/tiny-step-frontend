@@ -6,7 +6,7 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
 
   const onRedirectCallback = (appState) => {
-    navigate(appState?.state?.returnTo || '/checklist')
+    navigate(appState?.state?.returnTo || '/remind')
   }
 
   return (

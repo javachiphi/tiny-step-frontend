@@ -13,7 +13,7 @@ const AppRouter = () => {
       <Route path='/' element={<App />}>
         <Route index element={<ProtectedRoute />} />
         <Route
-          path='checklist'
+          path='remind'
           element={
             <ProtectedRoute>
               <React.Suspense fallback={<div>Loading...</div>} >
