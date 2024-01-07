@@ -17,6 +17,7 @@ const UserProvider = ({ children }) => {
   const jwtToken = useAuthToken()
   const [isUserVerified, setIsUserVerified] = useState(false)
   const [isNewUser, setIsNewUser] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [retryCount, setRetryCount] = useState(0)
   const [error, setError] = useState(null)
   const maxRetries = 3
@@ -26,6 +27,7 @@ const UserProvider = ({ children }) => {
 
   const verifyUser = async () => {
     if (!jwtToken || !isAuthenticated || isUserVerified) return
+    setLoading(true)
     setError(null)
     try {
       const data = await createData('user', null, jwtToken)
@@ -39,6 +41,8 @@ const UserProvider = ({ children }) => {
           initialDelay * Math.pow(2, retryCount),
         )
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -57,7 +61,7 @@ const UserProvider = ({ children }) => {
     }
   }, [jwtToken, isAuthenticated, isUserVerified, retryCount])
 
-  const contextValue = { isUserVerified, error, retryCount, isNewUser }
+  const contextValue = { isUserVerified, error, retryCount, isNewUser, loading }
 
   return (
     <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
