@@ -36,7 +36,7 @@ export default function Navigation() {
               handleOpenNavMenu={handleOpenNavMenu}
             />
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <DesktopMenu items={pages.slice(0, 1)} />
+              <DesktopMenu items={pages.slice(0, 2)} />
             </Box>
             <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
               <DesktopMenu items={pages.slice(-1)} />

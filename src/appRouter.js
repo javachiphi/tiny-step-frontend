@@ -4,6 +4,7 @@ import App from './App'
 import ProtectedRoute from './components/protectedRoute'
 const EntryForm = React.lazy(() => import('./components/entryForm'))
 const ChecklistPage = React.lazy(() => import('./pages/checklistPage'))
+const ReflectPage = React.lazy(() => import('./pages/reflectPage'))
 
 const AppRouter = () => {
   return (
@@ -17,6 +18,16 @@ const AppRouter = () => {
             <ProtectedRoute>
               <React.Suspense fallback={<div>Loading...</div>} >
               <ChecklistPage />
+              </React.Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='reflect'
+          element={
+            <ProtectedRoute>
+              <React.Suspense fallback={<div>Loading...</div>} >
+              <ReflectPage/>
               </React.Suspense>
             </ProtectedRoute>
           }

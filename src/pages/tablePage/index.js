@@ -11,7 +11,7 @@ import { useUser } from '../../context/userProvider'
 
 const rowsPerPage = 10
 
-export default function ReflectPage() {
+export default function TablePage() {
   const { isUserVerified, error, retryCount } = useUser()
   const [entries, setEntries] = useState([])
   const [dataChanged, setDataChanged] = useState(false)

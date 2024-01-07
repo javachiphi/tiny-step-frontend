@@ -10,7 +10,7 @@ const styledTab = {
   },
 }
 
-export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onResetNewEntryId }) {
+export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onResetNewEntryId, mode }) {
   const [data, setData] = useState(null)
   const { combinedTags, loading: combinedTagsLoading, refreshCombinedTags } = useCombinedTags()
 
@@ -73,7 +73,8 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onRe
                 return (
                   <Tab sx={styledTab} key={item.id} value={item.id}>
                     <Typography variant='body'>
-                      {item.note} {item.entryCount}
+                      {item.note} 
+                      {/* {mode !== 'reflect' && item.entryCount} */}
                     </Typography>
                   </Tab>
                 )
@@ -97,6 +98,7 @@ export default function GroupedEntries({ tagType, newEntryId, newEntryTags, onRe
                         setDataChanged={setDataChanged}
                         newEntryId={newEntryId}
                         onResetNewEntryId={onResetNewEntryId}
+                        mode={mode}
                       />
                     </TabPanel>
                   )}
