@@ -1,11 +1,11 @@
 # Tiny Steps - Frontend 
-Tiny Steps(frontend) is a React-based application designed for personal mental habit management.Daily routines often run on unnoticed habits. From perfectionism to overthinking, these patterns shape our lives. Tiny Steps makes them visible. Users can log moments of default behavior or thoughts (Track), revisit observations to find patterns and plan better responses (Reflect), and guide themselves to choose mindful actions in similar situations with checklists that app creates for them (Remind). 
+Tiny Steps(frontend) is a React-based application designed for personal mental habit management. Daily routines often run on unnoticed habits. From perfectionism to overthinking, these patterns shape our lives. Tiny Steps makes them visible. Users can log moments of default behavior or thoughts (Track), revisit observations to find patterns and plan better responses (Reflect), and guide themselves to choose mindful actions in similar situations with checklists that app creates for them (Remind). 
 
 
 ## Features
-**Track**: Log daily observations about mental habits or tendencies.
-**Reflect**: Revisit observations. Detect patterns among observations and tag mental habit or mental areas that you'd like to improve. Add how you'd respond more mindfully. 
-**Remind**: App creates a checklist by situation tags.  Review entries that contain mindful solutions before entering that situation. 
+- **Track**: Log daily observations about mental habits or tendencies.
+- **Reflect**: Revisit observations. Detect patterns among observations and tag mental habit or mental areas that you'd like to improve. Add how you'd respond more mindfully.
+- **Remind**: App creates a checklist by situation tags.  Review entries that contain mindful solutions before entering that situation. 
 
 
 ## Technologies Used
