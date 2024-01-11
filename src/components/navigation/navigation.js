@@ -46,13 +46,38 @@ export default function Navigation() {
             </Box>
           </>
         ) : (
-          <Box sx={{ flexGrow: 0 }}>
-            {' '}
-            <LoginButton />
-          </Box>
+          <>
+            <Box sx={{ flexGrow: 0 }}>
+              <LoginButton />
+            </Box>
+            <Box sx={{ flexGrow: 0 }}>
+              <SignUpButton />
+            </Box>
+          </>
         )}
       </Toolbar>
     </AppBar>
+  )
+}
+
+const SignUpButton = () => {
+  const { loginWithRedirect } = useAuth0()
+  const location = useLocation()
+
+  return (
+    <Button
+      sx={navBtn}
+      onClick={() =>
+        loginWithRedirect({
+          authorizationParams: {
+            screen_hint: 'signup',
+          },
+          state: { returnTo: location.pathname },
+        })
+      }
+    >
+      Sign Up
+    </Button>
   )
 }
 
