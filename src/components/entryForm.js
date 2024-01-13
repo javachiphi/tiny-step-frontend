@@ -9,15 +9,16 @@ import { getToday } from '../utils/helpers'
 import useCombinedTags from '../api/useCombinedTags'
 import { useTheme } from '@mui/joy/styles'
 import { useSnackbar } from '../context/snackbarProvider'
+import useInputState from '../api/useInputState'
 
 export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
-  const [observation, setObservation] = useState('')
-  const [solution, setSolution] = useState('')
+  const [observation, handleObservationChange, setObservation] =
+    useInputState('')
+  const [solution, handleSolutionChange, setSolution] = useInputState('')
   const [mindOptions, setMindOptions] = useState([])
   const [situOptions, setSituOptions] = useState([])
   const { showSnackbar } = useSnackbar()
   const location = useLocation()
-
 
   const jwtToken = useAuthToken()
   const navigate = useNavigate()
@@ -74,15 +75,6 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
     setShowAdditionalFields(!showAdditionalFields)
   }
 
-  const handleChange = (e, type) => {
-    const value = e.target.value
-    if (type === 'observation') {
-      setObservation(value)
-    } else if (type === 'solution') {
-      setSolution(value)
-    }
-  }
-
   const handleMultiSelectChange = (tagType, newValue) => {
     const extractTagIds = newValue.filter((item) => Number.isInteger(item))
 
@@ -101,8 +93,8 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
       handleSave('edit', entry.id, observation, solution, tagsData).then(() => {
         setDataChanged(true)
         onClose()
-        if(location.pathname === '/reflect') {
-        showSnackbar()
+        if (location.pathname === '/reflect') {
+          showSnackbar()
         }
       })
     } else {
@@ -160,7 +152,7 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
           <Textarea
             minRows={5}
             value={observation}
-            onChange={(e) => handleChange(e, 'observation')}
+            onChange={handleObservationChange}
             placeholder={'Observation'}
             sx={{ backgroundColor: '#fdf5eb', marginTop: '20px' }}
           />
@@ -193,7 +185,7 @@ export default function EntryForm({ mode, entry, onClose, setDataChanged }) {
               <Textarea
                 minRows={1}
                 value={solution}
-                onChange={(e) => handleChange(e, 'solution')}
+                onChange={handleSolutionChange}
                 placeholder={'Reflect: what will you do about it?'}
                 sx={{ backgroundColor: '#fdf5eb' }}
               />
