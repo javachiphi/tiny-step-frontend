@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   AccordionGroup,
   Card,
@@ -9,7 +9,8 @@ import {
 import { BACKEND_URL } from '../../constants'
 import { useAuthToken } from '../../context/tokenProvider'
 import AccordionButtons from './accordionButtons'
-const Entry = React.lazy(() => import('./Entry'))
+import Entry from './Entry'
+
 import axios from 'axios'
 
 export default function EntryList({
@@ -64,8 +65,8 @@ export default function EntryList({
 
   const setOpenStateForEntry = (entryId, isOpen) => {
     setOpenStates((prev) => ({ ...prev, [entryId]: isOpen }))
-    if(!isOpen && entryId === newEntryId){
-      onResetNewEntryId();
+    if (!isOpen && entryId === newEntryId) {
+      onResetNewEntryId()
     }
   }
 
@@ -100,7 +101,6 @@ export default function EntryList({
                 {entries &&
                   entries.map((entry, index) => {
                     return (
-                      <Suspense key={index} fallback={<div key={index}>loading...</div>}>
                       <Entry
                         key={entry.id}
                         entry={entry}
@@ -118,7 +118,6 @@ export default function EntryList({
                           setOpenStateForEntry(entry.id, value)
                         }
                       />
-                      </Suspense>
                     )
                   })}
               </AccordionGroup>

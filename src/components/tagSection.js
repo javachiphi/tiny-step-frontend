@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Suspense } from 'react'
-const TagDetails = React.lazy(() => import('./groupedEntries/tagDetails'))
-const EntryList = React.lazy(() => import('./groupedEntries/entryList'))
-const ChipRow = React.lazy(() => import('./groupedEntries/chipRow'))
 import useFilteredEntries from '../api/useFilteredEntries'
 import { Typography } from '@mui/joy'
+import TagDetails from './groupedEntries/tagDetails'
+import EntryList from './groupedEntries/entryList'
+import ChipRow from './groupedEntries/chipRow'
 
 export default function TagSection({
   tag,
@@ -12,7 +12,7 @@ export default function TagSection({
   setDataChanged,
   newEntryId,
   onResetNewEntryId,
-  mode
+  mode,
 }) {
   const [tagId, setTagId] = useState([mainTagId])
 
@@ -31,8 +31,8 @@ export default function TagSection({
   // implement pagination entries?page={1}&limit={10}&tagId={1} (make it not possible if two tagIds)
 
   useEffect(() => {
-    let entries 
-    if(mode === 'reflect') {
+    let entries
+    if (mode === 'reflect') {
       entries = filteredEntries.filter((entry) => !entry.solution)
     } else {
       entries = filteredEntries.filter((entry) => entry.solution)
@@ -42,36 +42,33 @@ export default function TagSection({
 
   return (
     <>
-      <Suspense fallback={<div>loading...</div>}>
       <TagDetails tag={tag} tagType={tagType} setDataChanged={setDataChanged} />
-      </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+
       {mode === 'reflect' ? null : (
-          <ChipRow
+        <ChipRow
           mainTagId={tag.id}
           tagType={tagType}
           filterByTagId={filterByTagId}
           filterTagId={tagId}
         />
-        )}
-      </Suspense>
+      )}
 
       {mode === 'reflect' && entries.length === 0 && !loading ? (
         <Typography
           variant='body-sm'
           style={{ textAlign: 'center', marginTop: '20px' }}
-        >Nothing to reflect</Typography>
-      ): (
-        <Suspense fallback={<div>loading...</div>}>
-          <EntryList
+        >
+          Nothing to reflect
+        </Typography>
+      ) : (
+        <EntryList
           entries={entries}
           loading={loading}
           tagType={tagType}
           setDataChanged={setDataChanged}
           newEntryId={newEntryId}
           onResetNewEntryId={onResetNewEntryId}
-          />
-      </Suspense> 
+        />
       )}
     </>
   )

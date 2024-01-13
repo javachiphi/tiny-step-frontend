@@ -1,15 +1,15 @@
 import React, { useState, Suspense } from 'react'
 import { Sheet } from '@mui/joy'
 import { useLocation } from 'react-router-dom'
-const PageTitle = React.lazy(() => import('../components/pageTitle'))
-const GroupedEntries = React.lazy(() => import('../components/groupedEntries/groupedEntries'))
+import PageTitle from '../components/pageTitle'
+import GroupedEntries from '../components/groupedEntries/groupedEntries'
 
 export default function ChecklistPage() {
   const [tagType, setTagType] = useState('situation')
   const [checked, setChecked] = useState(false)
   const location = useLocation()
   const { newEntryId: newlyCreatedId, newEntryTags } = location.state || {}
-  const [ newEntryId, setNewEntryId ] = useState(newlyCreatedId)
+  const [newEntryId, setNewEntryId] = useState(newlyCreatedId)
 
   const handleChecked = (event) => {
     setChecked(event.target.checked)
@@ -22,24 +22,20 @@ export default function ChecklistPage() {
 
   return (
     <div>
-      <Suspense fallback={<div>loading...</div>}>
-        <PageTitle
-          tagType={tagType}
-          title='Remind'
-          checked={checked}
-          onChecked={handleChecked}
-        />
-      </Suspense>
+      <PageTitle
+        tagType={tagType}
+        title='Remind'
+        checked={checked}
+        onChecked={handleChecked}
+      />
       <Sheet color='primary'>
         <div className='table-container'>
-          <Suspense fallback={<div>loading...</div>}>
           <GroupedEntries
             tagType={tagType}
             newEntryId={newEntryId}
             onResetNewEntryId={handleResetNewEntryId}
             newEntryTags={newEntryTags}
           />
-          </Suspense>
         </div>
       </Sheet>
     </div>

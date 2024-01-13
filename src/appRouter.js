@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react'
+import React from 'react'
+import { CircularProgress } from '@mui/joy'
 import { Routes, Route } from 'react-router-dom'
 import App from './App'
 import ProtectedRoute from './components/protectedRoute'
@@ -8,7 +9,6 @@ const ReflectPage = React.lazy(() => import('./pages/reflectPage'))
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
     <Routes>
       <Route path='/' element={<App />}>
         <Route index element={<ProtectedRoute />} />
@@ -16,8 +16,15 @@ const AppRouter = () => {
           path='remind'
           element={
             <ProtectedRoute>
-              <React.Suspense fallback={<div>Loading...</div>} >
-              <ChecklistPage />
+              <React.Suspense
+                fallback={
+                  <CircularProgress
+                    sx={{ marginTop: '30px' }}
+                    color='success'
+                  />
+                }
+              >
+                <ChecklistPage />
               </React.Suspense>
             </ProtectedRoute>
           }
@@ -26,8 +33,15 @@ const AppRouter = () => {
           path='reflect'
           element={
             <ProtectedRoute>
-              <React.Suspense fallback={<div>Loading...</div>} >
-              <ReflectPage/>
+              <React.Suspense
+                fallback={
+                  <CircularProgress
+                    sx={{ marginTop: '30px' }}
+                    color='success'
+                  />
+                }
+              >
+                <ReflectPage />
               </React.Suspense>
             </ProtectedRoute>
           }
@@ -36,15 +50,21 @@ const AppRouter = () => {
           path='create'
           element={
             <ProtectedRoute>
-              <React.Suspense fallback={<div>Loading...</div>} >
-              <EntryForm mode='create' setDataChanged={null} />
+              <React.Suspense
+                fallback={
+                  <CircularProgress
+                    sx={{ marginTop: '30px' }}
+                    color='success'
+                  />
+                }
+              >
+                <EntryForm mode='create' setDataChanged={null} />
               </React.Suspense>
             </ProtectedRoute>
           }
         />
       </Route>
     </Routes>
-    </Suspense>
   )
 }
 
