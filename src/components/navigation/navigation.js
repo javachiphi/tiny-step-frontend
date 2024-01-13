@@ -9,9 +9,8 @@ import { useLocation } from 'react-router-dom'
 import { useUser } from '../../context/userProvider'
 
 export default function Navigation() {
-  const { isAuthenticated } = useAuth0()
   const [anchorElNav, setAnchorElNav] = useState(null)
-  const { loading: userLoading } = useUser()
+  const { loading, isUserVerified } = useUser()
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -27,7 +26,19 @@ export default function Navigation() {
         <Typography variant='h6' component='div' sx={navTitle}>
           TINY STEPS
         </Typography>
-        {isAuthenticated ? (
+
+        {!isUserVerified && !loading && (
+          <>
+            <Box sx={{ flexGrow: 0 }}>
+              <LoginButton />
+            </Box>
+            <Box sx={{ flexGrow: 0 }}>
+              <SignUpButton />
+            </Box>
+          </>
+        )}
+
+        {isUserVerified && !loading && (
           <>
             <MobileMenuDropDown
               anchorElNav={anchorElNav}
@@ -43,15 +54,6 @@ export default function Navigation() {
             </Box>
             <Box sx={{ flexGrow: 0 }}>
               <LogoutButton />
-            </Box>
-          </>
-        ) : (
-          <>
-            <Box sx={{ flexGrow: 0 }}>
-              <LoginButton />
-            </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <SignUpButton />
             </Box>
           </>
         )}
@@ -104,9 +106,9 @@ const LogoutButton = () => {
   return (
     <Button
       sx={navBtn}
-      onClick={() =>
+      onClick={() => {
         logout({ logoutParams: { returnTo: window.location.origin } })
-      }
+      }}
     >
       Log Out
     </Button>
