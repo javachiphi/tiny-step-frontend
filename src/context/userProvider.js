@@ -46,6 +46,13 @@ const UserProvider = ({ children }) => {
     }
   }
 
+  const resetUserState = () => {
+    console.log('resetting')
+    setIsUserVerified(false)
+    setLoading(false)
+    // Any other state resets you need
+  }
+
   useEffect(() => {
     const throttledVerifyUser = throttle(verifyUser, 10000)
     verifyUserRef.current = throttledVerifyUser
@@ -61,7 +68,14 @@ const UserProvider = ({ children }) => {
     }
   }, [jwtToken, isAuthenticated, isUserVerified, retryCount])
 
-  const contextValue = { isUserVerified, error, retryCount, isNewUser, loading }
+  const contextValue = {
+    isUserVerified,
+    error,
+    retryCount,
+    isNewUser,
+    loading,
+    resetUserState,
+  }
 
   return (
     <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
